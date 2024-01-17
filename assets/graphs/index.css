@@ -926,7 +926,7 @@ a.don_btn {
   font-size: 1.2rem;
   font-weight: 400;
   margin: 0;
-  padding: 15px 0;
+  padding: 0.72em 0;
   color: #fff;
 }
 
@@ -948,5 +948,55 @@ a.don_btn {
 }
 
 .gp_main .ch_ip {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 196px;
+  text-align: right;
   margin: 0 auto;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.gp_item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 25px;
+}
+
+.gp_title {
+  font-size: 0.94rem;
+  margin: 0 0 0.2em;
+}
+
+.gp_desc {
+  font-size: 0.8rem;
+  line-height: 120%;
+  margin: 0;
+  color: #727881;
+
+}
+
+.gp_opt {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+  color: #727881;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+}
+
+.ch_hp {
+  display: flex;
+  align-items: flex-end;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.ch_hp input {
+  margin-right: 5px;
 }
