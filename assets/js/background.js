@@ -14,6 +14,7 @@
 
 const initialState = {
   disabled: false,
+  dark_mode: false,
 };
 
 const browser_cr = chrome ? chrome : browser;
@@ -28,8 +29,8 @@ initStateIfNotExist();
 
 // Show accept cookies if not cookies_gal20
 browser_cr.runtime.onInstalled.addListener(function () {
-  chrome.storage.local.get('cookies_gal20', function (data) {
-    if (!data.cookies_gal20) {
+  chrome.storage.local.get('formState', function (data) {
+    if (!data?.formState?.cookies_gal20) {
       chrome.tabs.create({ url: "/content/options.html" });
     }
   });

@@ -31,7 +31,9 @@ html,
 body {
   --text: #424546;
   --sec-text: #353639;
+  --th-text: #97999d;
   --background: #f8fafc;
+  --hover: #e3e7ea;
   --background-contrast: #fff;
   --background-contrast-2: #fafcfe;
   --main-border: 1px solid hsl(206, 9%, 85%);
@@ -51,10 +53,12 @@ html.dark_mode,
 html.dark_mode body {
   --text: #ffffff;
   --sec-text: #d7d9de;
-  --background: #22272a;
+  --th-text: #d7d9de;
+  --background: #25292b;
+  --hover: #393e41;
   --background-contrast: #232323;
   --background-contrast-2: #2b2b2c;
-  --main-border: 1px solid #4f5054;
+  --main-border: 1px solid #39393c;
   --sec-border: 1px solid #494949;
   --thr-border: 1px solid #2c2c2c;
   --scrollbar-color: #515454;
@@ -70,6 +74,10 @@ html.dark_mode body {
 
 .emojiesfix {
   font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol;
+}
+
+.ns>* {
+  user-select: none !important;
 }
 
 *::-webkit-scrollbar {
@@ -162,7 +170,7 @@ body {
     "Helvetica Neue", sans-serif;
   background-color: var(--background, #f8fafc);
   color: var(--text, #000);
-  min-width: 450px;
+  min-width: 420px;
 
   height: fit-content;
   font-size: 15px;
@@ -209,7 +217,6 @@ img {
 
 .logo_group>span {
   display: block;
-  color: #fc971e;
 }
 
 .logo {
@@ -229,9 +236,10 @@ img {
 }
 
 .logo_title {
-  font-size: 1.2rem;
+  font-size: 1.14rem;
   line-height: 1.2rem;
   font-weight: 500;
+  color: #fc971e;
 }
 
 .logo_subtitle {
@@ -242,7 +250,7 @@ img {
 }
 
 .header {
-  margin-bottom: 15px;
+  margin: 0;
   border-bottom: var(--main-border);
   user-select: none;
 }
@@ -503,7 +511,7 @@ a img {
 }
 
 .ext_content h1 {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   margin: 0.5rem 0 0.8rem;
 }
 
@@ -1027,7 +1035,7 @@ a.don_btn {
   width: fit-content;
   margin-top: 10px;
   text-decoration: underline;
-  color: #5885ff;
+  color: #4463b5;
   font-size: 0.92rem;
 }
 
@@ -1066,4 +1074,23 @@ a.don_btn {
   font-size: 0.96rem;
   color: #404142;
   user-select: auto !important;
+}
+
+.glb_menu_l2 {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.glb_menu_l2 a {
+  display: block;
+  padding: 8px 10px;
+  text-decoration: none;
+  color: var(--th-text);
+  font-size: 0.94rem;
+
+}
+
+.glb_menu_l2 a:hover {
+  background-color: var(--hover);
 }

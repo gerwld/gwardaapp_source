@@ -1,3 +1,5 @@
+// Used for base initialization, dark mode change etc
+
 (() => {
   "use strict";
   (() => {
