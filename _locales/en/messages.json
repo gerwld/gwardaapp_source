@@ -1,15 +1,15 @@
 {
   "extensionName": {
-    "message": "Amazon Keywords Analytics: GainseApp"
+    "message": "Amazon Keywords Analytics: GwardaApp"
   },
   "extensionDescription": {
     "message": "2024 Amazon extension that allows you to set up new themes, fonts, remove annoying notifications, popups, and more!"
   },
   "disabled": {
-    "message": "You turned off GainseApp"
+    "message": "You turned off GwardaApp"
   },
   "header_title": {
-    "message": "GainseApp Extension"
+    "message": "GwardaApp Extension"
   },
   "header_subtitle": {
     "message": "Setup new themes, fonts and so on!"
@@ -105,7 +105,7 @@
     "message": "Dark Yellow"
   },
   "d_title": {
-    "message": "Donations keep GainseApp up and running."
+    "message": "Donations keep GwardaApp up and running."
   },
   "d_subtitle": {
     "message": "I spend hours every week fixing bugs, adding and improving features, and addressing user feedback. Your support is crucial to continued maintenance."
@@ -120,7 +120,7 @@
     "message": "Donate via credit or debit card"
   },
   "d_cred__1": {
-    "message": "You can also share GainseApp with your friends or leave a"
+    "message": "You can also share GwardaApp with your friends or leave a"
   },
   "d_cred__2": {
     "message": "review"
@@ -129,7 +129,7 @@
     "message": "Thanks a lot."
   },
   "s_title": {
-    "message": "Having troubles with GainseApp?"
+    "message": "Having troubles with GwardaApp?"
   },
   "s_subtitle": {
     "message": "Here are some troubleshooting steps you can try:"
@@ -138,13 +138,13 @@
     "message": "Refresh the Amazon page."
   },
   "s_res__2": {
-    "message": "Disable and then enable again GainseApp."
+    "message": "Disable and then enable again GwardaApp."
   },
   "s_res__3": {
     "message": "Disable any other extensions."
   },
   "s_res__4": {
-    "message": "Uninstall and re-install GainseApp."
+    "message": "Uninstall and re-install GwardaApp."
   },
   "s_res__5": {
     "message": "Clear browser cache."
@@ -156,7 +156,7 @@
     "message": "To help me assist you more efficiently, please include this information:"
   },
   "s_detail__1": {
-    "message": "The version of GainseApp you are using."
+    "message": "The version of GwardaApp you are using."
   },
   "s_detail__2": {
     "message": "A screenshot or video demonstrating the problem."

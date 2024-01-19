@@ -1,17 +1,17 @@
 /* 
-//   - This file is part of GainseApp Extension
-//  <https://github.com/gerwld/GainseApp-extension/blob/main/README.md>,
-//   - Copyright (C) 2023-present GainseApp Extension
+//   - This file is part of GwardaApp Extension
+//  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
+//   - Copyright (C) 2023-present GwardaApp Extension
 //   -
-//   - GainseApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
+//   - GwardaApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
 //   -
-//   - GainseApp Extension is distributed in the hope that it will be useful,
+//   - GwardaApp Extension is distributed in the hope that it will be useful,
 //   - but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //   - Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License for more details.
 //   -
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
-//   - along with GainseApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
+//   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
  */
 
 html,
@@ -158,11 +158,11 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
     "Helvetica Neue", sans-serif;
   background-color: var(--background, #f8fafc);
   color: var(--text, #000);
-  min-width: 600px;
+  min-width: 450px;
 
   height: fit-content;
   font-size: 15px;
@@ -174,7 +174,6 @@ body {
 }
 
 * {
-  user-select: none;
   box-sizing: border-box;
 }
 
@@ -210,6 +209,7 @@ img {
 
 .logo_group>span {
   display: block;
+  color: #fc971e;
 }
 
 .logo {
@@ -219,11 +219,11 @@ img {
   justify-content: center;
   word-wrap: nowrap;
   white-space: nowrap;
-  padding: 10px;
+  padding: 8px;
 }
 
 .logo_img {
-  height: 50px;
+  height: 40px;
   padding-right: 10px;
   margin-bottom: -2px;
 }
@@ -900,15 +900,10 @@ a.don_btn {
 }
 
 .content_wrapper {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
-}
-
-.gp_app {
-  font-family: Montserrat;
-
 }
 
 .gp_header {
@@ -941,18 +936,20 @@ a.don_btn {
 .gp_content {
   width: calc(100% - 30px);
   min-height: 500px;
-  margin: 15px;
+  max-width: 800px;
+  margin: 15px auto;
+  padding-top: 28px;
   background-color: #fff;
   border: 1px solid #eee;
   box-shadow: 0px 2px 4px 0 #eee;
 }
 
-.gp_main .ch_ip {
+.gp_main>.ch_ip {
   display: flex;
   justify-content: flex-end;
   min-width: 196px;
   text-align: right;
-  margin: 0 auto;
+  margin: 20px auto;
   font-size: 0.82rem;
   font-weight: 500;
 }
@@ -973,7 +970,7 @@ a.don_btn {
   font-size: 0.8rem;
   line-height: 120%;
   margin: 0;
-  color: #727881;
+  color: #999fa8;
 
 }
 
@@ -999,4 +996,74 @@ a.don_btn {
 
 .ch_hp input {
   margin-right: 5px;
+}
+
+.accept_cookies {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  min-width: 600px;
+  min-height: 600px;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.accept_cookies__content {
+  width: 800px;
+  height: 80vh;
+  padding: 20px 40px 40px;
+  margin: 20vh auto 0px;
+  background-color: #e6e7ed;
+
+}
+
+.accept_cookies__links {
+  margin-top: 2rem;
+}
+
+.accept_cookies__links a {
+  display: block;
+  width: fit-content;
+  margin-top: 10px;
+  text-decoration: underline;
+  color: #5885ff;
+  font-size: 0.92rem;
+}
+
+.accept_cookies__links button {
+  display: inline-block;
+  padding: 10px 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0;
+  border: 1px solid #c9cdd0;
+}
+
+.accept_cookies__links button:nth-child(1) {
+  color: #fff;
+  background-color: #587eef;
+  margin-right: 10px;
+}
+
+.accept_cookies__links button:hover,
+.accept_cookies__links a:hover {
+  opacity: 0.6;
+}
+
+.accept_cookies h1 {
+  font-size: 1.8rem;
+  margin: 0.5em 0 0.7em;
+}
+
+.accept_cookies>* {
+  user-select: auto !important;
+}
+
+.accept_cookies p {
+  line-height: 150%;
+  font-weight: 400;
+  font-size: 0.96rem;
+  color: #404142;
+  user-select: auto !important;
 }

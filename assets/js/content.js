@@ -1,16 +1,16 @@
-//   - This file is part of GainseApp Extension
-//  <https://github.com/gerwld/GainseApp-extension/blob/main/README.md>,
-//   - Copyright (C) 2023-present GainseApp Extension
+//   - This file is part of GwardaApp Extension
+//  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
+//   - Copyright (C) 2023-present GwardaApp Extension
 //   -
-//   - GainseApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
+//   - GwardaApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
 //   -
-//   - GainseApp Extension is distributed in the hope that it will be useful,
+//   - GwardaApp Extension is distributed in the hope that it will be useful,
 //   - but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //   - Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License for more details.
 //   -
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
-//   - along with GainseApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
+//   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 (() => {
   "use strict";
@@ -24,7 +24,7 @@
     function setTheme(selectedTheme) {
       // Set theme if exists, then delete others
       if (themes.indexOf(selectedTheme) !== -1) {
-        setOrRemoveStylesOfItem(`/assets/graphs/themes/${selectedTheme}.css`, true, selectedTheme);
+        setOrRemoveStylesOfItem(`/assets/styles/themes/${selectedTheme}.css`, true, selectedTheme);
       }
       themes.filter((e) => e !== selectedTheme).forEach((theme) => document.getElementById(theme)?.remove());
     }
@@ -32,7 +32,7 @@
     function setFont(selectedFont) {
       // Set font if exists, then delete others
       if (fonts.indexOf(selectedFont) !== -1) {
-        setOrRemoveStylesOfItem(`/assets/graphs/fonts/${selectedFont}.css`, true, selectedFont);
+        setOrRemoveStylesOfItem(`/assets/styles/fonts/${selectedFont}.css`, true, selectedFont);
       }
       fonts.filter((e) => e !== selectedFont).forEach((font) => document.getElementById(font)?.remove());
     }
@@ -100,18 +100,18 @@
         const state = result.formState.disabled ? { disabled: true } : result.formState;
 
         //Styles setters
-        setOrRemoveStylesOfItem("/assets/graphs/header_btns.css", state.header_btns, "header_btns");
-        setOrRemoveStylesOfItem("/assets/graphs/rect_avatars.css", state.rect_avatars, "rect_avatars");
-        setOrRemoveStylesOfItem("/assets/graphs/block_images.css", state.block_images, "block_images");
-        setOrRemoveStylesOfItem("/assets/graphs/block_videos.css", state.block_videos, "block_videos");
-        setOrRemoveStylesOfItem("/assets/graphs/bigger_navbar.css", state.bigger_navbar, "bigger_navbar");
-        toggleNowPlayBlock("/assets/graphs/now_play_disable.css", state.now_play_disable, [
+        setOrRemoveStylesOfItem("/assets/styles/header_btns.css", state.header_btns, "header_btns");
+        setOrRemoveStylesOfItem("/assets/styles/rect_avatars.css", state.rect_avatars, "rect_avatars");
+        setOrRemoveStylesOfItem("/assets/styles/block_images.css", state.block_images, "block_images");
+        setOrRemoveStylesOfItem("/assets/styles/block_videos.css", state.block_videos, "block_videos");
+        setOrRemoveStylesOfItem("/assets/styles/bigger_navbar.css", state.bigger_navbar, "bigger_navbar");
+        toggleNowPlayBlock("/assets/styles/now_play_disable.css", state.now_play_disable, [
           "182yfcl2wcrumva06hlhooydu:ui-panel-state",
           "182yfcl2wcrumva06hlhooydu:ylx-sidebar-state",
         ]);
-        toggleStaticAside("/assets/graphs/static_aside.css", state.static_aside);
-        toggleClassicMode("/assets/graphs/focus_mode.css", state.focus_mode);
-        setOrRemoveStylesOfItem("/assets/graphs/square_shaped.css", state.square_shaped, "square_shaped");
+        toggleStaticAside("/assets/styles/static_aside.css", state.static_aside);
+        toggleClassicMode("/assets/styles/focus_mode.css", state.focus_mode);
+        setOrRemoveStylesOfItem("/assets/styles/square_shaped.css", state.square_shaped, "square_shaped");
         setTheme(state.theme);
         setFont(state.font);
       });
@@ -142,7 +142,7 @@
     const browser_cr = chrome ? chrome : browser;
     const store_links = {
       "chrome": "https://chromewebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write",
-      "firefox": "https://addons.mozilla.org/en-US/firefox/addon/GainseApp/reviews/",
+      "firefox": "https://addons.mozilla.org/en-US/firefox/addon/GwardaApp/reviews/",
       "edge": "https://chromewebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write",
       "opera": "https://chromewebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write"
     }

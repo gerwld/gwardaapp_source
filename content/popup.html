@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpoPlus Extension</title>
+  <link rel="stylesheet" href="../assets/styles/index.css" />
+</head>
+
+<body>
+  <header class="header">
+    <div class="logo">
+      <div class="logo_group">
+        <span class="logo_title" data-i18n="header_title">GwardaApp</span>
+      </div>
+      <img src="../assets/img/logo.svg" alt="SpoPlus Extension" class="logo_img" />
+    </div>
+
+    <nav class="header_nav" id="header_nav">
+      <button class="btn_header" data-action="disabled">Disable plugin</button>
+      <button class="btn_header" data-action="dark_mode">Dark mode</button>
+      <select class="btn_header lang_set emojiesfix" name="lang_set" id="lang_set">
+        <option value="en"> 🇬🇧 English </option>
+        <option value="de"> 🇩🇪 German </option>
+        <option value="es"> 🇪🇸 Spanish </option>
+        <option value="pl"> 🇵🇱 Polish </option>
+        <option value="uk"> 🇺🇦 Ukrainian </option>
+        <option value="hi"> 🇮🇳 Hindi </option>
+        <option value="sv"> 🇸🇪 Swedish </option>
+      </select>
+    </nav>
+  </header>
+
+  <section class="content">
+    <ul>
+      <li><a href="./options.html" target="_blank">Open Settings</a></li>
+      <li><a href="#">Keywords Settings</a></li>
+      <li><a href="#">Guide (How to use)</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <nav class="links">
+      <a href="#" class="version">v1.0.0 alpha</a>
+
+      <a href="support.html" data-i18n="btn_support">Get support</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnIZY7MKnvMXJqxW3VLmsw_YVxyFqPmrG24x64Lug7B09EVg/viewform?usp=sf_link"
+        target="_blank" data-i18n="btn_reqfeature">Request feature</a>
+    </nav>
+  </footer>
+  <script type="module" src="../assets/js/popup.js"></script>
+  <!-- <script type="module" src="../assets/js/locales.js"></script> -->
+</body>
+
+</html>

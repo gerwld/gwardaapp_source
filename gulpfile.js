@@ -11,19 +11,19 @@ import rename from "gulp-rename";
 import replace from "gulp-replace";
 
 let { src, dest, task, series } = gulp;
-const COPYRIGHT = `//   - This file is part of GainseApp Extension
-//  <https://github.com/gerwld/GainseApp-extension/blob/main/README.md>,
-//   - Copyright (C) 2023-present GainseApp Extension
+const COPYRIGHT = `//   - This file is part of GwardaApp Extension
+//  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
+//   - Copyright (C) 2023-present GwardaApp Extension
 //   -
-//   - GainseApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
+//   - GwardaApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
 //   -
-//   - GainseApp Extension is distributed in the hope that it will be useful,
+//   - GwardaApp Extension is distributed in the hope that it will be useful,
 //   - but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //   - Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License for more details.
 //   -
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
-//   - along with GainseApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
+//   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 
 // Note: Amazon is a registered trademark of Amazon AB. This extension is not affiliated with or endorsed by Amazon AB.
@@ -57,20 +57,20 @@ task('minifyImg', async function () {
 
 //## Minify CSS  ##//
 task('minifyCSS', async function () {
-    src(['./assets/graphs/*.css', './assets/graphs/**/*.css', './assets/graphs/**/**/*.css'])
+    src(['./assets/styles/*.css', './assets/styles/**/*.css', './assets/styles/**/**/*.css'])
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(autoprefix('last 2 versions'))
         .pipe(insert.prepend(`/*\n${COPYRIGHT}*/\n\n`))
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./public/firefox/assets/graphs/'))
+        .pipe(dest('./public/firefox/assets/styles/'))
 
-    src(['./assets/graphs/*.css', './assets/graphs/**/*.css', './assets/graphs/**/**/*.css'])
+    src(['./assets/styles/*.css', './assets/styles/**/*.css', './assets/styles/**/**/*.css'])
         .pipe(replace('moz-extension://', 'chrome-extension://'))
         .pipe(cleanCSS({ compatibility: 'ie8' }))
         .pipe(autoprefix('last 2 versions'))
         .pipe(insert.prepend(`/*\n${COPYRIGHT}*/\n\n`))
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./public/chrome/assets/graphs/'))
+        .pipe(dest('./public/chrome/assets/styles/'))
 });
 
 //## Minify JS ##//

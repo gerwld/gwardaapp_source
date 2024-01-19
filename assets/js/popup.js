@@ -1,16 +1,16 @@
-//   - This file is part of GainseApp Extension
-//  <https://github.com/gerwld/GainseApp-extension/blob/main/README.md>,
-//   - Copyright (C) 2023-present GainseApp Extension
+//   - This file is part of GwardaApp Extension
+//  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
+//   - Copyright (C) 2023-present GwardaApp Extension
 //   -
-//   - GainseApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
+//   - GwardaApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
 //   -
-//   - GainseApp Extension is distributed in the hope that it will be useful,
+//   - GwardaApp Extension is distributed in the hope that it will be useful,
 //   - but WITHOUT ANY WARRANTY; without even the implied warranty of
 //   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //   - Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License for more details.
 //   -
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
-//   - along with GainseApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
+//   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 
 (() => {
@@ -22,18 +22,20 @@
       const lang_set = document.getElementById("lang_set");
 
       //Accordion
-      const groups = container.querySelectorAll(".ch_group");
-      container.addEventListener("click", (e) => {
-        let current = e.target;
-        if (current.classList.contains("toggle_ch")) {
-          groups.forEach((e) => {
-            if (e.contains(current)) {
-              e.classList.toggle("opened");
-              e.querySelector(".items").setAttribute("aria-hidden", !e.classList.contains("opened"));
-            }
-          });
-        }
-      });
+      const groups = container?.querySelectorAll(".ch_group");
+      if (groups) {
+        container.addEventListener("click", (e) => {
+          let current = e.target;
+          if (current.classList.contains("toggle_ch")) {
+            groups?.forEach((e) => {
+              if (e.contains(current)) {
+                e.classList.toggle("opened");
+                e.querySelector(".items").setAttribute("aria-hidden", !e.classList.contains("opened"));
+              }
+            });
+          }
+        });
+      }
 
       // Listen for changes in chrome.storage.local
       let prevstate;
@@ -83,14 +85,15 @@
           // Function to update form inputs based on the state object
           function updateFormInputs() {
             const inputs = document.querySelectorAll("input, select");
-            for (let i = 0; i < inputs.length; i++) {
-              const input = inputs[i];
-              if (input.type === "checkbox") {
-                input.checked = state[input.name] || false;
-              } else {
-                input.value = state[input.name] || "";
+            if (inputs)
+              for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                if (input.type === "checkbox") {
+                  input.checked = state[input.name] || false;
+                } else {
+                  input.value = state[input.name] || "";
+                }
               }
-            }
           }
 
           //Function to update menu state
@@ -126,8 +129,8 @@
           }
 
           // Add event listener to each input and update the state
-          const inputs = container.querySelectorAll("input, select");
-          inputs.forEach((input) => {
+          const inputs = container?.querySelectorAll("input, select");
+          inputs?.forEach((input) => {
             if (input.type === "checkbox") {
               input.addEventListener("change", updateState);
             } else input.addEventListener("input", updateState);
