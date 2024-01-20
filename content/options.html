@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GwardaApp - Preferences</title>
+  <title data-i18n="op_title">GwardaApp - Preferences (v.0.0.1)</title>
   <link rel="stylesheet" href="../assets/styles/index.css">
   <link rel="icon" href="../assets/img/logo.svg" type="image/svg+xml">
 </head>
@@ -12,104 +12,117 @@
 <body class="gp_app">
   <header class="gp_header">
     <div class="content_wrapper">
-      <h1>GwardaApp - Preferences (v.1.0.0)</h1>
+      <h1 data-i18n="op_title">GwardaApp - Preferences (v.0.0.1)</h1>
       <nav class="header_nav" id="header_nav">
-        <select class="btn_header lang_set emojiesfix" name="lang_set" id="lang_set">
-          <option value="en">English</option>
-          <option value="de">German</option>
-          <option value="es">Spanish</option>
-          <option value="pl">Polish</option>
-          <option value="uk">Ukrainian</option>
-          <option value="hi">Hindi</option>
-          <option value="sv">Swedish</option>
-        </select>
+        <button class="btn_header" data-action="dark_mode">Dark mode</button>
       </nav>
     </div>
   </header>
   <main class="gp_main">
     <h2 class="gp_subtitle">Amazon Keywords Analytics App</h2>
-    <label class="ch_ip">
-      <input type="checkbox" name="header_btns" />
-      <span class="ch_sp"></span>
-      <span>Enable/Disable Extension</span>
-    </label>
-    <div class="gp_content content_wrapper">
-      <div class="gp_item">
-        <div>
-          <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
-          <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
-            facere sint tempore ad ipsam aspernatur culpa cum?</p>
+    <form id="settings">
+      <label class="ch_ip">
+        <input type="checkbox" name="disabled" data-state="reversed" />
+        <span class="ch_sp"></span>
+        <span>Enable/Disable Extension</span>
+      </label>
+      <div class="gp_content content_wrapper">
+        <div class="gp_item">
+          <div>
+            <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
+            <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
+              facere sint tempore ad ipsam aspernatur culpa cum?</p>
+          </div>
+          <div class="gp_opt">
+            <label class="ch_hp">
+              <input type="radio" name="set_0" value="true" checked>
+              <span>Enable</span>
+            </label>
+            <label class="ch_hp">
+              <input type="radio" name="set_0" value="false">
+              <span>Disable</span>
+            </label>
+          </div>
         </div>
-        <div class="gp_opt">
-          <label class="ch_hp">
-            <input type="radio" name="set_0" value="true" checked>
-            <span>Enable</span>
-          </label>
-          <label class="ch_hp">
-            <input type="radio" name="set_0" value="false">
-            <span>Disable</span>
-          </label>
-        </div>
-      </div>
 
-      <div class="gp_item">
-        <div>
-          <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
-          <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
-            facere sint tempore ad ipsam aspernatur culpa cum?</p>
+        <div class="gp_item">
+          <div>
+            <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
+            <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
+              facere sint tempore ad ipsam aspernatur culpa cum?</p>
+          </div>
+          <div class="gp_opt">
+            <label class="ch_hp">
+              <input type="radio" name="set_1" value="true">
+              <span>Enable</span>
+            </label>
+            <label class="ch_hp">
+              <input type="radio" name="set_1" value="false" checked>
+              <span>Disable</span>
+            </label>
+          </div>
         </div>
-        <div class="gp_opt">
-          <label class="ch_hp">
-            <input type="radio" name="set_1" value="true">
-            <span>Enable</span>
-          </label>
-          <label class="ch_hp">
-            <input type="radio" name="set_1" value="false" checked>
-            <span>Disable</span>
-          </label>
-        </div>
-      </div>
 
-      <div class="gp_item">
-        <div>
-          <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
-          <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
-            facere sint tempore ad ipsam aspernatur culpa cum?</p>
+        <div class="gp_item">
+          <div>
+            <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
+            <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
+              facere sint tempore ad ipsam aspernatur culpa cum?</p>
+          </div>
+          <div class="gp_opt">
+            <label class="ch_hp">
+              <input type="radio" name="set_2" value="true" checked>
+              <span>Enable</span>
+            </label>
+            <label class="ch_hp">
+              <input type="radio" name="set_2" value="false">
+              <span>Disable</span>
+            </label>
+          </div>
         </div>
-        <div class="gp_opt">
-          <label class="ch_hp">
-            <input type="radio" name="set_2" value="true" checked>
-            <span>Enable</span>
-          </label>
-          <label class="ch_hp">
-            <input type="radio" name="set_2" value="false">
-            <span>Disable</span>
-          </label>
-        </div>
-      </div>
 
-      <div class="gp_item">
-        <div>
-          <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
-          <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
-            facere sint tempore ad ipsam aspernatur culpa cum?</p>
+        <div class="gp_item">
+          <div>
+            <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
+            <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
+              facere sint tempore ad ipsam aspernatur culpa cum?</p>
+          </div>
+          <div class="gp_opt">
+            <label class="ch_hp">
+              <input type="radio" name="set_3" value="true" checked>
+              <span>Enable</span>
+            </label>
+            <label class="ch_hp">
+              <input type="radio" name="set_3" value="false">
+              <span>Disable</span>
+            </label>
+          </div>
         </div>
-        <div class="gp_opt">
-          <label class="ch_hp">
-            <input type="radio" name="set_3" value="true" checked>
-            <span>Enable</span>
-          </label>
-          <label class="ch_hp">
-            <input type="radio" name="set_3" value="false">
-            <span>Disable</span>
-          </label>
+
+        <div class="gp_item">
+          <div>
+            <h3 class="gp_title">Title Lorem ipsum dolor sit.</h3>
+            <p class="gp_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, dolorem aliquid animi
+              facere sint tempore ad ipsam aspernatur culpa cum?</p>
+          </div>
+          <div class="gp_opt">
+            <select name="lang_set">
+              <option value="en">English</option>
+              <option value="de">German</option>
+              <option value="es">Spanish</option>
+              <option value="pl">Polish</option>
+              <option value="uk">Ukrainian</option>
+              <option value="hi">Hindi</option>
+              <option value="sv">Swedish</option>
+            </select>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </main>
 
 
-  <div class="accept_cookies">
+  <div class="accept_cookies hidden" id="accept_cookies">
     <div class="accept_cookies__content">
       <h1>Cookies and Privacy</h1>
       <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Cupiditate nam iusto voluptates recusandae est,
@@ -122,14 +135,23 @@
       <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci delectus autem inventore, et ipsum natus,
         nulla hic praesentium veritatis ut aliquam vel nostrum modi exercitationem.</p>
 
-      <div class="accept_cookies__links">
-        <button>Accept Cookies</button>
-        <button>Preferences</button>
-        <a href="">Reject Cookies (and uninstall)</a>
+      <div class="accept_cookies__links" id="accept_cookies__links">
+        <button data-action="accept_cookies">Accept Cookies</button>
+        <button data-action="pref_cookies">Preferences</button>
+        <button data-action="delete_cookies" class="link">Reject Cookies (and uninstall)</button>
       </div>
     </div>
+    <div class="accept_cookies__pref">
+      <h2>Extra preferences</h2>
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos animi aspernatur labore maiores error
+        repellat non officia, odio, ullam deserunt excepturi! Deserunt perspiciatis, quam aperiam error ipsa neque optio
+        blanditiis.</p>
+      <button data-action="pref_save" class="accept_cookies__prefact">Save</button>
+      <button data-action="pref_close">Cancel</button>
+    </div>
   </div>
-
+  <script type="module" src="../assets/js/init.js"></script>
+  <script type="module" src="../assets/js/options.js"></script>
 </body>
 
 </html>

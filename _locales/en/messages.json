@@ -9,7 +9,7 @@
     "message": "You turned off GwardaApp"
   },
   "header_title": {
-    "message": "GwardaApp Extension"
+    "message": "GwardaApp"
   },
   "header_subtitle": {
     "message": "Setup new themes, fonts and so on!"
@@ -37,72 +37,6 @@
   },
   "n_default": {
     "message": "Default"
-  },
-  "mi_1": {
-    "message": "Enable Focus Mode"
-  },
-  "mi_2": {
-    "message": "Hide Header App Buttons"
-  },
-  "mi_3": {
-    "message": "Make Navbar Bigger"
-  },
-  "mi_4": {
-    "message": "Keep Aside Menu width Static"
-  },
-  "mi_5": {
-    "message": "Make all Avatars Rectangle"
-  },
-  "mi_6": {
-    "message": "Disable \"Now Playing View\""
-  },
-  "mi_7": {
-    "message": "Make Everything Square shaped"
-  },
-  "mi_8": {
-    "message": "Block all videos to reduce traffic usage (experimental)"
-  },
-  "mi_9": {
-    "message": "Block all images to reduce traffic usage (experimental)"
-  },
-  "mi_10": {
-    "message": "Color palette / font:"
-  },
-  "fonts_title": {
-    "message": "Select font:"
-  },
-  "themes_title": {
-    "message": "Select theme:"
-  },
-  "themes_label": {
-    "message": "NEW"
-  },
-  "themes_msg": {
-    "message": "New Options v1.1.9"
-  },
-  "theme_1": {
-    "message": "Default (Dark Green)"
-  },
-  "theme_2": {
-    "message": "Light Green"
-  },
-  "theme_3": {
-    "message": "Dark Purple"
-  },
-  "theme_4": {
-    "message": "Dark Pink (kittens)"
-  },
-  "theme_5": {
-    "message": "Light Purple"
-  },
-  "theme_6": {
-    "message": "Dark Blue"
-  },
-  "theme_7": {
-    "message": "Dark Red"
-  },
-  "theme_8": {
-    "message": "Dark Yellow"
   },
   "d_title": {
     "message": "Donations keep GwardaApp up and running."
@@ -166,5 +100,8 @@
   },
   "s_detail__4": {
     "message": "Your browser and its version (e.g., Firefox 86.0)."
+  },
+  "op_title": {
+    "message": "GwardaApp - Preferences (v.0.0.1)"
   }
 }

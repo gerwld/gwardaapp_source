@@ -20,8 +20,8 @@ const initialState = {
 const browser_cr = chrome ? chrome : browser;
 
 function initStateIfNotExist() {
-  browser_cr.storage.local.get("formState", (result) => {
-    if (!result.formState || Object.keys(result.formState).length === 0) browser_cr.storage.local.set({ formState: { ...initialState } });
+  browser_cr.storage.local.get("gpState", (result) => {
+    if (!result.gpState || Object.keys(result.gpState).length === 0) browser_cr.storage.local.set({ gpState: { ...initialState } });
   });
 }
 
@@ -29,11 +29,11 @@ initStateIfNotExist();
 
 // Show accept cookies if not cookies_gal20
 browser_cr.runtime.onInstalled.addListener(function () {
-  chrome.storage.local.get('formState', function (data) {
-    if (!data?.formState?.cookies_gal20) {
+  chrome.storage.local.get('gpState', function (data) {
+    if (!data?.gpState?.cookies_gal20) {
       chrome.tabs.create({ url: "/content/options.html" });
     }
   });
 });
 
-browser_cr.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLScGXGlaC1KUSji5XzrVtB7PpRdoBbmRhoEVig1BPPrUY2ShKg/viewform?usp=sf_link");
+// browser_cr.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLScGXGlaC1KUSji5XzrVtB7PpRdoBbmRhoEVig1BPPrUY2ShKg/viewform?usp=sf_link");

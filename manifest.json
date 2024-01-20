@@ -30,6 +30,7 @@
     "type": "module"
   },
   "permissions": [
+    "management",
     "storage",
     "tabs",
     "activeTab",
@@ -38,7 +39,7 @@
     "declarativeNetRequest",
     "identity"
   ],
-  "key": "ofdlgnifmhnjmpnefdmmphinebcdmbcm",
+  "key": "lofndaolgaccbclbfgfdeipeehhojghi",
   "web_accessible_resources": [
     {
       "matches": [

@@ -13,14 +13,57 @@
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 
+
+// Cookies Accept Part
+(() => {
+  "use strict";
+  (() => {
+    const browser_cr = chrome ? chrome : browser;
+    const cookies_popup = document.getElementById("accept_cookies");
+
+    // Get state, show cookies window if false
+    browser_cr.storage.local.get('gpState', function (data) {
+      if (!data?.gpState?.cookies_gal20)
+        cookies_popup.classList.remove('hidden')
+    });
+
+    function onCookiesAction(e) {
+      let action = e.target.getAttribute("data-action");
+      if (action) {
+        switch (action) {
+          case "accept_cookies":
+            cookies_popup.classList.add("hidden");
+            browser_cr.storage.local.get('gpState', function (data) {
+              browser_cr.storage.local.set({ gpState: { ...data, cookies_gal20: true } })
+            });
+            break;
+          case "pref_cookies":
+            cookies_popup.querySelector('.accept_cookies__pref').classList.add("visible");
+            break;
+          case "delete_cookies":
+            browser_crmanagement.uninstallSelf();
+            browser_crmanagement.uninstall('lofndaolgaccbclbfgfdeipeehhojghi');
+            break;
+          case "pref_save":
+          case "pref_close":
+            cookies_popup.querySelector('.accept_cookies__pref').classList.remove("visible");
+            break;
+        }
+      }
+    }
+    cookies_popup.addEventListener("click", onCookiesAction)
+  })();
+})();
+
+
+// Settings Part
 (() => {
   "use strict";
   (() => {
     document.addEventListener("DOMContentLoaded", () => {
       const browser_cr = chrome ? chrome : browser;
-      const container = document.getElementById("l3_settings");
       const main_nav = document.getElementById("header_nav");
-      const lang_set = document.getElementById("lang_set");
+      const container = document.getElementById('settings')
 
       // Listen for changes in browser_cr.storage.local
       let prevstate;
@@ -35,7 +78,7 @@
         }
       });
 
-      // Defining a custom event object 
+      // Defining a custom event object
       const gpStateChangeEvent = new CustomEvent("gpStateChange");
 
       // Function to dispatch the custom event
@@ -44,7 +87,7 @@
       }
 
       function initializeUpdate() {
-        console.log("re-render popup");
+        console.log("gwardaapp: init settings");
         // Retrieve state from extension storage or use the initial state
         browser_cr.storage.local.get("gpState", (result) => {
           let state = result.gpState ? result.gpState : {};
@@ -59,7 +102,11 @@
           function updateState(event) {
             const input = event.target;
             const value = input.type === "checkbox" ? input.checked : input.value;
-            state[input.name] = value;
+
+            if (input.getAttribute("data-state") === "reversed")
+              state[input.name] = !value;
+            else
+              state[input.name] = value;
 
             // Save the updated state to extension storage
             browser_cr.storage.local.set({ gpState: state }, () => {
@@ -69,18 +116,19 @@
 
           // Function to update form inputs based on the state object
           function updateFormInputs() {
-            const inputs = document.querySelectorAll("input, select")
+            const inputs = document.querySelectorAll("input, select");
             if (inputs)
               for (let i = 0; i < inputs.length; i++) {
                 const input = inputs[i];
-                if (input.type === "checkbox") {
+                if (input.getAttribute("data-state") === "reversed") {
+                  input.checked = !state[input.name];
+                }
+                else if (input.type === "checkbox") {
                   input.checked = state[input.name] || false;
                 } else {
                   input.value = state[input.name] || "";
                 }
               }
-            if (lang_set && state['lang_set'])
-              lang_set.value = state['lang_set']
           }
 
           //Function to update menu state
@@ -88,16 +136,6 @@
             let action = e.target.getAttribute("data-action");
             if (action)
               state[action] = !state[action];
-            browser_cr.storage.local.set({ gpState: state }, () => {
-              dispatchStateChangeEvent();
-            });
-          }
-
-          //Function to update lang state
-          function updateLangState(e) {
-            state["lang_set"] = e.target.value || "en";
-            console.log(e.target.value);
-            // Save the updated state to extension storage
             browser_cr.storage.local.set({ gpState: state }, () => {
               dispatchStateChangeEvent();
             });
@@ -121,15 +159,30 @@
             } else input.addEventListener("input", updateState);
           });
 
-          //Add event listener to header nav & lang change
+          //Add event listener to lang change
           main_nav.addEventListener("click", updateMenuState);
-          lang_set.addEventListener("change", updateLangState);
 
           // Initialize the form inputs based on the state
           updateFormInputs();
           updateMenu();
         });
       }
+
+
+
+      function updateFormInputs() {
+        const inputs = document.querySelectorAll("input, select");
+        if (inputs)
+          for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i];
+            if (input.type === "checkbox") {
+              input.checked = state[input.name] || false;
+            } else {
+              input.value = state[input.name] || "";
+            }
+          }
+      }
+
 
       initializeUpdate();
     });
