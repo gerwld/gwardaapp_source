@@ -75,6 +75,7 @@ html.dark_mode body {
 html.mwn,
 html.mwn body {
   min-width: unset;
+  min-height: 100vh;
 }
 
 .emojiesfix {
@@ -964,7 +965,7 @@ a.don_btn {
   display: block;
   width: 100%;
   background: rgb(247, 148, 29);
-  background: linear-gradient(90deg, rgba(247, 148, 29, 1) 0%, rgb(255, 124, 23) 100%);
+  background: linear-gradient(90deg, rgb(247 106 29) 0%, rgb(255, 124, 23) 100%);
   box-shadow: 0px 2px 1px 0 #ffe2c4;
 }
 
