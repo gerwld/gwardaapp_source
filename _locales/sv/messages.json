@@ -1,15 +1,15 @@
 {
   "extensionName": {
-    "message": "SpoPlus - Redigera Spotify Tema & Inställningar"
+    "message": "GwardaApp - Redigera Spotify Tema & Inställningar"
   },
   "extensionDescription": {
     "message": "2024 Spotify-tillägg som låter dig ställa in nya teman, typsnitt, ta bort irriterande meddelanden, popups och mer!"
   },
   "disabled": {
-    "message": "Du har stängt av SpoPlus"
+    "message": "Du har stängt av GwardaApp"
   },
   "header_title": {
-    "message": "SpoPlus Tillägg"
+    "message": "GwardaApp Tillägg"
   },
   "header_subtitle": {
     "message": "Ställ in nya teman, typsnitt och så vidare!"
@@ -105,7 +105,7 @@
     "message": "Mörk Gul"
   },
   "d_title": {
-    "message": "Donationer håller SpoPlus igång."
+    "message": "Donationer håller GwardaApp igång."
   },
   "d_subtitle": {
     "message": "Jag lägger ner timmar varje vecka på att fixa buggar, lägga till och förbättra funktioner samt hantera användarfeedback. Ditt stöd är avgörande för fortsatt underhåll."
@@ -120,7 +120,7 @@
     "message": "Donera med kredit- eller betalkort"
   },
   "d_cred__1": {
-    "message": "Du kan också dela SpoPlus med dina vänner eller lämna en"
+    "message": "Du kan också dela GwardaApp med dina vänner eller lämna en"
   },
   "d_cred__2": {
     "message": "recension"
@@ -129,7 +129,7 @@
     "message": "Tack så mycket."
   },
   "s_title": {
-    "message": "Har du problem med SpoPlus?"
+    "message": "Har du problem med GwardaApp?"
   },
   "s_subtitle": {
     "message": "Här är några felsökningssteg du kan försöka:"
@@ -138,13 +138,13 @@
     "message": "Uppdatera Spotify-sidan."
   },
   "s_res__2": {
-    "message": "Inaktivera och aktivera SpoPlus igen."
+    "message": "Inaktivera och aktivera GwardaApp igen."
   },
   "s_res__3": {
     "message": "Inaktivera andra tillägg."
   },
   "s_res__4": {
-    "message": "Avinstallera och installera om SpoPlus."
+    "message": "Avinstallera och installera om GwardaApp."
   },
   "s_res__5": {
     "message": "Rensa webbläsarens cache."
@@ -156,7 +156,7 @@
     "message": "För att hjälpa mig assistera dig mer effektivt, inkludera följande information:"
   },
   "s_detail__1": {
-    "message": "Versionen av SpoPlus du använder."
+    "message": "Versionen av GwardaApp du använder."
   },
   "s_detail__2": {
     "message": "En skärmbild eller video som visar problemet."

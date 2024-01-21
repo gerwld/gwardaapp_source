@@ -72,6 +72,11 @@ html.dark_mode body {
   --lang-ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 20 20'%3E%3Cg fill='%23fff'%3E%3Cpath d='M7.75 2.75a.75.75 0 0 0-1.5 0v1.258a32.987 32.987 0 0 0-3.599.278a.75.75 0 1 0 .198 1.487A31.545 31.545 0 0 1 8.7 5.545A19.381 19.381 0 0 1 7 9.56a19.418 19.418 0 0 1-1.002-2.05a.75.75 0 0 0-1.384.577a20.935 20.935 0 0 0 1.492 2.91a19.613 19.613 0 0 1-3.828 4.154a.75.75 0 1 0 .945 1.164A21.116 21.116 0 0 0 7 12.331c.095.132.192.262.29.391a.75.75 0 0 0 1.194-.91a18.97 18.97 0 0 1-.59-.815a20.888 20.888 0 0 0 2.333-5.332c.31.031.618.068.924.108a.75.75 0 0 0 .198-1.487a32.832 32.832 0 0 0-3.599-.278z'/%3E%3Cpath fill-rule='evenodd' d='M13 8a.75.75 0 0 1 .671.415l4.25 8.5a.75.75 0 1 1-1.342.67L15.787 16h-5.573l-.793 1.585a.75.75 0 1 1-1.342-.67l4.25-8.5A.75.75 0 0 1 13 8m2.037 6.5L13 10.427L10.964 14.5z' clip-rule='evenodd'/%3E%3C/g%3E%3C/svg%3E");
 }
 
+html.mwn,
+html.mwn body {
+  min-width: unset;
+}
+
 .emojiesfix {
   font-family: apple color emoji, segoe ui emoji, noto color emoji, android emoji, emojisymbols, emojione mozilla, twemoji mozilla, segoe ui symbol;
 }
@@ -148,6 +153,7 @@ select:focus {
   position: relative;
 }
 
+
 .ch_lp::before {
   content: '';
   display: block;
@@ -160,6 +166,10 @@ select:focus {
   border-top: none;
   border-right: none;
   transform: rotate(-45deg);
+}
+
+.ch_lp__wide::before {
+  bottom: 14px;
 }
 
 html,
@@ -502,6 +512,10 @@ a img {
   cursor: pointer;
 }
 
+.ch_lp__wide select {
+  height: 32px;
+}
+
 .ch_lp select:hover {
   background-color: var(--background-contrast-2);
 }
@@ -764,7 +778,7 @@ a.don_btn {
 }
 
 /* ----------------------- checkbox styles ----------------------- */
-
+.ch_hp,
 .ch_ip {
   display: flex;
   position: relative;
@@ -778,6 +792,7 @@ a.don_btn {
   pointer-events: contain;
   font-size: 0.78rem;
   line-height: 1rem;
+  cursor: pointer;
 }
 
 .ch_ip__long {
@@ -789,6 +804,7 @@ a.don_btn {
 }
 
 /* Hide the browser's default checkbox */
+.ch_hp input,
 .ch_ip input {
   position: absolute;
   opacity: 0;
@@ -813,11 +829,13 @@ a.don_btn {
 }
 
 /* When the checkbox is checked, add a blue background */
+.ch_hp input:checked~.ch_sp,
 .ch_ip input:checked~.ch_sp {
   background-color: #228ad7;
   border-color: #197dc9;
 }
 
+.ch_hp input:checked:hover~.ch_sp,
 .ch_ip input:checked:hover~.ch_sp {
   background-color: #2076b8;
   border-color: #197dc9;
@@ -871,6 +889,34 @@ a.don_btn {
   left: 1px;
   width: 12px;
   border-radius: 50%;
+}
+
+.ch_hp {
+  margin: 0 12px 8px 10px;
+  padding: 5px 5px 5px 21px;
+}
+
+.ch_hp .ch_sp {
+  top: 5px;
+  top: 4.5px;
+  width: 16px;
+}
+
+.ch_hp .ch_sp:after {
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  opacity: 0;
+}
+
+.ch_hp input:checked~.ch_sp:after {
+  opacity: 1;
+  background-color: #fff;
+}
+
+.ch_hp input {
+  margin-right: 5px;
 }
 
 /* ----------------------- checkbox styles end ----------------------- */
@@ -1009,17 +1055,6 @@ a.don_btn {
   line-height: 0.8rem;
 }
 
-.ch_hp {
-  display: flex;
-  align-items: flex-end;
-  margin-right: 12px;
-  cursor: pointer;
-}
-
-.ch_hp input {
-  margin-right: 5px;
-}
-
 .accept_cookies {
   position: absolute;
   top: 0;
@@ -1042,8 +1077,13 @@ a.don_btn {
 }
 
 .accept_cookies.hidden {
+  height: 0;
+  width: 0;
+  min-width: 0;
+  min-height: 0;
   opacity: 0;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .accept_cookies.hidden .accept_cookies__content {
@@ -1155,4 +1195,124 @@ a.don_btn {
 
 .glb_menu_l2 a:hover {
   background-color: var(--hover);
+}
+
+.select__lang_set {
+  min-width: 140px;
+}
+
+@media only screen and (max-width: 670px) {
+  .gp_opt {
+    display: block;
+    min-width: unset;
+  }
+
+  .gp_item {
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .ch_hp {
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (max-width: 570px) {
+  .gp_content {
+    padding: 17px 14px 0;
+  }
+
+  .gp_desc {
+    font-size: 0.7rem;
+  }
+
+  .ch_hp {
+    margin: 0;
+    font-size: 0.7rem;
+  }
+
+  .gp_opt {
+    margin-left: 10px;
+  }
+
+  .select__lang_set {
+    min-width: 100px;
+  }
+
+  .ch_lp {
+    padding-right: 0;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+
+  html,
+  body {
+    font-size: 16px;
+  }
+
+  .ch_lp__wide select {
+    height: 42px;
+  }
+
+  .ch_lp::before {
+    right: 12px;
+    bottom: 18px;
+  }
+
+  .mwn .btn_header {
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    margin: -2px;
+  }
+
+  .content_wrapper {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .gp_content {
+    padding: 14px 10px 0;
+  }
+
+  .gp_title {
+    font-size: 0.84rem;
+  }
+
+  .gp_opt {
+    margin: 2px -4px 20px 8px;
+  }
+
+  .ch_lp {
+    padding-right: 4px;
+  }
+
+  .gp_header h1 {
+    text-align: left;
+  }
+
+  .gp_content {
+    width: calc(100% - 20px);
+  }
+
+  .gp_subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .gp_header h1 {
+    font-size: 1rem;
+  }
+
+  .mwn .btn_header {
+    width: 34px;
+    height: 34px;
+    margin: -2px;
+  }
+
+  .gp_header h1 {
+    padding-right: 34px;
+  }
 }

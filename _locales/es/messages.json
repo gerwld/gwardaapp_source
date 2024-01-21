@@ -1,15 +1,15 @@
 {
   "extensionName": {
-    "message": "SpoPlus - Editar Tema y Configuraciones de Spotify"
+    "message": "GwardaApp - Editar Tema y Configuraciones de Spotify"
   },
   "extensionDescription": {
     "message": "Extensión de Spotify para el año 2024 que te permite configurar nuevos temas, fuentes, eliminar notificaciones molestas, pop-ups ¡y mucho más!"
   },
   "disabled": {
-    "message": "Has desactivado SpoPlus"
+    "message": "Has desactivado GwardaApp"
   },
   "header_title": {
-    "message": "Extensión SpoPlus"
+    "message": "Extensión GwardaApp"
   },
   "header_subtitle": {
     "message": "Configura nuevos temas, fuentes, ¡y más!"
@@ -105,7 +105,7 @@
     "message": "Amarillo Oscuro"
   },
   "d_title": {
-    "message": "Las donaciones mantienen SpoPlus en funcionamiento."
+    "message": "Las donaciones mantienen GwardaApp en funcionamiento."
   },
   "d_subtitle": {
     "message": "Paso horas cada semana corrigiendo errores, agregando y mejorando funciones, y atendiendo comentarios de usuarios. Tu apoyo es crucial para el mantenimiento continuo."
@@ -120,7 +120,7 @@
     "message": "Donar con tarjeta de crédito o débito"
   },
   "d_cred__1": {
-    "message": "También puedes compartir SpoPlus con tus amigos o dejar una"
+    "message": "También puedes compartir GwardaApp con tus amigos o dejar una"
   },
   "d_cred__2": {
     "message": "reseña"
@@ -129,7 +129,7 @@
     "message": "Muchas gracias."
   },
   "s_title": {
-    "message": "¿Tienes problemas con SpoPlus?"
+    "message": "¿Tienes problemas con GwardaApp?"
   },
   "s_subtitle": {
     "message": "Aquí hay algunos pasos de solución de problemas que puedes intentar:"
@@ -138,13 +138,13 @@
     "message": "Actualiza la página de Spotify."
   },
   "s_res__2": {
-    "message": "Desactiva y luego vuelve a activar SpoPlus."
+    "message": "Desactiva y luego vuelve a activar GwardaApp."
   },
   "s_res__3": {
     "message": "Desactiva cualquier otra extensión."
   },
   "s_res__4": {
-    "message": "Desinstala y vuelve a instalar SpoPlus."
+    "message": "Desinstala y vuelve a instalar GwardaApp."
   },
   "s_res__5": {
     "message": "Borra la caché del navegador."
@@ -156,7 +156,7 @@
     "message": "Para ayudarme a asistirte de manera más eficiente, incluye esta información:"
   },
   "s_detail__1": {
-    "message": "La versión de SpoPlus que estás utilizando."
+    "message": "La versión de GwardaApp que estás utilizando."
   },
   "s_detail__2": {
     "message": "Una captura de pantalla o video que muestre el problema."

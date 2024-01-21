@@ -1,15 +1,15 @@
 {
   "extensionName": {
-    "message": "SpoPlus - Spotify Theme & Einstellungen bearbeiten"
+    "message": "GwardaApp - Spotify Theme & Einstellungen bearbeiten"
   },
   "extensionDescription": {
     "message": "2024 Spotify-Erweiterung, mit der Sie neue Themen, Schriftarten einrichten können und lästige Benachrichtigungen, Pop-ups und mehr entfernen können!"
   },
   "disabled": {
-    "message": "Sie haben SpoPlus deaktiviert"
+    "message": "Sie haben GwardaApp deaktiviert"
   },
   "header_title": {
-    "message": "SpoPlus-Erweiterung"
+    "message": "GwardaApp"
   },
   "header_subtitle": {
     "message": "Neue Themen, Schriftarten und mehr einrichten!"
@@ -105,7 +105,7 @@
     "message": "Dunkelgelb"
   },
   "d_title": {
-    "message": "Spenden halten SpoPlus am Laufen."
+    "message": "Spenden halten GwardaApp am Laufen."
   },
   "d_subtitle": {
     "message": "Ich investiere jede Woche Stunden, um Fehler zu beheben, Funktionen hinzuzufügen und zu verbessern sowie auf Benutzerfeedback einzugehen. Ihre Unterstützung ist entscheidend für die fortlaufende Wartung."
@@ -120,7 +120,7 @@
     "message": "Mit Kredit- oder Debitkarte spenden"
   },
   "d_cred__1": {
-    "message": "Sie können SpoPlus auch mit Ihren Freunden teilen oder eine"
+    "message": "Sie können GwardaApp auch mit Ihren Freunden teilen oder eine"
   },
   "d_cred__2": {
     "message": "Bewertung hinterlassen"
@@ -129,7 +129,7 @@
     "message": "Vielen Dank."
   },
   "s_title": {
-    "message": "Probleme mit SpoPlus?"
+    "message": "Probleme mit GwardaApp?"
   },
   "s_subtitle": {
     "message": "Hier sind einige Problembehandlungsschritte, die Sie versuchen können:"
@@ -138,13 +138,13 @@
     "message": "Aktualisieren Sie die Spotify-Seite."
   },
   "s_res__2": {
-    "message": "Deaktivieren Sie SpoPlus und aktivieren Sie es erneut."
+    "message": "Deaktivieren Sie GwardaApp und aktivieren Sie es erneut."
   },
   "s_res__3": {
     "message": "Deaktivieren Sie andere Erweiterungen."
   },
   "s_res__4": {
-    "message": "Deinstallieren Sie SpoPlus und führen Sie eine Neuinstallation durch."
+    "message": "Deinstallieren Sie GwardaApp und führen Sie eine Neuinstallation durch."
   },
   "s_res__5": {
     "message": "Browser-Cache löschen."
@@ -156,7 +156,7 @@
     "message": "Um mir zu helfen, Sie effizienter zu unterstützen, geben Sie bitte folgende Informationen an:"
   },
   "s_detail__1": {
-    "message": "Die Version von SpoPlus, die Sie verwenden."
+    "message": "Die Version von GwardaApp, die Sie verwenden."
   },
   "s_detail__2": {
     "message": "Ein Screenshot oder Video, das das Problem zeigt."

@@ -1,15 +1,15 @@
 {
   "extensionName": {
-    "message": "SpoPlus - Edytuj motyw i ustawienia Spotify"
+    "message": "GwardaApp - Edytuj motyw i ustawienia Spotify"
   },
   "extensionDescription": {
     "message": "2024 Rozszerzenie Spotify, które pozwala na ustawienie nowych motywów, czcionek, usunięcie irytujących powiadomień, wyskakujących okienek i wiele więcej!"
   },
   "disabled": {
-    "message": "Wyłączyłeś SpoPlus."
+    "message": "Wyłączyłeś GwardaApp."
   },
   "header_title": {
-    "message": "Rozszerzenie SpoPlus"
+    "message": "Rozszerzenie GwardaApp"
   },
   "header_subtitle": {
     "message": "Ustaw nowe motywy, czcionki i wiele więcej!"
@@ -105,7 +105,7 @@
     "message": "Ciemnożółty"
   },
   "d_title": {
-    "message": "Darowizny utrzymują SpoPlus przy życiu."
+    "message": "Darowizny utrzymują GwardaApp przy życiu."
   },
   "d_subtitle": {
     "message": "Co tydzień poświęcam godziny na naprawę błędów, dodawanie i ulepszanie funkcji oraz poprawę doświadczenia użytkownika. Wsparcie jest kluczowe dla ciągłego utrzymania!"
@@ -120,7 +120,7 @@
     "message": "Wesprzyj poprzez kartę debetową"
   },
   "d_cred__1": {
-    "message": "Możesz także podzielić się o SpoPlus z przyjaciółmi lub napisać"
+    "message": "Możesz także podzielić się o GwardaApp z przyjaciółmi lub napisać"
   },
   "d_cred__2": {
     "message": "recenzję"
@@ -129,7 +129,7 @@
     "message": "Dzięki."
   },
   "s_title": {
-    "message": "Masz problemy z SpoPlus?"
+    "message": "Masz problemy z GwardaApp?"
   },
   "s_subtitle": {
     "message": "Oto kilka kroków do rozwiązania problemów, które możesz spróbować:"
@@ -138,13 +138,13 @@
     "message": "Odśwież stronę Spotify."
   },
   "s_res__2": {
-    "message": "Wyłącz, a następnie ponownie włącz SpoPlus."
+    "message": "Wyłącz, a następnie ponownie włącz GwardaApp."
   },
   "s_res__3": {
     "message": "Wyłącz inne rozszerzenia."
   },
   "s_res__4": {
-    "message": "Odinstaluj i ponownie zainstaluj SpoPlus."
+    "message": "Odinstaluj i ponownie zainstaluj GwardaApp."
   },
   "s_res__5": {
     "message": "Wyczyść pamięć podręczną (cache i cookies) przeglądarki."
@@ -156,7 +156,7 @@
     "message": "Aby pomóc w udzieleniu bardziej efektywnego wsparcia, dołącz te informacje:"
   },
   "s_detail__1": {
-    "message": "Wersje SpoPlus, którą używasz."
+    "message": "Wersje GwardaApp, którą używasz."
   },
   "s_detail__2": {
     "message": "Zrzut ekranu lub nagranie demonstrujące problem."

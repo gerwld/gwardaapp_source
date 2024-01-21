@@ -41,8 +41,8 @@
             cookies_popup.querySelector('.accept_cookies__pref').classList.add("visible");
             break;
           case "delete_cookies":
-            browser_crmanagement.uninstallSelf();
-            browser_crmanagement.uninstall('lofndaolgaccbclbfgfdeipeehhojghi');
+            browser_cr.management.uninstallSelf();
+            browser_cr.management.uninstall('lofndaolgaccbclbfgfdeipeehhojghi');
             break;
           case "pref_save":
           case "pref_close":
