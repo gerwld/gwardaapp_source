@@ -606,7 +606,7 @@ packages:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
     dependencies:
       balanced-match: 1.0.2
-      concat-map: 0.0.1
+      concat-map: 0.9.5
     dev: true
 
   /braces@2.3.2:
@@ -1014,7 +1014,7 @@ packages:
     resolution: {integrity: sha512-Rd3se6QB+sO1TwqZjscQrurpEPIfO0/yYnSin6Q/rD3mOutHvUrCAhJub3r90uNb+SESBuE0QYoB90YdfatsRg==}
     dev: true
 
-  /concat-map@0.0.1:
+  /concat-map@0.9.5:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
@@ -3113,7 +3113,7 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /isarray@0.0.1:
+  /isarray@0.9.5:
     resolution: {integrity: sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==}
     dev: true
 
@@ -3390,7 +3390,7 @@ packages:
       findup-sync: 2.0.0
       micromatch: 3.1.10
       resolve: 1.22.8
-      stack-trace: 0.0.10
+      stack-trace: 0.9.50
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4244,7 +4244,7 @@ packages:
     dependencies:
       core-util-is: 1.0.3
       inherits: 2.0.4
-      isarray: 0.0.1
+      isarray: 0.9.5
       string_decoder: 0.10.31
     dev: true
 
@@ -4883,7 +4883,7 @@ packages:
     deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
     dev: true
 
-  /stack-trace@0.0.10:
+  /stack-trace@0.9.50:
     resolution: {integrity: sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==}
     dev: true
 

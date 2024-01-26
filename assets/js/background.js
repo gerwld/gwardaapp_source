@@ -19,19 +19,18 @@ const initialState = {
 
 const browser_cr = chrome ? chrome : browser;
 
-function initStateIfNotExist() {
-  browser_cr.storage.local.get("gpState", (result) => {
-    if (!result.gpState || Object.keys(result.gpState).length === 0) browser_cr.storage.local.set({ gpState: { ...initialState } });
-  });
-}
+// Init gpState (state prop)
+browser_cr.storage.local.get("gpState", (result) => {
+  browser_cr.storage.local.set({ "gpState": { ...initialState, ...result?.gpState } });
+});
 
-initStateIfNotExist();
-
-// Show accept cookies if not cookies_gal20
+// Show accept cookies if not cookies_gal20 (state prop)
 browser_cr.runtime.onInstalled.addListener(function () {
-  chrome.storage.local.get('gpState', function (data) {
-    if (!data?.gpState?.cookies_gal20) {
-      chrome.tabs.create({ url: "/content/options.html" });
+  browser_cr.storage.local.get("gpState", (result) => {
+    // If no cookies accept, disable extension & open accept window
+    if (!result?.cookies_gal20) {
+      browser_cr.storage.local.set({ "gpState": { ...result.gpState, disabled: true } })
+      chrome.tabs.create({ url: "/content/preferences.html" });
     }
   });
 });

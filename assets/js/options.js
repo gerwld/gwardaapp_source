@@ -168,22 +168,6 @@
         });
       }
 
-
-
-      function updateFormInputs() {
-        const inputs = document.querySelectorAll("input, select");
-        if (inputs)
-          for (let i = 0; i < inputs.length; i++) {
-            const input = inputs[i];
-            if (input.type === "checkbox") {
-              input.checked = state[input.name] || false;
-            } else {
-              input.value = state[input.name] || "";
-            }
-          }
-      }
-
-
       initializeUpdate();
     });
   })();

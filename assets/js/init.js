@@ -57,12 +57,19 @@
   });
 
   // Entry point. 
-  // If manually selected - then so, else browser lang if so, otherways english
+  // If manually selected - then so, else browser lang if so & not beta, otherways english
+  const notinbeta = ["en", "de", "es", "pl", "uk", "sv", "ar"];
+  const browser_lang = navigator?.language?.split("-")[0]?.toLowerCase() || "en"
   browser_cr.storage.local.get("gpState", async (result) => {
+
     const initialLang =
-      result.gpState.lang_set ? result.gpState.lang_set
-        : navigator?.language ? navigator.language.split("-")[0]
+      result?.gpState?.lang_set ? result.gpState.lang_set
+        : browser_lang && notinbeta.indexOf(browser_lang) !== -1 ? browser_lang
           : "en";
+    // Init lang if not exist      
+    if (!result?.gpState?.lang_set) {
+      browser_cr.storage.local.set({ gpState: { ...result.gpState, lang_set: initialLang } })
+    }
 
     await handleLanguage(initialLang);
   });
