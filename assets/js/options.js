@@ -41,6 +41,7 @@
       // Function to dispatch the custom event
       function dispatchStateChangeEvent() {
         window.dispatchEvent(gpStateChangeEvent);
+        console.log('dispatch');
       }
 
       function initializeUpdate() {
@@ -64,7 +65,9 @@
             const value = input.type === "checkbox" ? input.checked : input.value;
 
             if (input.getAttribute("data-state") === "reversed")
-              state[input.name] = !value;
+              state[input.name] = !JSON.parse(value);
+            else if (input && input.type === "radio")
+              state[input.name] = JSON.parse(value);
             else
               state[input.name] = value;
 
@@ -84,7 +87,7 @@
                 } else if (input && input.type === "checkbox") {
                   input.checked = state[input.name] || false;
                 } else if (input && input.type === "radio") {
-                  input.checked = state[input.name] === input.value;
+                  input.checked = state[input.name] === JSON.parse(input.value);
                 } else {
                   input.value = state[input.name] || "";
                 }

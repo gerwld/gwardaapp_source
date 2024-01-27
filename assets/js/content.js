@@ -18,25 +18,71 @@
     let interval0;
     const browser_cr = chrome ? chrome : browser;
 
-    function setOrRemoveContentItem(assetPath, item, item_id) {
-      fetch(browser_cr.runtime.getURL(assetPath))
+
+    function setOrRemoveContentItem(assetDir, state, item_id, parent) {
+      const assetHtmlPath = browser_cr.runtime.getURL(`${assetDir}/content.html`);
+      const assetJsPath = browser_cr.runtime.getURL(`${assetDir}/content.js`);
+
+      fetch(assetHtmlPath)
         .then((response) => response.text())
-        .then((html) => {
+        .then((content) => {
           let current = document.getElementById(item_id);
-          let block = document.createElement("div");
-          block.textContent = html;
-          block.setAttribute("id", item_id);
-          if (item && !current) document.head.appendChild(html);
-          else if (!item && current instanceof Node) document.head.removeChild(current);
-        }).catch(_ => { });;
+          let current_script = document.getElementById(item_id + "_script");
+
+          if (parent && content) {
+            if (state) {
+              // Add HTML to the parent element
+              let block = document.createElement("div");
+              block.innerHTML = content;
+              block.setAttribute("id", item_id);
+
+              if (!current) {
+                parent.insertBefore(block, parent.firstChild);
+
+                // Add JS to the page body
+                let script = document.createElement("script");
+                script.setAttribute("id", item_id + "_script");
+                script.async = true;
+                script.src = assetJsPath;
+                if (!current_script)
+                  document.head.appendChild(script);
+              }
+            } else {
+              // Remove HTML and JS
+              if (current instanceof Node) {
+                parent.removeChild(current);
+
+                // Remove JS
+                let script = document.querySelector("script[src='" + assetJsPath + "']");
+                if (script) {
+                  script.parentNode.removeChild(script);
+                }
+              }
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching or injecting content:", error);
+        });
     }
+
 
 
 
     function getCurrentState() {
       browser_cr.storage.local.get("gpState", (result) => {
         const state = result.gpState.disabled ? { disabled: true } : result.gpState;
-        //setters
+        console.log(state);
+
+
+        // ------------------ SETTERS PART ------------------//
+        const modules = [
+          { id: "eppw_ga", path: "/epqw/", state: state.set_0, parent: document.querySelector("body") }
+        ]
+
+        modules.forEach(module => {
+          setOrRemoveContentItem('/assets/components/' + module.path, module.state, module.id, module.parent)
+        })
 
       });
     }
@@ -52,8 +98,7 @@
 })(this);
 
 
-// ---- Rate extension popup ---- //
-
+// Rate extension popup
 (() => {
   "use strict";
   (() => {

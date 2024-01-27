@@ -17,7 +17,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://amazon.com/*"
+        "*://google.com/*",
+        "*://*.google.com/*"
       ],
       "js": [
         "/assets/js/content.js"

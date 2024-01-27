@@ -13,7 +13,7 @@
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 const initialState = {
-  disabled: false,
+  disabled: true,
   dark_mode: false,
 };
 
@@ -26,7 +26,7 @@ browser_cr.storage.local.get("gpState", (result) => {
 
 // Show accept cookies if not cookies_gal20 (state prop)
 browser_cr.runtime.onInstalled.addListener(function () {
-  browser_cr.storage.local.get("gpState", (result) => {
+  browser_cr.storage.local.get(null, (result) => {
     // If no cookies accept, disable extension & open accept window
     if (!result?.cookies_gal20) {
       browser_cr.storage.local.set({ "gpState": { ...result.gpState, disabled: true } })
