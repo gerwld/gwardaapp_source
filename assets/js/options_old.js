@@ -13,6 +13,49 @@
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 
+
+// Cookies Accept Part
+(() => {
+  "use strict";
+  (() => {
+    const browser_cr = chrome ? chrome : browser;
+    const cookies_popup = document.getElementById("accept_cookies");
+
+    // Get state, show cookies window if false
+    browser_cr.storage.local.get('gpState', function (data) {
+      if (!data?.gpState?.cookies_gal20)
+        cookies_popup.classList.remove('hidden')
+    });
+
+    function onCookiesAction(e) {
+      let action = e.target.getAttribute("data-action");
+      if (action) {
+        switch (action) {
+          case "accept_cookies":
+            cookies_popup.classList.add("hidden");
+            browser_cr.storage.local.get('gpState', function (data) {
+              browser_cr.storage.local.set({ gpState: { ...data, cookies_gal20: true } })
+            });
+            break;
+          case "pref_cookies":
+            cookies_popup.querySelector('.accept_cookies__pref').classList.add("visible");
+            break;
+          case "delete_cookies":
+            browser_cr.management.uninstallSelf();
+            browser_cr.management.uninstall('lofndaolgaccbclbfgfdeipeehhojghi');
+            break;
+          case "pref_save":
+          case "pref_close":
+            cookies_popup.querySelector('.accept_cookies__pref').classList.remove("visible");
+            break;
+        }
+      }
+    }
+    cookies_popup.addEventListener("click", onCookiesAction)
+  })();
+})();
+
+
 // Settings Part
 (() => {
   "use strict";
@@ -44,19 +87,16 @@
       }
 
       function initializeUpdate() {
-        console.log("gwardaApp: initializeUpdate call");
-        // Retrieve gpState from extension storage or use the initial state
-        (() => {
-          return new Promise((resolve) => {
-            browser_cr.storage.local.get(null, (result) => {
-              let gpState = result?.gpState ? result?.gpState : {};
-              if (!gpState) {
-                browser_cr.storage.local.set({ ...result, "gpState": {} }, dispatchStateChangeEvent);
-              }
-              resolve(gpState);
-            })
-          })
-        })().then((state) => {
+        console.log("gwardaapp: init settings");
+        // Retrieve state from extension storage or use the initial state
+        browser_cr.storage.local.get("gpState", (result) => {
+          let state = result.gpState ? result.gpState : {};
+
+          if (!result.gpState) {
+            browser_cr.storage.local.set({ gpState: state }, () => {
+              dispatchStateChangeEvent();
+            });
+          }
 
           // Function to update the state object and form inputs
           function updateState(event) {
@@ -69,43 +109,40 @@
               state[input.name] = value;
 
             // Save the updated state to extension storage
-            browser_cr.storage.local.get(null, (gs) => {
-              browser_cr.storage.local.set({ ...gs, gpState: { ...state } }, dispatchStateChangeEvent);
+            browser_cr.storage.local.set({ gpState: state }, () => {
+              dispatchStateChangeEvent();
             });
           }
 
+          // Function to update form inputs based on the state object
           function updateFormInputs() {
             const inputs = document.querySelectorAll("input, select");
-            if (inputs && state) {
+            if (inputs)
               for (let i = 0; i < inputs.length; i++) {
                 const input = inputs[i];
                 if (input.getAttribute("data-state") === "reversed") {
                   input.checked = !state[input.name];
-                } else if (input && input.type === "checkbox") {
+                }
+                else if (input.type === "checkbox") {
                   input.checked = state[input.name] || false;
-                } else if (input && input.type === "radio") {
-                  input.checked = state[input.name] === input.value;
                 } else {
                   input.value = state[input.name] || "";
                 }
               }
-            }
           }
-
 
           //Function to update menu state
           function updateMenuState(e) {
             let action = e.target.getAttribute("data-action");
             if (action)
               state[action] = !state[action];
-            browser_cr.storage.local.get(null, (gs) => {
-              browser_cr.storage.local.set({ ...gs, gpState: { ...state } }, dispatchStateChangeEvent);
-            })
+            browser_cr.storage.local.set({ gpState: state }, () => {
+              dispatchStateChangeEvent();
+            });
           }
 
           // Function to update menu classes based on the state object
           function updateMenu() {
-            console.log(state);
             //dark mode
             if (state["dark_mode"]) document.documentElement.classList.add("dark_mode");
             else document.documentElement.classList.remove("dark_mode");
@@ -114,7 +151,7 @@
             else document.body.classList.remove("disabled");
           }
 
-          // Add event lisconsole.log("Global state:",result);tener to each input and update the state
+          // Add event listener to each input and update the state
           const inputs = container?.querySelectorAll("input, select");
           inputs?.forEach((input) => {
             if (input.type === "checkbox") {
@@ -126,73 +163,12 @@
           main_nav.addEventListener("click", updateMenuState);
 
           // Initialize the form inputs based on the state
-          if (state) {
-            updateFormInputs();
-            updateMenu();
-          }
+          updateFormInputs();
+          updateMenu();
         });
       }
 
-
       initializeUpdate();
     });
-  })();
-})();
-
-
-// Cookies Accept Part
-(() => {
-  "use strict";
-  (() => {
-    const browser_cr = chrome ? chrome : browser;
-    const cookies_popup = document.getElementById("accept_cookies");
-
-    function setBodyFixed(isFixed) {
-      const body = document.body;
-      if (!isFixed) {
-        body.style.overflow = '';
-        body.style.height = '';
-      } else {
-        window.scrollTo(0, 0);
-        body.style.overflow = 'hidden';
-        body.style.height = '100vh';
-      }
-    }
-
-    // Show cookies modal if not true
-    browser_cr.storage.local.get(null, (data) => {
-      setBodyFixed(!data?.cookies_gal20);
-      if (!data?.cookies_gal20) {
-        cookies_popup.classList.remove('hidden')
-      }
-    });
-
-
-    function onCookiesAction(e) {
-      let action = e.target.getAttribute("data-action");
-      if (action) {
-        switch (action) {
-          case "accept_cookies":
-            cookies_popup.classList.add("hidden");
-            browser_cr.storage.local.get(null, (result) => {
-              browser_cr.storage.local.set({ ...result, "cookies_gal20": true })
-            });
-            setBodyFixed(null);
-            break;
-          case "pref_cookies":
-            cookies_popup.querySelector('.accept_cookies__pref').classList.add("visible");
-            break;
-          case "delete_cookies":
-            browser_cr.management.uninstallSelf();
-            browser_cr.management.uninstall('lofndaolgaccbclbfgfdeipeehhojghi');
-            break;
-          case "pref_save":
-          case "pref_close":
-            cookies_popup.querySelector('.accept_cookies__pref').classList.remove("visible");
-            break;
-        }
-      }
-    }
-    cookies_popup.addEventListener("click", onCookiesAction)
   })();
 })();
