@@ -104,7 +104,7 @@
           }
 
           // Function to update menu classes based on the state object
-          function updateMenu() {
+          function updateHTMLBase() {
             //dark mode
             if (state["dark_mode"]) document.documentElement.classList.add("dark_mode");
             else document.documentElement.classList.remove("dark_mode");
@@ -127,7 +127,7 @@
 
           // Initialize the form inputs based on the state
           updateFormInputs();
-          updateMenu();
+          updateHTMLBase();
         });
       }
 

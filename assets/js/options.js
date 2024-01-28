@@ -19,41 +19,42 @@
   (() => {
     document.addEventListener("DOMContentLoaded", () => {
       const browser_cr = chrome ? chrome : browser;
-      const main_nav = document.getElementById("header_nav");
       const container = document.getElementById('settings')
 
-      // Listen for changes in browser_cr.storage.local
+      // LISTENER: Listen for changes in local state with debounce
       let prevstate;
+      let updateScheduled = false;
       browser_cr.storage.local.onChanged.addListener((changes, namespace) => {
         if (
-          changes.gpState &&
           changes.gpState.newValue &&
           JSON.stringify({ ...changes.gpState.newValue }) !== prevstate
         ) {
           prevstate = JSON.stringify({ ...changes.gpState.newValue });
-          initializeUpdate();
+          if (!updateScheduled) {
+            updateScheduled = true;
+            setTimeout(() => {
+              updateScheduled = false;
+              initializeUpdate();
+            }, 20);
+          }
         }
       });
 
-      // Defining a custom event object
-      const gpStateChangeEvent = new CustomEvent("gpStateChange");
 
-      // Function to dispatch the custom event
+      // DISPATCH: Defining a custom event
+      const gpStateChangeEvent = new CustomEvent("gpStateChange");
       function dispatchStateChangeEvent() {
         window.dispatchEvent(gpStateChangeEvent);
-        console.log('dispatch');
       }
 
+      // UPDATE: Update based on new state
       function initializeUpdate() {
         console.log("gwardaApp: initializeUpdate call");
-        // Retrieve gpState from extension storage or use the initial state
+        const eventListeners = [];
         (() => {
           return new Promise((resolve) => {
             browser_cr.storage.local.get(null, (result) => {
               let gpState = result?.gpState ? result?.gpState : {};
-              if (!gpState) {
-                browser_cr.storage.local.set({ ...result, "gpState": {} }, dispatchStateChangeEvent);
-              }
               resolve(gpState);
             })
           })
@@ -95,47 +96,36 @@
             }
           }
 
+          removeEventListeners();
 
-          //Function to update menu state
-          function updateMenuState(e) {
-            let action = e.target.getAttribute("data-action");
-            if (action)
-              state[action] = !state[action];
-            browser_cr.storage.local.get(null, (gs) => {
-              browser_cr.storage.local.set({ ...gs, gpState: { ...state } }, dispatchStateChangeEvent);
-            })
-          }
-
-          // Function to update menu classes based on the state object
-          function updateMenu() {
-            console.log(state);
-            //dark mode
-            if (state["dark_mode"]) document.documentElement.classList.add("dark_mode");
-            else document.documentElement.classList.remove("dark_mode");
-            //disable or enable plugin
-            if (state["disabled"]) document.body.classList.add("disabled");
-            else document.body.classList.remove("disabled");
-          }
-
-          // Add event lisconsole.log("Global state:",result);tener to each input and update the state
+          // Add event listener to each input and update the state
           const inputs = container?.querySelectorAll("input, select");
           inputs?.forEach((input) => {
+            let listener;
             if (input.type === "checkbox") {
-              input.addEventListener("change", updateState);
-            } else input.addEventListener("input", updateState);
+              listener = { type: "change", listener: updateState };
+            } else {
+              listener = { type: "input", listener: updateState };
+            }
+            eventListeners.push({ target: input, listener });
+            input.addEventListener(listener.type, listener.listener);
           });
 
-          //Add event listener to lang change
-          main_nav.addEventListener("click", updateMenuState);
+          function removeEventListeners() {
+            eventListeners.forEach(({ target, listener }) => {
+              target.removeEventListener(listener.type, listener.listener);
+            });
+            eventListeners.length = 0;
+          }
+
+
 
           // Initialize the form inputs based on the state
           if (state) {
             updateFormInputs();
-            updateMenu();
           }
         });
       }
-
 
       initializeUpdate();
     });

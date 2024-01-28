@@ -74,3 +74,86 @@
     await handleLanguage(initialLang);
   });
 })();
+
+
+
+
+// Settings Part
+(() => {
+  "use strict";
+  (() => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const browser_cr = chrome ? chrome : browser;
+      const main_nav = document.getElementById("header_nav");
+
+      // LISTENER: Listen for changes in local state with debounce
+      let prevstate;
+      let updateScheduled = false;
+      browser_cr.storage.local.onChanged.addListener((changes, namespace) => {
+        if (
+          changes.gpState.newValue &&
+          JSON.stringify({ ...changes.gpState.newValue }) !== prevstate
+        ) {
+          prevstate = JSON.stringify({ ...changes.gpState.newValue });
+          // Schedule the update if not already scheduled
+          if (!updateScheduled) {
+            updateScheduled = true;
+            setTimeout(() => {
+              updateScheduled = false;
+              initializeUpdate();
+            }, 20);
+          }
+        }
+      });
+
+      // DISPATCH: Defining a custom event
+      const gpStateChangeEvent = new CustomEvent("gpStateChange");
+      function dispatchStateChangeEvent() {
+        window.dispatchEvent(gpStateChangeEvent);
+      }
+
+      // UPDATE: Update based on new state
+      function initializeUpdate() {
+        console.log("gwardaApp: init/initializeUpdate call");
+        (() => {
+          return new Promise((resolve) => {
+            browser_cr.storage.local.get(null, (result) => {
+              let gpState = result?.gpState ? result?.gpState : {};
+              resolve(gpState);
+            })
+          })
+        })().then((state) => {
+
+          // Function to update menu state
+          function updateMenuState(e) {
+            let action = e.target.getAttribute("data-action");
+            if (action)
+              state[action] = !state[action];
+            browser_cr.storage.local.get(null, (gs) => {
+              browser_cr.storage.local.set({ ...gs, gpState: { ...state } }, dispatchStateChangeEvent);
+            })
+          }
+
+          // Function to update HTML classes
+          function updateHTMLBase() {
+            // - dark mode
+            if (state["dark_mode"]) document.documentElement.classList.add("dark_mode");
+            else document.documentElement.classList.remove("dark_mode");
+            // - disable or enable plugin
+            if (state["disabled"]) document.body.classList.add("disabled");
+            else document.body.classList.remove("disabled");
+          }
+
+          //Add event listener to lang change
+          main_nav.addEventListener("click", updateMenuState);
+
+          if (state)
+            updateHTMLBase();
+        });
+      }
+
+
+      initializeUpdate();
+    });
+  })();
+})();

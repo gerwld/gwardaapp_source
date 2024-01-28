@@ -36,6 +36,7 @@
         }
       }
 
+
       function checkParentAndProceed() {
         const parent = document.querySelector(parentSelector);
 
@@ -75,10 +76,9 @@
 
                 // Remove JS 
                 // (forEach if it somehow was added multiple times)
-                let script = document.querySelectorAll("script[src='" + assetJsPath + "']");
-                script?.forEach(e =>
-                  e.parentNode.removeChild(e)
-                )
+                document.querySelectorAll(`script[src="${assetJsPath}"]`).forEach(e =>
+                  e.remove()
+                );
               }
             }
           })
@@ -103,7 +103,6 @@
     function getCurrentState() {
       browser_cr.storage.local.get("gpState", (result) => {
         const state = result.gpState.disabled ? { disabled: true } : result.gpState;
-        console.log(state);
 
 
         // ------------------ SETTERS PART ------------------//
