@@ -24,6 +24,81 @@
     </div>
   </header>
 </body>
+
+<main class="keywords content_wrapper">
+  <form class="keywords__form" id="main_keywords__form">
+    <label class="ch_tp">
+      <span></span>
+      <input type=" text" name="keywords_string" placeholder="Enter Keyword/s" />
+    </label>
+
+    <label class="ch_lp ch_lp__gw">
+      <select name="lang_set" class="select__lang_set">
+        <option value="_" selected disabled>Marketplace</option>
+        <option value="de">German</option>
+        <option value="es">Spanish</option>
+        <option value="pl">Polish</option>
+        <option value="uk">Ukrainian</option>
+        <option value="hi">Hindi</option>
+        <option value="sv">Swedish</option>
+      </select>
+    </label>
+
+    <span class="l2w_label">Modifiers</span>
+    <div class="gp_opt gp_opt__form">
+      <label class="ch_hp">
+        <input type="checkbox" name="set_3" value="true" checked>
+        <span class="ch_sp"></span>
+        <span>a-z</span>
+      </label>
+      <label class="ch_hp">
+        <input type="checkbox" name="set_3" value="false">
+        <span class="ch_sp"></span>
+        <span>0-9</span>
+      </label>
+    </div>
+
+    <button type="submit" class="kw_btn">Generate Keywords</button>
+
+  </form>
+  <div class="keywords__result">
+    <header class="keywords__header">
+      <span class="keywords__total">Total Generated Keywords:</span>
+      <span class="keywords__count">0</span>
+    </header>
+    <div class="kwres">
+      <div class="kwres__header">
+        <div class="kwres__item">
+          <span class="kwres__count">#</span>
+          <span class="kwres__count">Generated Keyword</span>
+          <span class="kwres__count">Seed</span>
+          <span class="kwres__count">Rank</span>
+        </div>
+      </div>
+      <div class="kwres__item">
+        <span class="kwres__count">1</span>
+        <span class="kwres__count">Generated Keyword</span>
+        <span class="kwres__count">Seed</span>
+        <span class="kwres__count">Rank</span>
+      </div>
+      <div class="kwres__item">
+        <span class="kwres__count">2</span>
+        <span class="kwres__count">Generated Keyword</span>
+        <span class="kwres__count">Seed</span>
+        <span class="kwres__count">Rank</span>
+      </div>
+      <div class="kwres__item">
+        <span class="kwres__count">3</span>
+        <span class="kwres__count">Generated Keyword</span>
+        <span class="kwres__count">Seed</span>
+        <span class="kwres__count">Rank</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
 <script type="module" src="../assets/js/init.js"></script>
 <script type="module" src="../assets/js/keywords.js"></script>
 

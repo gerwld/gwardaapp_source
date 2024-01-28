@@ -40,7 +40,9 @@
         const parent = document.querySelector(parentSelector);
 
         // Regardless of whether the parent is found or not, inject the script
-        injectScript();
+        if (state) {
+          injectScript();
+        }
 
         if (!parent && state) {
           // Parent not found, wait for 100ms and check again

@@ -3,6 +3,7 @@
   "use strict";
   const logo = document?.querySelector('.logo')?.querySelector("img")
   const logo_svg = document?.querySelector('.F1hUFe.jbTlie')?.querySelector("svg")
+  let logo_url = ''
 
   if (logo_svg) {
     logo_svg.remove()
