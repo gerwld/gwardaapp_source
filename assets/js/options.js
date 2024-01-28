@@ -13,7 +13,7 @@
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 
-// Settings Part
+// Options Part
 (() => {
   "use strict";
   (() => {
@@ -35,7 +35,7 @@
             setTimeout(() => {
               updateScheduled = false;
               initializeUpdate();
-            }, 20);
+            }, 30);
           }
         }
       });

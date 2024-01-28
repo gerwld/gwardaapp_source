@@ -3,6 +3,7 @@
   const browser_cr = chrome ? chrome : browser;
   let CURRENT_LANG;
   const translations = {};
+  const lang_set = document.getElementById("lang_set");
 
   // Init dark mode
   browser_cr.storage.local.get("gpState", (result) => {
@@ -75,10 +76,7 @@
   });
 })();
 
-
-
-
-// Settings Part
+// Lang / Dark Mode (App settings) Part
 (() => {
   "use strict";
   (() => {
@@ -101,7 +99,7 @@
             setTimeout(() => {
               updateScheduled = false;
               initializeUpdate();
-            }, 20);
+            }, 30);
           }
         }
       });
@@ -144,6 +142,17 @@
             else document.body.classList.remove("disabled");
           }
 
+          // Initializes locale select if exist, and adds event listener to it
+          if (lang_set) {
+            if ([state['lang_set']])
+              lang_set.value = state['lang_set']
+            function onUpdateLangState(e) {
+              state["lang_set"] = e.target.value || "en";
+              browser_cr.storage.local.set({ gpState: state }, dispatchStateChangeEvent);
+            }
+            lang_set?.addEventListener("change", onUpdateLangState);
+          }
+
           //Add event listener to lang change
           main_nav.addEventListener("click", updateMenuState);
 
@@ -156,4 +165,98 @@
       initializeUpdate();
     });
   })();
+})();
+
+// Custom select 
+(() => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const customSelects = document.querySelectorAll(".custom-select");
+
+    customSelects.forEach((customSelect) => {
+      const selectElement = customSelect.querySelector("select");
+
+      if (!selectElement) return;
+      // Get all hidden images
+      const hiddenImages = customSelect.querySelectorAll(".hidden img");
+
+      // Create a new DIV for the selected item
+      const selectedDiv = document.createElement("DIV");
+      selectedDiv.setAttribute("class", "select-selected");
+
+      // Create a new SPAN for the selected item's text
+      const selectedSpan = document.createElement("SPAN");
+      selectedSpan.innerHTML = selectElement.options[selectElement.selectedIndex].innerHTML;
+      selectedDiv.appendChild(selectedSpan);
+
+      // Check if the value of the selected option matches the data-value attribute of any hidden image, if so, append it to selectedDiv
+      const selectedOptionValue = selectElement.options[selectElement.selectedIndex].value;
+      const correspondingImg = Array.from(hiddenImages).find(img => img.getAttribute("data-value") === selectedOptionValue);
+      if (correspondingImg) {
+        selectedDiv.insertBefore(correspondingImg.cloneNode(true), selectedSpan);
+      }
+
+      customSelect.appendChild(selectedDiv);
+
+      // Create a new DIV for the option list
+      const optionsDiv = document.createElement("DIV");
+      optionsDiv.setAttribute("class", "select-items select-hide");
+
+      // For each option in the original select element, create a new DIV that will act as an option item
+      Array.from(selectElement.options).slice(1).forEach((option, index) => {
+        const optionDiv = document.createElement("DIV");
+        optionDiv.innerHTML = option.innerHTML;
+        optionDiv.setAttribute("data-value", option.value)
+
+        // Check if the value of the option matches the data-value attribute of any hidden image, if so, append it to optionDiv
+        const correspondingImg = Array.from(hiddenImages).find(img => img.getAttribute("data-value") === option.value);
+        if (correspondingImg)
+          optionDiv.insertBefore(correspondingImg.cloneNode(true), optionDiv.firstChild);
+
+        // Handle click event for option items
+        optionDiv.addEventListener("click", function (e) {
+          const target = e.target;
+          let s, h;
+
+          s = target.parentNode.parentNode.querySelector("select");
+          h = target.parentNode.previousSibling;
+
+          s.value = target.textContent;
+          h.innerHTML = target.innerHTML;
+
+          closeAllSelect(h);
+        });
+
+        optionsDiv.appendChild(optionDiv);
+      });
+
+      customSelect.appendChild(optionsDiv);
+
+      // Handle click event for the select box
+      selectedDiv.addEventListener("click", function (e) {
+        e.stopPropagation();
+        closeAllSelect(selectedDiv);
+        selectedDiv.nextSibling.classList.toggle("select-hide");
+        selectedDiv.classList.toggle("select-arrow-active");
+      });
+    });
+
+    // Close all select boxes when the user clicks anywhere outside the select box
+    document.addEventListener("click", () => closeAllSelect(null));
+    function closeAllSelect(elmnt) {
+      const items = document.querySelectorAll(".select-items");
+      const selects = document.querySelectorAll(".select-selected");
+      const arrNo = Array.from(selects).map((select, index) => (elmnt == select ? index : -1)).filter((index) => index !== -1);
+      items.forEach((item, i) => {
+        if (!arrNo.includes(i)) {
+          item.classList.add("select-hide");
+        }
+      });
+
+      selects.forEach((select, i) => {
+        if (!arrNo.includes(i)) {
+          select.classList.remove("select-arrow-active");
+        }
+      });
+    }
+  });
 })();

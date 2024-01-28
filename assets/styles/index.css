@@ -239,6 +239,106 @@ img {
   pointer-events: none;
 }
 
+/* The container must be positioned relative: */
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none;
+  /*hide original SELECT element: */
+}
+
+.custom-select .hidden {
+  display: none;
+}
+
+
+/* Style the arrow inside the select element: */
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/* Point the arrow upwards when the select box is open (active): */
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/* style the items (options), including the selected item: */
+.select-items div,
+.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.select-items>div {
+  display: flex;
+  align-items: center;
+}
+
+.select-selected img,
+.select-items div img {
+  max-height: 1.4em;
+  width: auto;
+  max-width: 2.1em;
+  margin: 0 12px -0.1em 0;
+}
+
+.select-selected img {
+  box-shadow: 0 1px 2px #b5b5b5;
+}
+
+
+/* Style items (options): */
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  box-shadow: 0 10px 20px 0 rgba(69, 71, 73, 0.45);
+  overscroll-behavior: none;
+}
+
+@keyframes select_appear_mid {
+  0% {
+    transform: scale(0.8);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.select-items__200 .select-items {
+  margin-top: -250px;
+  animation: select_appear_mid 100ms ease both;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover,
+.same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 /* header styles  */
 
 .logo_group>span {
@@ -1272,8 +1372,9 @@ a.don_btn {
   flex: 1 0 280px;
   max-width: 300px;
   height: 100%;
-  padding: 36px 20px;
+  padding: 36px 10px;
   margin-right: 1rem;
+  margin-top: 50px;
   align-items: flex-start;
   border-radius: 10px;
   background-color: var(--background-contrast);
@@ -1295,15 +1396,23 @@ a.don_btn {
   padding: 0;
 }
 
+.select-selected,
 .ch_lp__gw select {
   height: 50px;
   width: 100%;
+  line-height: 50px;
   padding: 0;
 }
 
+.select-selected::after {
+  top: 21px;
+}
+
 .ch_tp input,
-.ch_lp__gw select {
-  font-size: 0.92rem;
+.ch_lp__gw select,
+.select-selected,
+.select-selected {
+  font-size: 0.96rem;
   padding: 0 10px;
   padding-left: 18px;
   background-color: var(--background-contrast);
@@ -1312,10 +1421,32 @@ a.don_btn {
 }
 
 .dark_mode .ch_tp input,
-.dark_mode .ch_lp__gw select {
+.dark_mode .ch_lp__gw select,
+.select-selected {
   background-color: var(--background);
   border-color: var(--hover);
 }
+
+.select-selected {
+  display: flex;
+  align-items: center;
+}
+
+
+.select-selected::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 18px;
+  bottom: 11px;
+  width: 5px;
+  height: 5px;
+  border: 2px solid var(--scrollbar-color, gray);
+  border-top: none;
+  border-right: none;
+  transform: rotate(-45deg);
+}
+
 
 .ch_lp__gw::before {
   right: 14px;
@@ -1365,6 +1496,7 @@ a.don_btn {
 
 .va_ver {
   opacity: 0.5;
+  font-weight: 400;
 }
 
 
@@ -1474,6 +1606,7 @@ a.don_btn {
   color: #202425;
   background-color: rgb(81 97 109);
   box-shadow: 0px 2px 0 0 #212223;
+  text-shadow: 1px 1px 2px #a0bfe045;
 }
 
 

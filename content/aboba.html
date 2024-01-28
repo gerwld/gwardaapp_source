@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Dropdown Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .custom-select {
+      position: relative;
+      display: inline-block;
+    }
+
+    select {
+      display: none;
+    }
+
+    .select-selected {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #fff;
+    }
+
+    .select-selected img {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+
+    .select-items {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      z-index: 1;
+    }
+
+    .select-items div {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .select-items div:hover {
+      background-color: #f4f4f4;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="custom-select">
+    <select name="lang_set">
+      <option value="_" selected disabled>Marketplace</option>
+      <option value="amazon.com" selected>
+        <img src="../assets/img/logo.svg" alt="Amazon.com" />
+        amazon.com
+      </option>
+      <option value="amazon.in">amazon.in</option>
+      <option value="amazon.cn">amazon.cn</option>
+      <!-- Add other options as needed -->
+    </select>
+    <div class="hidden">
+      <img src="path/to/image1.jpg" data-value="amazon.in" alt="Amazon.in" />
+      <img src="path/to/image2.jpg" data-value="amazon.cn" alt="Amazon.cn" />
+      <!-- Add other hidden images as needed -->
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const customSelects = document.querySelectorAll(".custom-select");
+
+        customSelects.forEach((customSelect) => {
+          const selectElement = customSelect.querySelector("select");
+
+          if (!selectElement) return;
+
+          const hiddenImages = customSelect.querySelectorAll(".hidden img");
+
+          const selectedDiv = document.createElement("DIV");
+          selectedDiv.setAttribute("class", "select-selected");
+          const selectedOption = selectElement.options[selectElement.selectedIndex];
+          selectedDiv.innerHTML = selectedOption.innerHTML;
+
+          const imgElement = selectedOption.querySelector("img");
+          if (imgElement) {
+            const clonedImg = imgElement.cloneNode(true);
+            selectedDiv.insertBefore(clonedImg, selectedDiv.firstChild);
+          }
+
+          customSelect.appendChild(selectedDiv);
+
+          const optionsDiv = document.createElement("DIV");
+          optionsDiv.setAttribute("class", "select-items select-hide");
+
+          Array.from(selectElement.options).slice(1).forEach((option, index) => {
+            const optionDiv = document.createElement("DIV");
+            optionDiv.innerHTML = option.innerHTML;
+
+            const correspondingImg = Array.from(hiddenImages).find(img => img.getAttribute("data-value") === option.value);
+            if (correspondingImg) {
+              const clonedCorrespondingImg = correspondingImg.cloneNode(true);
+              optionDiv.insertBefore(clonedCorrespondingImg, optionDiv.firstChild);
+            }
+
+            optionDiv.addEventListener("click", function (e) {
+              const target = e.target;
+              let s, h;
+
+              s = target.parentNode.parentNode.querySelector("select");
+              h = target.parentNode.previousSibling;
+
+              s.value = target.textContent;
+              h.innerHTML = target.innerHTML;
+
+              const selectedImgElement = target.querySelector("img");
+              if (selectedImgElement) {
+                const clonedSelectedImg = selectedImgElement.cloneNode(true);
+                h.insertBefore(clonedSelectedImg, h.firstChild);
+              }
+
+              closeAllSelect(h);
+            });
+
+            optionsDiv.appendChild(optionDiv);
+          });
+
+          customSelect.appendChild(optionsDiv);
+
+          selectedDiv.addEventListener("click", function (e) {
+            e.stopPropagation();
+            closeAllSelect(selectedDiv);
+            selectedDiv.nextSibling.classList.toggle("select-hide");
+            selectedDiv.classList.toggle("select-arrow-active");
+          });
+        });
+
+        document.addEventListener("click", () => closeAllSelect(null));
+
+        function closeAllSelect(elmnt) {
+          const items = document.querySelectorAll(".select-items");
+          const selects = document.querySelectorAll(".select-selected");
+          const arrNo = Array.from(selects).map((select, index) => (elmnt == select ? index : -1)).filter((index) => index !== -1);
+          items.forEach((item, i) => {
+            if (!arrNo.includes(i)) {
+              item.classList.add("select-hide");
+            }
+          });
+
+          selects.forEach((select, i) => {
+            if (!arrNo.includes(i)) {
+              select.classList.remove("select-arrow-active");
+            }
+          });
+        }
+      });
+    })();
+  </script>
+
+</body>
+
+</html>
