@@ -57,8 +57,8 @@
           injectScript();
         }
 
-        if (!parent && state) {
-          // Parent not found, wait for 1ms and check again
+        if (!parent && state || Array.isArray(parentSelector) && parent.length === 0) {
+          // Parent not found, wait for 10ms and check again
           setTimeout(checkParentAndProceed, 10);
           return;
         }
@@ -165,8 +165,9 @@
 
         // ------------------ SETTERS PART ------------------//
         const modules = [
-          { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/epqw/", state: state.set_0, parentSelector: "body" },
+          { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: "body" },
           { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".LatpMc.nPDzT.T3FoJb"] },
+          { className: "lqs_abc71734-a087-49b8-bc49-86a3уbc280d7_ga", path: "/lqs/", state: state.lqs, parentSelector: ["h3"] },
         ]
 
         modules.forEach(module => {
@@ -181,7 +182,7 @@
     }
 
     function contentLoaded() {
-      getCurrentState();
+      // getCurrentState();
       setTimeout(() =>
         setOrRemoveStylesOfItemLocal(`.appear_anim {animation: none !important;}`, true, "hideanim_l3_appear"), 800)
     }

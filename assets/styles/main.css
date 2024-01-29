@@ -1,7 +1,7 @@
 @keyframes init {
   0% {
     opacity: 0;
-    transform: translateY(10px);
+    /* transform: translateY(10px); */
   }
 
   100% {
@@ -12,5 +12,6 @@
 
 
 .appear_anim {
-  animation: init 100ms ease both;
+  animation: init 0ms ease both;
+  background-color: rgb(222, 225, 231);
 }
