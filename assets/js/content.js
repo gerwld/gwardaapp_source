@@ -37,22 +37,25 @@
       }
 
       async function fetchHTML() {
+        console.warn("gwardaApp: fetchHTML exec.")
         return fetch(assetHtmlPath)
           .then((response) => response.text()).then(e => e)
-        // .catch((error) =>
-        //   console.error("gwardaApp: Error fetching or injecting content:", error)
-        // );
+          .catch((error) =>
+            console.error("gwardaApp: Error fetching or injecting content:", error)
+          );
       }
-      let content = await fetchHTML();
 
+
+      let content = await fetchHTML();
+      let totalWaitTime = 0;
       function checkParentAndProceed() {
-        console.warn("gwardaApp: checkParentAndProceed exec.")
         if (!state) {
           document.querySelectorAll("." + item_class).forEach(e => e.remove());
           document.querySelectorAll(`script[src="${assetJsPath}"]`).forEach(e => e.remove());
           return;
         }
         else {
+          console.warn("gwardaApp: checkParentAndProceed exec.")
           // - else inject script and find parent / parents
           injectScript();
           let parent;
@@ -68,14 +71,18 @@
             parent = document.querySelector(parentSelector)
 
 
+          // Repeat for 3000ms (6 times) if not found parent, then break execution
           if (!parent && state || Array.isArray(parentSelector) && parent.length === 0) {
-            // Parent not found, wait for 10ms and check again
-            setTimeout(checkParentAndProceed, 10);
+            if (totalWaitTime < 3000) {
+              setTimeout(checkParentAndProceed, 500);
+              totalWaitTime += 500;
+            } else {
+              console.log("Maximum wait time reached. Exiting...");
+            }
             return;
           }
 
           // Parent found, proceed injection
-          // let current = document.querySelectorAll("." + item_class);
           if (parent && content) {
             // Add HTML to the parent element
             if (content) {
@@ -105,11 +112,13 @@
 
         }
       }
-      checkParentAndProceed()
 
-      // setInterval(checkParentAndProceed, 80);
+      // Entry point
+      checkParentAndProceed()
       observeClassChanges(parentSelector[0], checkParentAndProceed)
+      document.addEventListener("DOMContentLoaded", observeClassChanges, false);
     }
+
 
     function setOrRemoveStylesOfItemLocal(css, item, item_class) {
       let current = document.getElementById(item_class);
@@ -122,7 +131,6 @@
 
     function observeClassChanges(parentClass, callback) {
       let current = document.querySelectorAll(parentClass);
-      console.log(current, parentClass);
       const observer = new MutationObserver(() => {
         const newElements = document.querySelectorAll(parentClass);
         if (newElements.length !== current.length || !Array.from(newElements).every((element, index) => element === current[index])) {
@@ -142,7 +150,7 @@
           const find = document?.querySelectorAll("#gw__overlay");
           const logo_url = browser_cr.runtime.getURL('assets/img/logo.svg');
           if (state && find?.length === 0 && logo_url) {
-            const ov_content = `<div><button id="gw__overlay-button"><span>GwardaApp</span><img src="${logo_url}"></button><style>#gw__overlay {position: fixed;bottom: 10vh;right: 0; width: 115px;background: #353c40;  background: rgb(53, 60, 64, 0.8); font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",  "Helvetica Neue", sans-serif;border-top-left-radius: 14px;border-bottom-left-radius: 14px;cursor: pointer;font-size: 12px;}#gw__overlay-button {display: flex;align-items: center;justify-content: flex-end;flex-direction: row-reverse;height: 40px;transition: opacity 100ms ease;}#gw__overlay img,#gw__overlay span {pointer-events: none;user-select: none;}#gw__overlay span {margin-right: 5px;}#gw__overlay img {width: 34px;height: 34px;margin: 4px;}#gw__overlay-button:hover {opacity: 0.8;}#gw__overlay-button {color: #fff;background: none;border: none;padding: 0;cursor: pointer;} </style></div>`;
+            const ov_content = `<div><button id="gw__overlay-button"><span>GwardaApp</span><img src="${logo_url}"></button><style>#gw__overlay {z-index: 9999999;position: fixed;bottom: 10vh;right: 0; width: 115px;background: #353c40;  background: rgb(53, 60, 64, 0.8); font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",  "Helvetica Neue", sans-serif;border-top-left-radius: 14px;border-bottom-left-radius: 14px;cursor: pointer;font-size: 12px;}#gw__overlay-button {display: flex;align-items: center;justify-content: flex-end;flex-direction: row-reverse;height: 40px;transition: opacity 100ms ease;}#gw__overlay img,#gw__overlay span {pointer-events: none;user-select: none;}#gw__overlay span {margin-right: 5px;}#gw__overlay img {width: 34px;height: 34px;margin: 4px;}#gw__overlay-button:hover {opacity: 0.8;}#gw__overlay-button {color: #fff;background: none;border: none;padding: 0;cursor: pointer;} </style></div>`;
             const ov = document.createElement('div');
             ov.setAttribute('id', "gw__overlay");
             ov.innerHTML = ov_content;
@@ -197,8 +205,7 @@
 (() => {
   "use strict";
   (() => {
-    // const APPEAR_TIMEOUT = 10 * 1000 * 600;
-    const APPEAR_TIMEOUT = 0;
+    const APPEAR_TIMEOUT = 10 * 1000 * 600;
     const MAX_CLOSE_COUNT = 4;
     const browser_cr = chrome ? chrome : browser;
     const STORE_LINKS = {
