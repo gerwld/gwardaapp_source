@@ -26,57 +26,73 @@
 </body>
 
 <main class="keywords content_wrapper">
-  <form class="keywords__form" id="main_keywords__form">
+  <form class="keywords__form" id="keywords__form">
+    <span id="error-message" style="color: red; display: none;"></span>
     <label class="ch_tp">
       <span></span>
-      <input type=" text" name="keywords_string" placeholder="Enter Keyword/s" />
+      <input type=" text" name="prefix" placeholder="Enter Keyword/s" />
     </label>
 
     <div class="custom-select select-items__200">
-      <select name="lang_set">
+      <select name="marketplace">
         <option value="_" disabled selected>Choose Marketplace</option>
-        <option value="amazon.com">amazon.com</option>
-        <option value="amazon.co.uk">amazon.co.uk</option>
-        <option value="amazon.co.jp">amazon.co.jp</option>
-        <option value="amazon.fr">amazon.fr</option>
-        <option value="amazon.in">amazon.in</option>
-        <option value="amazon.es">amazon.es</option>
-        <option value="amazon.cn">amazon.cn</option>
-        <option value="amazon.de">amazon.de</option>
-        <option value="amazon.nl">amazon.nl</option>
-        <option value="amazon.it">amazon.it</option>
-        <option value="amazon.com.mx">amazon.com.mx</option>
-        <option value="amazon.ca">amazon.ca</option>
-        <option value="amazon.com.br">amazon.com.br</option>
-        <option value="amazon.com.au">amazon.com.au</option>
+        <option value="CA">amazon.ca</option>
+        <option value="US">amazon.com</option>
+        <option value="MX">amazon.com.mx</option>
+        <option value="ES">amazon.es</option>
+        <option value="UK">amazon.co.uk</option>
+        <option value="FR">amazon.fr</option>
+        <option value="BE">amazon.be</option>
+        <option value="NL">amazon.nl</option>
+        <option value="DE">amazon.de</option>
+        <option value="IT">amazon.it</option>
+        <option value="SE">amazon.se</option>
+        <option value="ZA">amazon.co.za</option>
+        <option value="PL">amazon.pl</option>
+        <option value="EG">amazon.eg</option>
+        <option value="TR">amazon.com.tr</option>
+        <option value="SA">amazon.sa</option>
+        <option value="AE">amazon.ae</option>
+        <option value="IN">amazon.in</option>
+        <option value="SG">amazon.sg</option>
+        <option value="AU">amazon.com.au</option>
+        <option value="JP">amazon.co.jp</option>
       </select>
+
       <div class="hidden" style="display: none;">
-        <img src="../assets/img/flags/us.svg" data-value="amazon.com">
-        <img src="../assets/img/flags/gb.svg" data-value="amazon.co.uk">
-        <img src="../assets/img/flags/jp.svg" data-value="amazon.co.jp">
-        <img src="../assets/img/flags/fr.svg" data-value="amazon.fr">
-        <img src="../assets/img/flags/in.svg" data-value="amazon.in">
-        <img src="../assets/img/flags/es.svg" data-value="amazon.es">
-        <img src="../assets/img/flags/cn.svg" data-value="amazon.cn">
-        <img src="../assets/img/flags/de.svg" data-value="amazon.de">
-        <img src="../assets/img/flags/nl.svg" data-value="amazon.nl">
-        <img src="../assets/img/flags/it.svg" data-value="amazon.it">
-        <img src="../assets/img/flags/mx.svg" data-value="amazon.com.mx">
-        <img src="../assets/img/flags/ca.svg" data-value="amazon.ca">
-        <img src="../assets/img/flags/br.svg" data-value="amazon.com.br">
-        <img src="../assets/img/flags/au.svg" data-value="amazon.com.au">
+        <img src="../assets/img/flags/ca.svg" data-value="CA">
+        <img src="../assets/img/flags/us.svg" data-value="US">
+        <img src="../assets/img/flags/mx.svg" data-value="MX">
+        <img src="../assets/img/flags/es.svg" data-value="ES">
+        <img src="../assets/img/flags/gb.svg" data-value="UK">
+        <img src="../assets/img/flags/fr.svg" data-value="FR">
+        <img src="../assets/img/flags/be.svg" data-value="BE">
+        <img src="../assets/img/flags/nl.svg" data-value="NL">
+        <img src="../assets/img/flags/de.svg" data-value="DE">
+        <img src="../assets/img/flags/it.svg" data-value="IT">
+        <img src="../assets/img/flags/se.svg" data-value="SE">
+        <img src="../assets/img/flags/za.svg" data-value="ZA">
+        <img src="../assets/img/flags/pl.svg" data-value="PL">
+        <img src="../assets/img/flags/eg.svg" data-value="EG">
+        <img src="../assets/img/flags/tr.svg" data-value="TR">
+        <img src="../assets/img/flags/sa.svg" data-value="SA">
+        <img src="../assets/img/flags/ae.svg" data-value="AE">
+        <img src="../assets/img/flags/in.svg" data-value="IN">
+        <img src="../assets/img/flags/sg.svg" data-value="SG">
+        <img src="../assets/img/flags/au.svg" data-value="AU">
+        <img src="../assets/img/flags/jp.svg" data-value="JP">
       </div>
     </div>
 
     <span class="l2w_label">Modifiers</span>
     <div class="gp_opt gp_opt__form">
       <label class="ch_hp">
-        <input type="checkbox" name="set_3" value="true" checked>
+        <input type="checkbox" name="a-z" value="true" checked>
         <span class="ch_sp"></span>
         <span>a-z</span>
       </label>
       <label class="ch_hp">
-        <input type="checkbox" name="set_3" value="false">
+        <input type="checkbox" name="0-9" value="false">
         <span class="ch_sp"></span>
         <span>0-9</span>
       </label>
@@ -99,23 +115,9 @@
           <span class="kwres__count">Rank</span>
         </div>
       </div>
-      <div class="kwres__item">
-        <span class="kwres__count">1</span>
-        <span class="kwres__count">Generated Keyword</span>
-        <span class="kwres__count">Seed</span>
-        <span class="kwres__count">Rank</span>
-      </div>
-      <div class="kwres__item">
-        <span class="kwres__count">2</span>
-        <span class="kwres__count">Generated Keyword</span>
-        <span class="kwres__count">Seed</span>
-        <span class="kwres__count">Rank</span>
-      </div>
-      <div class="kwres__item">
-        <span class="kwres__count">3</span>
-        <span class="kwres__count">Generated Keyword</span>
-        <span class="kwres__count">Seed</span>
-        <span class="kwres__count">Rank</span>
+      <div class="kwres_content" id="kwres_content">
+        <span class="kwres__item kwres__item__begin">Click generate to begin.</span>
+
       </div>
     </div>
   </div>
@@ -124,6 +126,6 @@
 
 
 <script type="module" src="../assets/js/init.js"></script>
-<!-- <script type="module" src="../assets/js/keywords.js"></script> -->
+<script type="module" src="../assets/js/keywords.js"></script>
 
 </html>

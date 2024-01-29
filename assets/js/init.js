@@ -3,7 +3,6 @@
   const browser_cr = chrome ? chrome : browser;
   let CURRENT_LANG;
   const translations = {};
-  const lang_set = document.getElementById("lang_set");
 
   // Init dark mode
   browser_cr.storage.local.get("gpState", (result) => {
@@ -83,6 +82,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       const browser_cr = chrome ? chrome : browser;
       const main_nav = document.getElementById("header_nav");
+      const lang_set = document.getElementById("lang_set");
 
       // LISTENER: Listen for changes in local state with debounce
       let prevstate;
@@ -176,7 +176,8 @@
       const selectElement = customSelect.querySelector("select");
 
       if (!selectElement) return;
-      // Get all hidden images
+
+      // Retrieve all hidden images
       const hiddenImages = customSelect.querySelectorAll(".hidden img");
 
       // Create a new DIV for the selected item
@@ -185,11 +186,12 @@
 
       // Create a new SPAN for the selected item's text
       const selectedSpan = document.createElement("SPAN");
-      selectedSpan.innerHTML = selectElement.options[selectElement.selectedIndex].innerHTML;
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      selectedSpan.innerHTML = selectedOption ? selectedOption.innerHTML : "";
       selectedDiv.appendChild(selectedSpan);
 
       // Check if the value of the selected option matches the data-value attribute of any hidden image, if so, append it to selectedDiv
-      const selectedOptionValue = selectElement.options[selectElement.selectedIndex].value;
+      const selectedOptionValue = selectedOption ? selectedOption.value : "";
       const correspondingImg = Array.from(hiddenImages).find(img => img.getAttribute("data-value") === selectedOptionValue);
       if (correspondingImg) {
         selectedDiv.insertBefore(correspondingImg.cloneNode(true), selectedSpan);
@@ -205,7 +207,7 @@
       Array.from(selectElement.options).slice(1).forEach((option, index) => {
         const optionDiv = document.createElement("DIV");
         optionDiv.innerHTML = option.innerHTML;
-        optionDiv.setAttribute("data-value", option.value)
+        optionDiv.setAttribute("data-value", option.value);
 
         // Check if the value of the option matches the data-value attribute of any hidden image, if so, append it to optionDiv
         const correspondingImg = Array.from(hiddenImages).find(img => img.getAttribute("data-value") === option.value);
@@ -220,7 +222,7 @@
           s = target.parentNode.parentNode.querySelector("select");
           h = target.parentNode.previousSibling;
 
-          s.value = target.textContent;
+          s.value = target.getAttribute("data-value");
           h.innerHTML = target.innerHTML;
 
           closeAllSelect(h);
