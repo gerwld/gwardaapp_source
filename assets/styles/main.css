@@ -112,6 +112,7 @@ body {
 .lqswlx {
   position: relative;
   width: 200px;
+  z-index: 100;
 }
 
 .lqswlx__content__wrapper {
@@ -240,6 +241,7 @@ body {
   border-radius: 5px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 90;
+  background-color: #fff;
 }
 
 .lqswlx__title {
