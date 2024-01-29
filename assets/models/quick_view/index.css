@@ -1,0 +1,52 @@
+.appear_anim {
+  animation: init 0ms ease both;
+  background-color: rgb(222, 225, 231);
+}
+
+.qgw {
+  padding: 10px 10px 5px;
+  border: var(--main-border);
+}
+
+.qgw__dl>div {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-size: min(14px, 1rem);
+}
+
+.qgw__dt {
+  display: block;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.qgw__dd {
+  color: var(--shadow-color-1);
+}
+
+.qgw__nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  line-height: 120%;
+  margin: 12px 0 0;
+}
+
+.qgw__nav a {
+  display: block;
+  padding: 2px 5px;
+  margin: 0 5px 5px 0;
+  color: rgba(255, 128, 0) !important;
+  background-color: rgba(255, 128, 0, 0.3);
+  border: 1px solid rgba(255, 128, 0, 0.3);
+  text-decoration: none;
+  border-radius: 5px;
+  transition: 100ms ease;
+}
+
+.qgw__nav a:hover {
+  color: #fff;
+  background-color: rgba(255, 128, 0, 0.6);
+}

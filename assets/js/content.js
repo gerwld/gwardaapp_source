@@ -18,7 +18,7 @@
     let interval0;
     const browser_cr = chrome ? chrome : browser;
 
-    async function setOrRemoveContentItem(assetDir, state, item_class, parentSelector) {
+    async function setOrRemoveContentItem(assetDir, state, item_class, parentSelector, setDown) {
       const assetHtmlPath = browser_cr.runtime.getURL(`${assetDir}/index.html`);
       const assetJsPath = browser_cr.runtime.getURL(`${assetDir}/index.js`);
 
@@ -46,8 +46,11 @@
       }
 
 
-      let content = await fetchHTML();
+      let content;
       let totalWaitTime = 0;
+      if (state)
+        content = await fetchHTML();
+
       function checkParentAndProceed() {
         if (!state) {
           document.querySelectorAll("." + item_class).forEach(e => e.remove());
@@ -93,7 +96,10 @@
                     let block = document.createElement("div");
                     block.innerHTML = content;
                     block.setAttribute("class", item_class);
-                    r.insertBefore(block, r.firstChild)
+                    if (setDown)
+                      r.appendChild(block);
+                    else
+                      r.insertBefore(block, r.firstChild)
                   }
                 })
               }
@@ -103,7 +109,10 @@
                   let block = document.createElement("div");
                   block.innerHTML = content;
                   block.setAttribute("class", item_class);
-                  parent.insertBefore(block, parent.firstChild);
+                  if (setDown)
+                    parent.appendChild(block);
+                  else
+                    parent.insertBefore(block, r.firstChild)
                 }
               }
             }
@@ -172,13 +181,13 @@
 
         // ------------------ SETTERS PART ------------------//
         const modules = [
-          { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: "body" },
-          { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".LatpMc.nPDzT.T3FoJb"] },
-          { className: "lqs_abc71734-a087-49b8-bc49-86a3уbc280d7_ga", path: "/lqs/", state: state.lqs, parentSelector: ["h3"] },
+          { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: ['div[data-component-type="s-search-result"] .a-section.a-spacing-base'], setDown: true },
+          // { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".LatpMc.nPDzT.T3FoJb"] },
+          // { className: "lqs_abc71734-a087-49b8-bc49-86a3уbc280d7_ga", path: "/lqs/", state: state.lqs, parentSelector: ["h3"] },
         ]
 
         modules.forEach(module => {
-          setOrRemoveContentItem('/assets/models/' + module.path, module.state, module.className, module.parentSelector)
+          setOrRemoveContentItem('/assets/models/' + module.path, module.state, module.className, module.parentSelector, module.setDown)
         })
 
       });

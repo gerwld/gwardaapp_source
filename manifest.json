@@ -16,7 +16,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://chesscolibri.pro/*"
+        "*://amazon.com/*",
+        "*://*.amazon.com/*"
       ],
       "js": [
         "/assets/js/content.js",
