@@ -104,6 +104,30 @@
       browser_cr.storage.local.get("gpState", (result) => {
         const state = result.gpState.disabled ? { disabled: true } : result.gpState;
 
+        (function appendOverlay(state) {
+          const find = document?.querySelectorAll("#gw__overlay");
+          const logo_url = browser_cr.runtime.getURL('assets/img/logo.svg');
+          if (state && find?.length === 0 && logo_url) {
+            const ov_content = `<div><button id="gw__overlay-button"><span>GwardaApp</span><img src="${logo_url}"></button><style>#gw__overlay {position: fixed;bottom: 10vh;right: 0; width: 115px;background: #353c40;  background: rgb(53, 60, 64, 0.8); font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",  "Helvetica Neue", sans-serif;border-top-left-radius: 14px;border-bottom-left-radius: 14px;cursor: pointer;font-size: 12px;}#gw__overlay-button {display: flex;align-items: center;justify-content: flex-end;flex-direction: row-reverse;height: 40px;transition: opacity 100ms ease;}#gw__overlay img,#gw__overlay span {pointer-events: none;user-select: none;}#gw__overlay span {margin-right: 5px;}#gw__overlay img {width: 34px;height: 34px;margin: 4px;}#gw__overlay-button:hover {opacity: 0.8;}#gw__overlay-button {color: #fff;background: none;border: none;padding: 0;cursor: pointer;} </style></div>`;
+            const ov = document.createElement('div');
+            ov.setAttribute('id', "gw__overlay");
+            ov.innerHTML = ov_content;
+            document.documentElement.appendChild(ov);
+
+            document.getElementById('gw__overlay-button')?.addEventListener('click', () =>
+              browser_cr.runtime.sendMessage({ openPreferences: true }))
+
+            const port = browser_cr.runtime.connect({ name: 'content-script' });
+            document.getElementById('gw__overlay-button').addEventListener('click', () => {
+              port.postMessage({ openPreferences: true });
+            });
+          } else if (!state) {
+            find?.forEach(e => e.remove());
+          }
+        })(!state.disabled);
+
+
+
 
         // ------------------ SETTERS PART ------------------//
         const modules = [
@@ -138,8 +162,8 @@
 (() => {
   "use strict";
   (() => {
-    const APPEAR_TIMEOUT = 10 * 1000 * 600;
-    // const APPEAR_TIMEOUT = 0;
+    // const APPEAR_TIMEOUT = 10 * 1000 * 600;
+    const APPEAR_TIMEOUT = 0;
     const MAX_CLOSE_COUNT = 4;
     const browser_cr = chrome ? chrome : browser;
     const STORE_LINKS = {
@@ -173,7 +197,7 @@
             const notification = document.createElement('div');
             const logo = browser_cr.runtime.getURL('assets/img/logo.svg');
             notification.setAttribute('id', "ext_show");
-            notification.innerHTML = `<div> <div class="groupl"> ${logo ? `<img src="${logo}" alt="logo"/>` : ''} <div> <h1>It would really help.</h1> </div></div> <p>If you enjoy using this extension, would you mind rate it on the webstore, then?</p> <a href="${STORE_LINKS[browser]}" target="_blank" id="rateLink">Rate it</a> <div class="cls"> <span id="closeNotification" style="cursor: pointer;">No, Thanks</span> </div> </div> <style id="43ggfdbt5rf"> #ext_show img, #ext_show p { user-select: none; pointer-events: none; } #ext_show h1 { width: 100%; display: block; text-align: left; color: #ffffff!important; font-weight: 600; font-size: 20px; } #ext_show .groupl { display: flex; align-items: center; justify-content: center; } #ext_show h1.first { margin-bottom: 5px; } #ext_show p { max-width: 290px; font-size: 14px; font-weight: 400; margin: 8px 0 16px; color: #868b90!important; line-height: 140%; text-align: center; } #ext_show a { text-decoration: none!important; display: block; border: 1px solid rgb(68, 86, 91, 0.5); border-radius: 10px; padding: 6px 10px; margin: 10px auto; max-width: 270px; background-color: rgba(255,255,255, 0.16)!important; color: white!important; text-align: center; } #ext_show a:hover { text-decoration: none; background-color: rgba(255,255,255, 0.1)!important; } #ext_show a:focus { text-decoration: none; } #ext_show > div { z-index: 100000!important; font-family: "Inter", inherit, serif; width: 296px; position: fixed; top: 10px; right: 10px; background-color: #161515!important; padding: 10px 8px 9px; border: 1px solid rgb(68, 86, 91, 0.5); z-index: 100; border-radius: 12px } #ext_show img { margin-right: 10px; margin-left: -10px; height: 33px; width: auto; max-width: 40px; box-shadow: 0 2px 2px 2px rgb(33, 33, 30, 0.15); } #ext_show .cls { display: flex; justify-content: center; } #closeNotification { display: inline-block; margin: 0 auto; padding-left: 4px; text-align: center; font-size: 11px; color: #72767a!important; } #closeNotification:hover { text-decoration: underline; } </style> `;
+            notification.innerHTML = `<div> <div class="groupl"> ${logo ? `<img src="${logo}" alt="logo"/>` : ''} <div> <h1>It would really help.</h1> </div></div> <p>If you enjoy using this extension, would you mind rate it on the webstore, then?</p> <a href="${STORE_LINKS[browser]}" target="_blank" id="rateLink">Rate it</a> <div class="cls"> <span id="closeNotification" style="cursor: pointer;">No, Thanks</span> </div> </div> <style id="43ggfdbt5rf"> #ext_show img, #ext_show p { user-select: none; pointer-events: none; } #ext_show h1 { width: 100%; display: block; text-align: left; color: #ffffff!important; font-weight: 600; font-weight: 500; font-size: 21px; line-height: 21px; margin:0; } #ext_show .groupl { display: flex; align-items: center; justify-content: center; margin: 10px 0; } #ext_show h1.first { margin-bottom: 5px; } #ext_show p { max-width: 290px; font-size: 14px; font-size: 12.8px; font-weight: 400; margin: 8px 0 16px; color: #868b90!important; line-height: 140%; text-align: center; } #ext_show a { text-decoration: none!important; display: block; border: 1px solid rgb(68, 86, 91, 0.5); border-radius: 22px; padding: 7px 10px; margin: 10px auto; max-width: 270px; background-color: rgba(255,255,255, 0.16)!important; color: white!important; text-align: center; } #ext_show a:hover { text-decoration: none; background-color: rgba(255,255,255, 0.1)!important; } #ext_show a:focus { text-decoration: none; } #ext_show > div { transform: scale(0.92);  box-shadow: rgba(149, 157, 165, 1) 0px 8px 24px; z-index: 100000!important;   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; width: 296px; position: fixed; top: 10px; right: 10px; background-color: #161515!important; background-color: rgb(22, 21, 21, 0.96)!important; padding: 5px 12px 15px; box-sizing: border-box; border: 1px solid rgb(68, 86, 91, 0.5); z-index: 100; border-radius: 12px } #ext_show img { margin-right: 10px; margin-left: -10px; height: 33px; width: auto; max-width: 40px; box-shadow: 0 2px 2px 2px rgb(33, 33, 30, 0.15); } #ext_show .cls { display: flex; justify-content: center; } #closeNotification { display: inline-block; margin: 0 auto; padding-left: 4px; text-align: center; font-size: 11px; font-size: 10.5px; color: #72767a!important; } #closeNotification:hover { text-decoration: underline; } </style> `;
 
             const appendPopup = () => {
               document.body.appendChild(notification);
@@ -204,3 +228,4 @@
     document.addEventListener("DOMContentLoaded", initRateMePopup, false);
   })();
 })(this);
+
