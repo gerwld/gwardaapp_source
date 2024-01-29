@@ -21,7 +21,11 @@
       ],
       "js": [
         "/assets/js/content.js",
-        "/assets/models/epqw/index.js"
+        "/assets/models/epqw/index.js",
+        "/assets/models/stock_status/index.js"
+      ],
+      "css": [
+        "/assets/styles/main.css"
       ],
       "run_at": "document_start"
     }

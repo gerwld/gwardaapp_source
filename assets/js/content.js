@@ -18,17 +18,17 @@
     let interval0;
     const browser_cr = chrome ? chrome : browser;
 
-    function setOrRemoveContentItem(assetDir, state, item_id, parentSelector) {
+    function setOrRemoveContentItem(assetDir, state, item_class, parentSelector) {
       const assetHtmlPath = browser_cr.runtime.getURL(`${assetDir}/index.html`);
       const assetJsPath = browser_cr.runtime.getURL(`${assetDir}/index.js`);
 
 
       function injectScript() {
-        const isScriptExist = document.getElementById(item_id + "_script");
+        const isScriptExist = document.getElementById(item_class + "_script");
         if (!isScriptExist) {
           // Add JS to the page body
           let script = document.createElement("script");
-          script.setAttribute("id", item_id + "_script");
+          script.setAttribute("id", item_class + "_script");
           script.async = true;
           script.defer = false;
           script.src = assetJsPath;
@@ -38,7 +38,19 @@
 
 
       function checkParentAndProceed() {
-        const parent = document.querySelector(parentSelector);
+        // if parrent is array then add to each item with that selectors items, otherways to one
+        let parent;
+        if (parentSelector && Array.isArray(parentSelector)) {
+          let selectedElements = [];
+          parentSelector.forEach(selector => {
+            let elements = document.querySelectorAll(selector);
+            selectedElements = selectedElements.concat(Array.from(elements));
+          });
+          parent = selectedElements;
+        }
+        else
+          parent = document.querySelector(parentSelector)
+
 
         // Regardless of whether the parent is found or not, inject the script
         if (state) {
@@ -46,8 +58,8 @@
         }
 
         if (!parent && state) {
-          // Parent not found, wait for 100ms and check again
-          setTimeout(checkParentAndProceed, 100);
+          // Parent not found, wait for 1ms and check again
+          setTimeout(checkParentAndProceed, 10);
           return;
         }
 
@@ -55,24 +67,47 @@
         fetch(assetHtmlPath)
           .then((response) => response.text())
           .then((content) => {
-            let current = document.getElementById(item_id);
+            let current = document.querySelectorAll("." + item_class);
 
             if (parent && content) {
               if (state) {
-                let block = document.createElement("div");
-                block.innerHTML = content;
-                block.setAttribute("id", item_id);
-
                 // Add HTML to the parent element
-                if (!current)
-                  parent.insertBefore(block, parent.firstChild);
+                if (!current.length) {
+                  // - If multiple parents
+                  if (Array.isArray(parentSelector)) {
+                    parent.forEach(r => {
+                      if (!r.querySelector("." + item_class)) {
+                        let block = document.createElement("div");
+                        block.innerHTML = content;
+                        block.setAttribute("class", item_class);
+                        r.insertBefore(block, r.firstChild)
+                      }
+                    })
+                  }
+                  // - If single one
+                  else {
+                    let block = document.createElement("div");
+                    block.innerHTML = content;
+                    block.setAttribute("class", item_class);
+                    parent.insertBefore(block, parent.firstChild);
+                  }
+                }
+
                 // Add JS to the page (condition checks inside of it)
                 injectScript();
               }
               else {
                 // Remove HTML
-                if (current instanceof Node)
-                  parent.removeChild(current);
+                // // - faster, not that reliable
+                if (Array.isArray(parentSelector)) {
+                  [...parent].forEach(e => e?.querySelector("." + item_class)?.remove());
+                } else if (parent) {
+                  parent?.querySelector("." + item_class)?.remove();
+                }
+                // - slower, removes all
+                document.querySelectorAll("." + item_class).forEach(e =>
+                  e.remove()
+                );
 
                 // Remove JS 
                 // (forEach if it somehow was added multiple times)
@@ -91,11 +126,11 @@
       checkParentAndProceed();
     }
 
-    function setOrRemoveStylesOfItemLocal(css, item, item_id) {
-      let current = document.getElementById(item_id);
+    function setOrRemoveStylesOfItemLocal(css, item, item_class) {
+      let current = document.getElementById(item_class);
       let style = document.createElement("style");
       style.textContent = css;
-      style.setAttribute("id", item_id);
+      style.setAttribute("id", item_class);
       if (item && !current) document.head.appendChild(style);
       else if (!item && current instanceof Node) document.head.removeChild(current);
     }
@@ -128,14 +163,14 @@
 
 
 
-
         // ------------------ SETTERS PART ------------------//
         const modules = [
-          { id: "eppw_ga", path: "/epqw/", state: state.set_0, parentSelector: "body" }
+          { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/epqw/", state: state.set_0, parentSelector: "body" },
+          { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".LatpMc.nPDzT.T3FoJb"] },
         ]
 
         modules.forEach(module => {
-          setOrRemoveContentItem('/assets/models/' + module.path, module.state, module.id, module.parentSelector)
+          setOrRemoveContentItem('/assets/models/' + module.path, module.state, module.className, module.parentSelector)
         })
 
       });
