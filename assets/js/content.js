@@ -18,7 +18,7 @@
     let interval0;
     const browser_cr = chrome ? chrome : browser;
 
-    function setOrRemoveContentItem(assetDir, state, item_class, parentSelector) {
+    async function setOrRemoveContentItem(assetDir, state, item_class, parentSelector) {
       const assetHtmlPath = browser_cr.runtime.getURL(`${assetDir}/index.html`);
       const assetJsPath = browser_cr.runtime.getURL(`${assetDir}/index.js`);
 
@@ -36,94 +36,79 @@
         }
       }
 
+      async function fetchHTML() {
+        return fetch(assetHtmlPath)
+          .then((response) => response.text()).then(e => e)
+        // .catch((error) =>
+        //   console.error("gwardaApp: Error fetching or injecting content:", error)
+        // );
+      }
+      let content = await fetchHTML();
 
       function checkParentAndProceed() {
-        // if parrent is array then add to each item with that selectors items, otherways to one
-        let parent;
-        if (parentSelector && Array.isArray(parentSelector)) {
-          let selectedElements = [];
-          parentSelector.forEach(selector => {
-            let elements = document.querySelectorAll(selector);
-            selectedElements = selectedElements.concat(Array.from(elements));
-          });
-          parent = selectedElements;
-        }
-        else
-          parent = document.querySelector(parentSelector)
-
-
-        // Regardless of whether the parent is found or not, inject the script
-        if (state) {
-          injectScript();
-        }
-
-        if (!parent && state || Array.isArray(parentSelector) && parent.length === 0) {
-          // Parent not found, wait for 10ms and check again
-          setTimeout(checkParentAndProceed, 10);
+        console.warn("gwardaApp: checkParentAndProceed exec.")
+        if (!state) {
+          document.querySelectorAll("." + item_class).forEach(e => e.remove());
+          document.querySelectorAll(`script[src="${assetJsPath}"]`).forEach(e => e.remove());
           return;
         }
+        else {
+          // - else inject script and find parent / parents
+          injectScript();
+          let parent;
+          if (parentSelector && Array.isArray(parentSelector)) {
+            let selectedElements = [];
+            parentSelector.forEach(selector => {
+              let elements = document.querySelectorAll(selector);
+              selectedElements = selectedElements.concat(Array.from(elements));
+            });
+            parent = selectedElements;
+          }
+          else
+            parent = document.querySelector(parentSelector)
 
-        // Parent found, proceed with the original logic
-        fetch(assetHtmlPath)
-          .then((response) => response.text())
-          .then((content) => {
-            let current = document.querySelectorAll("." + item_class);
 
-            if (parent && content) {
-              if (state) {
-                // Add HTML to the parent element
-                if (!current.length) {
-                  // - If multiple parents
-                  if (Array.isArray(parentSelector)) {
-                    parent.forEach(r => {
-                      if (!r.querySelector("." + item_class)) {
-                        let block = document.createElement("div");
-                        block.innerHTML = content;
-                        block.setAttribute("class", item_class);
-                        r.insertBefore(block, r.firstChild)
-                      }
-                    })
-                  }
-                  // - If single one
-                  else {
+          if (!parent && state || Array.isArray(parentSelector) && parent.length === 0) {
+            // Parent not found, wait for 10ms and check again
+            setTimeout(checkParentAndProceed, 10);
+            return;
+          }
+
+          // Parent found, proceed injection
+          // let current = document.querySelectorAll("." + item_class);
+          if (parent && content) {
+            // Add HTML to the parent element
+            if (content) {
+              // - If multiple parents
+              if (Array.isArray(parentSelector)) {
+                parent.forEach(r => {
+                  if (!r.querySelector("." + item_class)) {
                     let block = document.createElement("div");
                     block.innerHTML = content;
                     block.setAttribute("class", item_class);
-                    parent.insertBefore(block, parent.firstChild);
+                    r.insertBefore(block, r.firstChild)
                   }
-                }
-
-                // Add JS to the page (condition checks inside of it)
-                injectScript();
+                })
               }
+              // - If single one
               else {
-                // Remove HTML
-                // // - faster, not that reliable
-                if (Array.isArray(parentSelector)) {
-                  [...parent].forEach(e => e?.querySelector("." + item_class)?.remove());
-                } else if (parent) {
-                  parent?.querySelector("." + item_class)?.remove();
+                if (!parent.querySelector("." + item_class)) {
+                  let block = document.createElement("div");
+                  block.innerHTML = content;
+                  block.setAttribute("class", item_class);
+                  parent.insertBefore(block, parent.firstChild);
                 }
-                // - slower, removes all
-                document.querySelectorAll("." + item_class).forEach(e =>
-                  e.remove()
-                );
-
-                // Remove JS 
-                // (forEach if it somehow was added multiple times)
-                document.querySelectorAll(`script[src="${assetJsPath}"]`).forEach(e =>
-                  e.remove()
-                );
               }
             }
-          })
-          .catch((error) =>
-            console.error("gwardaApp: Error fetching or injecting content:", error)
-          );
-      }
+          }
 
-      // Start the checking process
-      checkParentAndProceed();
+
+        }
+      }
+      checkParentAndProceed()
+
+      // setInterval(checkParentAndProceed, 80);
+      observeClassChanges(parentSelector[0], checkParentAndProceed)
     }
 
     function setOrRemoveStylesOfItemLocal(css, item, item_class) {
@@ -133,6 +118,20 @@
       style.setAttribute("id", item_class);
       if (item && !current) document.head.appendChild(style);
       else if (!item && current instanceof Node) document.head.removeChild(current);
+    }
+
+    function observeClassChanges(parentClass, callback) {
+      let current = document.querySelectorAll(parentClass);
+      console.log(current, parentClass);
+      const observer = new MutationObserver(() => {
+        const newElements = document.querySelectorAll(parentClass);
+        if (newElements.length !== current.length || !Array.from(newElements).every((element, index) => element === current[index])) {
+          callback();
+          current = newElements;
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+      return observer;
     }
 
     function getCurrentState() {

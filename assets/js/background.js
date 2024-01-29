@@ -38,16 +38,16 @@ browser_cr.runtime.onInstalled.addListener(function () {
 
 // Navigate to settings message listener
 let preferencesTabId = null;
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+browser_cr.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.openPreferences) {
     if (preferencesTabId) {
-      chrome.tabs.get(preferencesTabId, (tab) => {
-        if (chrome.runtime.lastError || !tab) {
+      browser_cr.tabs.get(preferencesTabId, (tab) => {
+        if (browser_cr.runtime.lastError || !tab) {
           preferencesTabId = null;
           createNewTab();
         } else {
-          chrome.tabs.update(preferencesTabId, { active: true }, () => {
-            if (chrome.runtime.lastError) {
+          browser_cr.tabs.update(preferencesTabId, { active: true }, () => {
+            if (browser_cr.runtime.lastError) {
               preferencesTabId = null;
               createNewTab();
             }
@@ -61,13 +61,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 function createNewTab() {
-  chrome.tabs.create({ url: "/content/preferences.html" }, (tab) => {
+  browser_cr.tabs.create({ url: "/content/preferences.html" }, (tab) => {
     preferencesTabId = tab.id;
   });
 }
 
 // If was closed set to null
-chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+browser_cr.tabs.onRemoved.addListener((tabId, removeInfo) => {
   if (tabId === preferencesTabId) {
     preferencesTabId = null;
   }
@@ -78,7 +78,7 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
 // TEST: CONTENT SCRIPT PART, to fix invalidated context
 const contentScriptPorts = {};
 
-chrome.runtime.onConnect.addListener((port) => {
+browser_cr.runtime.onConnect.addListener((port) => {
   if (port.name === 'content-script') {
     contentScriptPorts[port.sender.tab.id] = port;
 
@@ -92,15 +92,15 @@ function openPreferences(tabId) {
   const preferencesTabId = contentScriptPorts[tabId];
 
   if (preferencesTabId) {
-    chrome.tabs.update(preferencesTabId, { active: true });
+    browser_cr.tabs.update(preferencesTabId, { active: true });
   } else {
-    chrome.tabs.create({ url: "/content/preferences.html" }, (tab) => {
+    browser_cr.tabs.create({ url: "/content/preferences.html" }, (tab) => {
       contentScriptPorts[tabId] = tab.id;
     });
   }
 }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+browser_cr.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.openPreferences) {
     openPreferences(sender.tab.id);
   }
