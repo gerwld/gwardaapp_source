@@ -16,9 +16,11 @@
   "use strict";
   (() => {
     let interval0;
+    let secLoad;
     const browser_cr = chrome ? chrome : browser;
 
     async function setOrRemoveContentItem(assetDir, state, item_class, parentSelector, setDown) {
+
       const assetHtmlPath = browser_cr.runtime.getURL(`${assetDir}/index.html`);
       const assetJsPath = browser_cr.runtime.getURL(`${assetDir}/index.js`);
 
@@ -77,8 +79,8 @@
           // Repeat for 3000ms (6 times) if not found parent, then break execution
           if (!parent && state || Array.isArray(parentSelector) && parent.length === 0) {
             if (totalWaitTime < 3000) {
-              setTimeout(checkParentAndProceed, 300);
-              totalWaitTime += 300;
+              setTimeout(checkParentAndProceed, 150);
+              totalWaitTime += 150;
             } else {
               console.log("Maximum wait time reached. Exiting...");
             }
@@ -122,15 +124,20 @@
         }
       }
 
+      function onInitLoad() {
+        setTimeout(checkParentAndProceed, 5000)
+      }
+
       // Entry point
       // - at the beginning
       checkParentAndProceed()
       // - observer (sometimes buggy but more efficient timeout)
-      observeClassChanges(parentSelector[0], checkParentAndProceed)
+      observeClassChanges(parentSelector, checkParentAndProceed)
       // - fallback for observer, if it fail to find dynamicly added new items
-      // setTimeout(checkParentAndProceed, 5000);
+      // if (!secLoad)
+      // document.addEventListener("DOMContentLoaded", onInitLoad, false);
       // - on DOMContentLoaded to reduce inj. time
-      document.addEventListener("DOMContentLoaded", observeClassChanges, false);
+      // document.addEventListener("DOMContentLoaded", checkParentAndProceed, false);
     }
 
 
@@ -143,11 +150,24 @@
       else if (!item && current instanceof Node) document.head.removeChild(current);
     }
 
-    function observeClassChanges(parentClass, callback) {
-      if (Array.isArray(parentClass) && current.length) {
-        let current = document?.querySelectorAll(parentClass);
+    function observeClassChanges(parentSelector, callback) {
+      document.addEventListener("DOMContentLoaded", () => {
+        let current = getElements();
+
+        function getElements() {
+          if (Array.isArray(parentSelector)) {
+            let selectedElements = [];
+            parentSelector.forEach(selector => {
+              let items = document.querySelectorAll(selector);
+              selectedElements = selectedElements.concat(Array.from(items));
+            });
+            return selectedElements;
+          }
+          return document.querySelectorAll(parentSelector)
+        }
+
         const observer = new MutationObserver(() => {
-          const newElements = document.querySelectorAll(parentClass);
+          let newElements = getElements();
           if (newElements.length !== current.length || !Array.from(newElements).every((element, index) => element === current[index])) {
             callback();
             current = newElements;
@@ -155,7 +175,7 @@
         });
         observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
         return observer;
-      }
+      }, false);
     }
 
     function getCurrentState() {
@@ -188,10 +208,10 @@
 
         // ------------------ SETTERS PART ------------------//
         const modules = [
+          { className: "lqs_82c9e3ee-649b-4b3a-aa8d-01bb5d2e7e4a_ga", path: "/lqs/", state: state.lqs, parentSelector: "#productTitle" },
           { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: ['div[data-component-type="s-search-result"] .a-section.a-spacing-base'], setDown: true },
           { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".a-box-group"], setDown: true },
           { className: "keywords_afdafe90-8192-4c1a-8da7-3b01a3342a21_ga", path: "/keywords/", state: !state.disabled, parentSelector: '[data-component-type="s-messaging-widget-results-header"]', setDown: true },
-          { className: "lqs_82c9e3ee-649b-4b3a-aa8d-01bb5d2e7e4a_ga", path: "/lqs/", state: state.lqs, parentSelector: "#productTitle" },
         ]
 
         modules.forEach(module => {
@@ -210,28 +230,14 @@
         setOrRemoveStylesOfItemLocal(`.appear_anim {animation: none !important;}`, true, "hideanim_l3_appear"), 800)
     }
 
-
-    function debounce(func, delay, globalTimeoutID) {
-      return function () {
-        const context = this;
-        const args = arguments;
-        // If there is an existing timeout, clear it
-        if (globalTimeoutID) {
-          clearTimeout(globalTimeoutID);
-        }
-        // Set a new timeout
-        globalTimeoutID = setTimeout(function () {
-          func.apply(context, args);
-        }, delay);
-      };
-    }
-
     initializeUpdate();
     // LISTENER: Listen for changes in local state with debounce
     let prevstate;
     browser_cr.storage.local.onChanged.addListener((changes) => {
       let swop_prevstate = JSON.stringify({ ...changes.gpState.newValue }).replace(/\s/g, '');
       if (changes.gpState.newValue && swop_prevstate !== prevstate) {
+        secLoad = true;
+        console.warn("gwardaApp: ls change");
         prevstate = swop_prevstate;
         initializeUpdate();
       }

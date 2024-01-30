@@ -261,6 +261,7 @@ body {
 .lqswlx__content__wrapper {
   position: absolute;
   left: 0;
+  left: calc(50% - 300px);
   top: 100%;
   opacity: 0;
   max-height: 0;
