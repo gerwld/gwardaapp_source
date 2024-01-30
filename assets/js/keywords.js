@@ -1,25 +1,128 @@
 (() => {
   "use strict";
-
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("keywords__form");
+    const amazon_d = {
+      "CA": {
+        "id": "A2EUQ1WTGCTBG2",
+        "site": "amazon.ca"
+      },
+      "US": {
+        "id": "ATVPDKIKX0DER",
+        "site": "amazon.com"
+      },
+      "MX": {
+        "id": "A1AM78C64UM0Y8",
+        "site": "amazon.com.mx"
+      },
+      "ES": {
+        "id": "A1RKKUPIHCS9HS",
+        "site": "amazon.es"
+      },
+      "UK": {
+        "id": "A1F83G8C2ARO7P",
+        "site": "amazon.co.uk"
+      },
+      "FR": {
+        "id": "A13V1IB3VIYZZH",
+        "site": "amazon.fr"
+      },
+      "BE": {
+        "id": "AMEN7PMS3EDWL",
+        "site": "amazon.be"
+      },
+      "NL": {
+        "id": "A1805IZSGTT6HS",
+        "site": "amazon.nl"
+      },
+      "DE": {
+        "id": "A1PA6795UKMFR9",
+        "site": "amazon.de"
+      },
+      "IT": {
+        "id": "APJ6JRA9NG5V4",
+        "site": "amazon.it"
+      },
+      "SE": {
+        "id": "A2NODRKZP88ZB9",
+        "site": "amazon.se"
+      },
+      "ZA": {
+        "id": "AE08WJ6YKNBMC",
+        "site": "amazon.co.za"
+      },
+      "PL": {
+        "id": "A1C3SOZRARQ6R3",
+        "site": "amazon.pl"
+      },
+      "EG": {
+        "id": "ARBP9OOSHTCHU",
+        "site": "amazon.eg"
+      },
+      "TR": {
+        "id": "A33AVAJ2PDY3EV",
+        "site": "amazon.com.tr"
+      },
+      "SA": {
+        "id": "A17E79C6D8DWNP",
+        "site": "amazon.sa"
+      },
+      "AE": {
+        "id": "A2VIGQ35RCS4UG",
+        "site": "amazon.ae"
+      },
+      "IN": {
+        "id": "A21TJRUUN4KGV",
+        "site": "amazon.in"
+      },
+      "SG": {
+        "id": "A19VAU5U5O7RUS",
+        "site": "amazon.sg"
+      },
+      "AU": {
+        "id": "A39IBJ37TRP1C6",
+        "site": "amazon.com.au"
+      },
+      "JP": {
+        "id": "A1VC38T7YXB528",
+        "site": "amazon.co.jp"
+      }
+    }
     let debounceTimer, requestCounter = 0, isSubmitting = false, combinedResults = [];
 
     (function initForm() {
-      const prefixInput = form.querySelector('[name="prefix"]');
-      const prefix = new URLSearchParams(window.location.search)?.get("k");
+      const query = Object.fromEntries(new URLSearchParams(window.location.search).entries());
+      if (query['k'])
+        form.querySelector('[name="prefix"]').value = query['k']
+      if (query['mp']) {
+        const currentMarket = Object.entries(amazon_d).find(([key, value]) => value.site.includes(query['mp']));
+        if (currentMarket) {
+          form.querySelector('[name="marketplace"]').value = currentMarket[0]
+          form.querySelector('[name="marketplace"]').dispatchEvent(new Event('change'))
 
-      if (prefix)
-        prefixInput.value = prefix
-    })(this);
+          if (query['k']) {
+            onSubmit({ ...query, mp: currentMarket[0] }, true)
+          }
+        }
 
-    function onSubmit(e) {
-      e.preventDefault();
-      if (isSubmitting)
-        return;
+      }
 
+    })();
+
+    function onSubmit(e, isManual) {
+      let payload;
       const formData = new FormData(form);
-      const payload = Object.fromEntries([...formData.entries()]);
+
+      if (isManual)
+        payload = { ...Object.fromEntries([...formData.entries()]), prefix: e.k, marketplace: e.mp };
+      else {
+        e.preventDefault();
+        if (isSubmitting)
+          return;
+        payload = Object.fromEntries([...formData.entries()]);
+      }
+
+      console.log(payload);
       const originalKeywordInput = payload.prefix.trim();
       const marketplaceInput = payload.marketplace;
 
@@ -54,92 +157,6 @@
     function performRequest(payload, keywordInput) {
       const CLIENT_INFO = "gwarda-amazon-research";
       const ALIAS = "aps";
-      const amazon_d = {
-        "CA": {
-          "id": "A2EUQ1WTGCTBG2",
-          "site": "amazon.ca"
-        },
-        "US": {
-          "id": "ATVPDKIKX0DER",
-          "site": "amazon.com"
-        },
-        "MX": {
-          "id": "A1AM78C64UM0Y8",
-          "site": "amazon.com.mx"
-        },
-        "ES": {
-          "id": "A1RKKUPIHCS9HS",
-          "site": "amazon.es"
-        },
-        "UK": {
-          "id": "A1F83G8C2ARO7P",
-          "site": "amazon.co.uk"
-        },
-        "FR": {
-          "id": "A13V1IB3VIYZZH",
-          "site": "amazon.fr"
-        },
-        "BE": {
-          "id": "AMEN7PMS3EDWL",
-          "site": "amazon.be"
-        },
-        "NL": {
-          "id": "A1805IZSGTT6HS",
-          "site": "amazon.nl"
-        },
-        "DE": {
-          "id": "A1PA6795UKMFR9",
-          "site": "amazon.de"
-        },
-        "IT": {
-          "id": "APJ6JRA9NG5V4",
-          "site": "amazon.it"
-        },
-        "SE": {
-          "id": "A2NODRKZP88ZB9",
-          "site": "amazon.se"
-        },
-        "ZA": {
-          "id": "AE08WJ6YKNBMC",
-          "site": "amazon.co.za"
-        },
-        "PL": {
-          "id": "A1C3SOZRARQ6R3",
-          "site": "amazon.pl"
-        },
-        "EG": {
-          "id": "ARBP9OOSHTCHU",
-          "site": "amazon.eg"
-        },
-        "TR": {
-          "id": "A33AVAJ2PDY3EV",
-          "site": "amazon.com.tr"
-        },
-        "SA": {
-          "id": "A17E79C6D8DWNP",
-          "site": "amazon.sa"
-        },
-        "AE": {
-          "id": "A2VIGQ35RCS4UG",
-          "site": "amazon.ae"
-        },
-        "IN": {
-          "id": "A21TJRUUN4KGV",
-          "site": "amazon.in"
-        },
-        "SG": {
-          "id": "A19VAU5U5O7RUS",
-          "site": "amazon.sg"
-        },
-        "AU": {
-          "id": "A39IBJ37TRP1C6",
-          "site": "amazon.com.au"
-        },
-        "JP": {
-          "id": "A1VC38T7YXB528",
-          "site": "amazon.co.jp"
-        }
-      }
       const MID = amazon_d[payload.marketplace].id;
 
 

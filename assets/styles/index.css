@@ -1548,6 +1548,22 @@ a.don_btn {
   padding: 10px;
 }
 
+@keyframes appr_004e {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.kwres_content>div {
+  animation: appr_004e 200ms ease both;
+}
+
 .kwres__item {
   display: flex;
   justify-content: flex-start;

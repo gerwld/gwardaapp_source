@@ -43,6 +43,7 @@
     "storage"
   ],
   "web_accessible_resources": [
-    "/assets/*"
+    "/assets/*",
+    "/content/*.html"
   ]
 }

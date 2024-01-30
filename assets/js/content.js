@@ -78,9 +78,9 @@
 
           // Repeat for 3000ms (6 times) if not found parent, then break execution
           if (!parent && state || Array.isArray(parentSelector) && parent.length === 0) {
-            if (totalWaitTime < 3000) {
-              setTimeout(checkParentAndProceed, 150);
-              totalWaitTime += 150;
+            if (totalWaitTime < 8000) {
+              setTimeout(checkParentAndProceed, 200);
+              totalWaitTime += 200;
             } else {
               console.log("Maximum wait time reached. Exiting...");
             }
@@ -119,8 +119,6 @@
               }
             }
           }
-
-
         }
       }
 
@@ -182,31 +180,9 @@
       browser_cr.storage.local.get("gpState", (result) => {
         const state = result.gpState.disabled ? { disabled: true } : result.gpState;
 
-        (function appendOverlay(state) {
-          const find = document?.querySelectorAll("#gw__overlay");
-          const logo_url = browser_cr.runtime.getURL('assets/img/logo.svg');
-          if (state && find?.length === 0 && logo_url) {
-            const ov_content = `<div><button id="gw__overlay-button"><span>GwardaApp</span><img src="${logo_url}"></button><style>#gw__overlay {z-index: 9999999;position: fixed;bottom: 10vh;right: 0; width: 115px;background: #353c40;  background: rgb(53, 60, 64, 0.8); font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",  "Helvetica Neue", sans-serif;border-top-left-radius: 14px;border-bottom-left-radius: 14px;cursor: pointer;font-size: 12px;}#gw__overlay-button {display: flex;align-items: center;justify-content: flex-end;flex-direction: row-reverse;height: 42px;transition: opacity 100ms ease;}#gw__overlay img,#gw__overlay span {pointer-events: none;user-select: none;}#gw__overlay span {margin-right: 5px;}#gw__overlay img {width: 34px;height: 34px;margin: 4px;}#gw__overlay-button:hover {opacity: 0.8;}#gw__overlay-button {color: #fff;background: none;border: none;padding: 0;cursor: pointer;} </style></div>`;
-            const ov = document.createElement('div');
-            ov.setAttribute('id', "gw__overlay");
-            ov.innerHTML = ov_content;
-            document.documentElement.appendChild(ov);
-
-            document.getElementById('gw__overlay-button')?.addEventListener('click', () =>
-              browser_cr.runtime.sendMessage({ openPreferences: true }))
-
-            // const port = browser_cr.runtime.connect({ name: 'content-script' });
-            // document.getElementById('gw__overlay-button').addEventListener('click', () => {
-            //   port.postMessage({ openPreferences: true });
-            // });
-          } else if (!state) {
-            find?.forEach(e => e.remove());
-          }
-        })(!state.disabled);
-
-
-
         // ------------------ SETTERS PART ------------------//
+        moduleAppendOverlay(!state.disabled)
+
         const modules = [
           { className: "lqs_82c9e3ee-649b-4b3a-aa8d-01bb5d2e7e4a_ga", path: "/lqs/", state: state.lqs, parentSelector: "#productTitle" },
           { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: ['div[data-component-type="s-search-result"] .a-section.a-spacing-base'], setDown: true },
@@ -220,6 +196,37 @@
 
       });
     }
+
+
+    //<><><><><><><><><><><><><><>
+    //        ALL MODULES
+    //<><><><><><><><><><><><><><>
+
+    function moduleAppendOverlay(state) {
+      const find = document?.querySelectorAll("#gw__overlay");
+      const logo_url = browser_cr.runtime.getURL('assets/img/logo.svg');
+      const navlink = browser_cr.extension.getURL("content/preferences.html")
+      if (state && find?.length === 0 && logo_url) {
+        const ov_content = `<div><button id="gw__overlay-button"><span>GwardaApp</span><img src="${logo_url}"></button><style>#gw__overlay {z-index: 9999999;position: fixed;bottom: 10vh;right: 0; width: 115px;background: #353c40;  background: rgb(53, 60, 64, 0.8); font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",  "Helvetica Neue", sans-serif;border-top-left-radius: 14px;border-bottom-left-radius: 14px;cursor: pointer;font-size: 12px;}#gw__overlay-button {display: flex;align-items: center;justify-content: flex-end;flex-direction: row-reverse;height: 42px;transition: opacity 100ms ease;}#gw__overlay img,#gw__overlay span {pointer-events: none;user-select: none;}#gw__overlay span {margin-right: 5px;}#gw__overlay img {width: 34px;height: 34px;margin: 4px;}#gw__overlay-button:hover {opacity: 0.8;}#gw__overlay-button {color: #fff;background: none;border: none;padding: 0;cursor: pointer;} </style></div>`;
+        const ov = document.createElement('div');
+        ov.setAttribute('id', "gw__overlay");
+        ov.innerHTML = ov_content;
+        document.documentElement.appendChild(ov);
+
+        document.getElementById('gw__overlay-button')?.addEventListener('click', () => {
+          let newTab = window.open(navlink, '_gw_peferences');
+          if (newTab) {
+            newTab.focus();
+          }
+        })
+      } else if (!state) {
+        find?.forEach(e => e.remove());
+      }
+    };
+
+    //<><><><><><><><><><><><><><>
+    //      ALL MODULES END
+    //<><><><><><><><><><><><><><>
 
     function initializeUpdate() {
       getCurrentState();

@@ -6,14 +6,19 @@ document.addEventListener("DOMContentLoaded", () => {
   function findAndAdd() {
     const btn = document.getElementById('keywordsgws');
     const urlParams = new URLSearchParams(window.location.search);
-    if (!btn || !urlParams) {
+    const domain = window.location.hostname.replace(/^www\./, '');
+    if (!btn || !urlParams || !domain) {
       setInterval(findAndAdd, 200);
       return;
     }
     const urlparam = urlParams.get('k')
 
     document.getElementById('keywordsgws').addEventListener("click", () => {
-      browser_cr.runtime.sendMessage({ openKeywords: urlparam });
+      const navlink = browser_cr.extension.getURL(`content/keywords.html?k=${urlparam}&mp=${domain}`)
+      let newTab = window.open(navlink, '_gw_peferences');
+      if (newTab) {
+        newTab.focus();
+      }
     });
 
   }

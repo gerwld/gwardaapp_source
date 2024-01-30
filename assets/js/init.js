@@ -173,48 +173,55 @@
     const customSelects = document.querySelectorAll(".custom-select");
 
     customSelects.forEach((customSelect) => {
+      initializeCustomSelect(customSelect);
+    });
+
+    // Close all select boxes when the user clicks anywhere outside the select box
+    document.addEventListener("click", () => closeAllSelect(null));
+
+    function closeAllSelect(elmnt) {
+      const items = document.querySelectorAll(".select-items");
+      const selects = document.querySelectorAll(".select-selected");
+      const arrNo = Array.from(selects).map((select, index) => (elmnt == select ? index : -1)).filter((index) => index !== -1);
+      items.forEach((item, i) => {
+        if (!arrNo.includes(i)) {
+          item.classList.add("select-hide");
+        }
+      });
+
+      selects.forEach((select, i) => {
+        if (!arrNo.includes(i)) {
+          select.classList.remove("select-arrow-active");
+        }
+      });
+    }
+
+    function initializeCustomSelect(customSelect) {
       const selectElement = customSelect.querySelector("select");
 
       if (!selectElement) return;
 
-      // Retrieve all hidden images
       const hiddenImages = customSelect.querySelectorAll(".hidden img");
 
-      // Create a new DIV for the selected item
       const selectedDiv = document.createElement("DIV");
       selectedDiv.setAttribute("class", "select-selected");
 
-      // Create a new SPAN for the selected item's text
       const selectedSpan = document.createElement("SPAN");
-      const selectedOption = selectElement.options[selectElement.selectedIndex];
-      selectedSpan.innerHTML = selectedOption ? selectedOption.innerHTML : "";
       selectedDiv.appendChild(selectedSpan);
-
-      // Check if the value of the selected option matches the data-value attribute of any hidden image, if so, append it to selectedDiv
-      const selectedOptionValue = selectedOption ? selectedOption.value : "";
-      const correspondingImg = Array.from(hiddenImages).find(img => img.getAttribute("data-value") === selectedOptionValue);
-      if (correspondingImg) {
-        selectedDiv.insertBefore(correspondingImg.cloneNode(true), selectedSpan);
-      }
 
       customSelect.appendChild(selectedDiv);
 
-      // Create a new DIV for the option list
       const optionsDiv = document.createElement("DIV");
       optionsDiv.setAttribute("class", "select-items select-hide");
 
-      // For each option in the original select element, create a new DIV that will act as an option item
       Array.from(selectElement.options).slice(1).forEach((option, index) => {
         const optionDiv = document.createElement("DIV");
         optionDiv.innerHTML = option.innerHTML;
         optionDiv.setAttribute("data-value", option.value);
 
-        // Check if the value of the option matches the data-value attribute of any hidden image, if so, append it to optionDiv
-        const correspondingImg = Array.from(hiddenImages).find(img => img.getAttribute("data-value") === option.value);
-        if (correspondingImg)
-          optionDiv.insertBefore(correspondingImg.cloneNode(true), optionDiv.firstChild);
+        const correspondingImg = Array.from(hiddenImages).find((img) => img.getAttribute("data-value") === option.value);
+        if (correspondingImg) optionDiv.insertBefore(correspondingImg.cloneNode(true), optionDiv.firstChild);
 
-        // Handle click event for option items
         optionDiv.addEventListener("click", function (e) {
           const target = e.target;
           let s, h;
@@ -233,32 +240,30 @@
 
       customSelect.appendChild(optionsDiv);
 
-      // Handle click event for the select box
       selectedDiv.addEventListener("click", function (e) {
         e.stopPropagation();
         closeAllSelect(selectedDiv);
-        selectedDiv.nextSibling.classList.toggle("select-hide");
+        optionsDiv.classList.toggle("select-hide");
         selectedDiv.classList.toggle("select-arrow-active");
       });
-    });
 
-    // Close all select boxes when the user clicks anywhere outside the select box
-    document.addEventListener("click", () => closeAllSelect(null));
-    function closeAllSelect(elmnt) {
-      const items = document.querySelectorAll(".select-items");
-      const selects = document.querySelectorAll(".select-selected");
-      const arrNo = Array.from(selects).map((select, index) => (elmnt == select ? index : -1)).filter((index) => index !== -1);
-      items.forEach((item, i) => {
-        if (!arrNo.includes(i)) {
-          item.classList.add("select-hide");
-        }
+      // Add onchange event listener for the original select element
+      selectElement.addEventListener("change", function () {
+        updateCustomSelect(selectedDiv, selectedSpan, selectElement, hiddenImages);
       });
 
-      selects.forEach((select, i) => {
-        if (!arrNo.includes(i)) {
-          select.classList.remove("select-arrow-active");
-        }
-      });
+      // Initial update of custom select based on the initial value of the original select
+      updateCustomSelect(selectedDiv, selectedSpan, selectElement, hiddenImages);
+    }
+
+    function updateCustomSelect(selectedDiv, selectedSpan, selectElement, hiddenImages) {
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      selectedSpan.innerHTML = selectedOption ? selectedOption.innerHTML : "";
+      const selectedOptionValue = selectedOption ? selectedOption.value : "";
+      const correspondingImg = Array.from(hiddenImages).find((img) => img.getAttribute("data-value") === selectedOptionValue);
+      if (correspondingImg) {
+        selectedDiv.insertBefore(correspondingImg.cloneNode(true), selectedSpan);
+      }
     }
   });
 })();
