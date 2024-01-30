@@ -141,14 +141,16 @@
     function observeClassChanges(parentClass, callback) {
       if (parentClass[0] !== "#") {
         let current = document.querySelector(parentClass);
-        const observer = new MutationObserver(() => {
-          const newElements = document.querySelectorAll(parentClass);
-          if (newElements.length !== current.length || !Array.from(newElements).every((element, index) => element === current[index])) {
-            callback();
-            current = newElements;
-          }
-        });
-        observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        if (current.length) {
+          const observer = new MutationObserver(() => {
+            const newElements = document.querySelectorAll(parentClass);
+            if (newElements.length !== current.length || !Array.from(newElements).every((element, index) => element === current[index])) {
+              callback();
+              current = newElements;
+            }
+          });
+          observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
+        }
         return observer;
       }
     }
@@ -184,7 +186,7 @@
         // ------------------ SETTERS PART ------------------//
         const modules = [
           { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: ['div[data-component-type="s-search-result"] .a-section.a-spacing-base'], setDown: true },
-          // { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".LatpMc.nPDzT.T3FoJb"] },
+          { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".a-box-group"], setDown: true },
           { className: "lqs_abc71734-a087-49b8-bc49-86a3уbc280d7_ga", path: "/lqs/", state: state.lqs, parentSelector: "#productTitle" },
         ]
 
