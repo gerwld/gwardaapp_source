@@ -77,8 +77,8 @@
           // Repeat for 3000ms (6 times) if not found parent, then break execution
           if (!parent && state || Array.isArray(parentSelector) && parent.length === 0) {
             if (totalWaitTime < 3000) {
-              setTimeout(checkParentAndProceed, 500);
-              totalWaitTime += 500;
+              setTimeout(checkParentAndProceed, 300);
+              totalWaitTime += 300;
             } else {
               console.log("Maximum wait time reached. Exiting...");
             }
@@ -123,8 +123,13 @@
       }
 
       // Entry point
+      // - at the beginning
       checkParentAndProceed()
+      // - observer (sometimes buggy but more efficient timeout)
       observeClassChanges(parentSelector[0], checkParentAndProceed)
+      // - fallback for observer, if it fail to find dynamicly added new items
+      // setTimeout(checkParentAndProceed, 5000);
+      // - on DOMContentLoaded to reduce inj. time
       document.addEventListener("DOMContentLoaded", observeClassChanges, false);
     }
 
@@ -139,18 +144,16 @@
     }
 
     function observeClassChanges(parentClass, callback) {
-      if (parentClass[0] !== "#") {
-        let current = document.querySelector(parentClass);
-        if (current.length) {
-          const observer = new MutationObserver(() => {
-            const newElements = document.querySelectorAll(parentClass);
-            if (newElements.length !== current.length || !Array.from(newElements).every((element, index) => element === current[index])) {
-              callback();
-              current = newElements;
-            }
-          });
-          observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
-        }
+      if (Array.isArray(parentClass) && current.length) {
+        let current = document?.querySelectorAll(parentClass);
+        const observer = new MutationObserver(() => {
+          const newElements = document.querySelectorAll(parentClass);
+          if (newElements.length !== current.length || !Array.from(newElements).every((element, index) => element === current[index])) {
+            callback();
+            current = newElements;
+          }
+        });
+        observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] });
         return observer;
       }
     }
@@ -163,7 +166,7 @@
           const find = document?.querySelectorAll("#gw__overlay");
           const logo_url = browser_cr.runtime.getURL('assets/img/logo.svg');
           if (state && find?.length === 0 && logo_url) {
-            const ov_content = `<div><button id="gw__overlay-button"><span>GwardaApp</span><img src="${logo_url}"></button><style>#gw__overlay {z-index: 9999999;position: fixed;bottom: 10vh;right: 0; width: 115px;background: #353c40;  background: rgb(53, 60, 64, 0.8); font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",  "Helvetica Neue", sans-serif;border-top-left-radius: 14px;border-bottom-left-radius: 14px;cursor: pointer;font-size: 12px;}#gw__overlay-button {display: flex;align-items: center;justify-content: flex-end;flex-direction: row-reverse;height: 40px;transition: opacity 100ms ease;}#gw__overlay img,#gw__overlay span {pointer-events: none;user-select: none;}#gw__overlay span {margin-right: 5px;}#gw__overlay img {width: 34px;height: 34px;margin: 4px;}#gw__overlay-button:hover {opacity: 0.8;}#gw__overlay-button {color: #fff;background: none;border: none;padding: 0;cursor: pointer;} </style></div>`;
+            const ov_content = `<div><button id="gw__overlay-button"><span>GwardaApp</span><img src="${logo_url}"></button><style>#gw__overlay {z-index: 9999999;position: fixed;bottom: 10vh;right: 0; width: 115px;background: #353c40;  background: rgb(53, 60, 64, 0.8); font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",  "Helvetica Neue", sans-serif;border-top-left-radius: 14px;border-bottom-left-radius: 14px;cursor: pointer;font-size: 12px;}#gw__overlay-button {display: flex;align-items: center;justify-content: flex-end;flex-direction: row-reverse;height: 42px;transition: opacity 100ms ease;}#gw__overlay img,#gw__overlay span {pointer-events: none;user-select: none;}#gw__overlay span {margin-right: 5px;}#gw__overlay img {width: 34px;height: 34px;margin: 4px;}#gw__overlay-button:hover {opacity: 0.8;}#gw__overlay-button {color: #fff;background: none;border: none;padding: 0;cursor: pointer;} </style></div>`;
             const ov = document.createElement('div');
             ov.setAttribute('id', "gw__overlay");
             ov.innerHTML = ov_content;
@@ -172,10 +175,10 @@
             document.getElementById('gw__overlay-button')?.addEventListener('click', () =>
               browser_cr.runtime.sendMessage({ openPreferences: true }))
 
-            const port = browser_cr.runtime.connect({ name: 'content-script' });
-            document.getElementById('gw__overlay-button').addEventListener('click', () => {
-              port.postMessage({ openPreferences: true });
-            });
+            // const port = browser_cr.runtime.connect({ name: 'content-script' });
+            // document.getElementById('gw__overlay-button').addEventListener('click', () => {
+            //   port.postMessage({ openPreferences: true });
+            // });
           } else if (!state) {
             find?.forEach(e => e.remove());
           }
@@ -187,7 +190,8 @@
         const modules = [
           { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: ['div[data-component-type="s-search-result"] .a-section.a-spacing-base'], setDown: true },
           { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".a-box-group"], setDown: true },
-          { className: "lqs_abc71734-a087-49b8-bc49-86a3уbc280d7_ga", path: "/lqs/", state: state.lqs, parentSelector: "#productTitle" },
+          { className: "keywords_afdafe90-8192-4c1a-8da7-3b01a3342a21_ga", path: "/keywords/", state: !state.disabled, parentSelector: '[data-component-type="s-messaging-widget-results-header"]', setDown: true },
+          { className: "lqs_82c9e3ee-649b-4b3a-aa8d-01bb5d2e7e4a_ga", path: "/lqs/", state: state.lqs, parentSelector: "#productTitle" },
         ]
 
         modules.forEach(module => {
@@ -197,18 +201,43 @@
       });
     }
 
-    function handlegpStateChangeEvent() {
+    function initializeUpdate() {
       getCurrentState();
     }
 
     function contentLoaded() {
-      // getCurrentState();
       setTimeout(() =>
         setOrRemoveStylesOfItemLocal(`.appear_anim {animation: none !important;}`, true, "hideanim_l3_appear"), 800)
     }
 
-    getCurrentState();
-    browser_cr.storage.onChanged.addListener(handlegpStateChangeEvent);
+
+    function debounce(func, delay, globalTimeoutID) {
+      return function () {
+        const context = this;
+        const args = arguments;
+        // If there is an existing timeout, clear it
+        if (globalTimeoutID) {
+          clearTimeout(globalTimeoutID);
+        }
+        // Set a new timeout
+        globalTimeoutID = setTimeout(function () {
+          func.apply(context, args);
+        }, delay);
+      };
+    }
+
+    initializeUpdate();
+    // LISTENER: Listen for changes in local state with debounce
+    let prevstate;
+    browser_cr.storage.local.onChanged.addListener((changes) => {
+      let swop_prevstate = JSON.stringify({ ...changes.gpState.newValue }).replace(/\s/g, '');
+      if (changes.gpState.newValue && swop_prevstate !== prevstate) {
+        prevstate = swop_prevstate;
+        initializeUpdate();
+      }
+    });
+
+    browser_cr.storage.local.onChanged.addListener()
     document.addEventListener("DOMContentLoaded", contentLoaded, false);
   })();
 })(this);

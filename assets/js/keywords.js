@@ -5,6 +5,14 @@
     const form = document.getElementById("keywords__form");
     let debounceTimer, requestCounter = 0, isSubmitting = false, combinedResults = [];
 
+    (function initForm() {
+      const prefixInput = form.querySelector('[name="prefix"]');
+      const prefix = new URLSearchParams(window.location.search)?.get("k");
+
+      if (prefix)
+        prefixInput.value = prefix
+    })(this);
+
     function onSubmit(e) {
       e.preventDefault();
       if (isSubmitting)

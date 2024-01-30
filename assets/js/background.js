@@ -44,24 +44,27 @@ browser_cr.runtime.onMessage.addListener((request, sender, sendResponse) => {
       browser_cr.tabs.get(preferencesTabId, (tab) => {
         if (browser_cr.runtime.lastError || !tab) {
           preferencesTabId = null;
-          createNewTab();
+          createNewTab("/content/preferences.html");
         } else {
           browser_cr.tabs.update(preferencesTabId, { active: true }, () => {
             if (browser_cr.runtime.lastError) {
               preferencesTabId = null;
-              createNewTab();
+              createNewTab("/content/preferences.html");
             }
           });
         }
       });
     } else {
-      createNewTab();
+      createNewTab("/content/preferences.html");
     }
+  }
+  else if (request.openKeywords) {
+    createNewTab("/content/keywords.html?k=" + encodeURIComponent(request.openKeywords));
   }
 });
 
-function createNewTab() {
-  browser_cr.tabs.create({ url: "/content/preferences.html" }, (tab) => {
+function createNewTab(url) {
+  browser_cr.tabs.create({ url: url }, (tab) => {
     preferencesTabId = tab.id;
   });
 }
@@ -72,42 +75,6 @@ browser_cr.tabs.onRemoved.addListener((tabId, removeInfo) => {
     preferencesTabId = null;
   }
 });
-
-
-
-// TEST: CONTENT SCRIPT PART, to fix invalidated context
-const contentScriptPorts = {};
-
-browser_cr.runtime.onConnect.addListener((port) => {
-  if (port.name === 'content-script') {
-    contentScriptPorts[port.sender.tab.id] = port;
-
-    port.onDisconnect.addListener(() => {
-      delete contentScriptPorts[port.sender.tab.id];
-    });
-  }
-});
-
-function openPreferences(tabId) {
-  const preferencesTabId = contentScriptPorts[tabId];
-
-  if (preferencesTabId) {
-    browser_cr.tabs.update(preferencesTabId, { active: true });
-  } else {
-    browser_cr.tabs.create({ url: "/content/preferences.html" }, (tab) => {
-      contentScriptPorts[tabId] = tab.id;
-    });
-  }
-}
-
-browser_cr.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.openPreferences) {
-    openPreferences(sender.tab.id);
-  }
-});
-
-
-
 
 
 

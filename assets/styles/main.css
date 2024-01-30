@@ -36,6 +36,11 @@ body {
 }
 
 
+[data-component-type="s-messaging-widget-results-header"] {
+  display: flex !important;
+  align-items: center !important;
+}
+
 
 /* ----------------------- checkbox styles ----------------------- */
 .ch_hp,
@@ -456,3 +461,51 @@ body {
 }
 
 /* STOCK STATUS END */
+
+/* KEYWORDS BTN */
+
+[data-component-type="s-messaging-widget-results-header"] {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+[data-component-type="s-messaging-widget-results-header"] .a-size-base.a-color-secondary.a-text-normal {
+  position: absolute;
+  margin-top: 5px;
+}
+
+.keywordsgws__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 0 0.8rem;
+  padding: 3px 4px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 100;
+  font-size: 0.74rem;
+  font-weight: 500;
+  position: relative;
+  border: var(--sec-border);
+  border-radius: 5px;
+  color: #232425;
+  background-color: #fff;
+}
+
+.keywordsgws__btn:hover {
+  opacity: 0.7;
+}
+
+.keywordsgws__logo {
+  width: 1.8em;
+  height: 1.8em;
+  margin: 0 0.4em 0 0;
+}
+
+.keywordsgws__btn span {
+  margin-right: 0.4em;
+}
+
+/* KEYWORDS BTN END */

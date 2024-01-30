@@ -23,6 +23,7 @@
         "/assets/js/content.js",
         "/assets/models/quick_view/index.js",
         "/assets/models/stock_status/index.js",
+        "/assets/models/keywords/index.js",
         "/assets/models/lqs/index.js"
       ],
       "css": [

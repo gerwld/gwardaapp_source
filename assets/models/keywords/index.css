@@ -1,0 +1,37 @@
+[data-component-type="s-messaging-widget-results-header"] {
+  display: flex;
+  align-items: center;
+}
+
+.keywordsgws__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 3px 4px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 100;
+  font-size: 0.74rem;
+  font-weight: 500;
+  position: relative;
+  border: var(--sec-border);
+  border-radius: 5px;
+  color: #232425;
+  background-color: #fff;
+}
+
+.keywordsgws__btn:hover {
+  opacity: 0.7;
+}
+
+.keywordsgws__logo {
+  width: 1.8em;
+  height: 1.8em;
+  margin: 0 0.4em 0 0;
+}
+
+.keywordsgws__btn span {
+  margin-right: 0.4em;
+}
