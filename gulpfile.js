@@ -1,5 +1,6 @@
 import gulp from 'gulp';
 import svgmin from 'gulp-svgmin';
+import filter from 'gulp-filter';
 import autoprefix from 'gulp-autoprefixer';
 import cleanCSS from 'gulp-clean-css';
 import gulpFlatten from 'gulp-flatten';
@@ -11,7 +12,7 @@ import replace from "gulp-replace";
 import shell from 'gulp-shell';
 import webExt from 'web-ext';
 
-let { src, dest, task, series } = gulp;
+let { src, dest, task, series, watch } = gulp;
 const COPYRIGHT = `//   - This file is part of GwardaApp Extension
 //  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
 //   - Copyright (C) 2023-present GwardaApp Extension
@@ -35,23 +36,23 @@ task('minifyImg', async function () {
     src(['./src/assets/img/*.svg', './src/assets/img/**/*.svg'])
         .pipe(svgmin())
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./build/chromium/assets/img/'))
-        .pipe(dest('./build/firefox/assets/img/'))
+        .pipe(dest('./dist/chromium/assets/img/'))
+        .pipe(dest('./dist/firefox/assets/img/'))
 
     src(['./src/assets/img/*.png', './src/assets/img/**/*.png'])
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./build/chromium/assets/img/'))
-        .pipe(dest('./build/firefox/assets/img/'))
+        .pipe(dest('./dist/chromium/assets/img/'))
+        .pipe(dest('./dist/firefox/assets/img/'))
 
-    src(['./src/assets/icons/*.png', './src/assets/icons/**/*.png'])
+    src(['./src/assets/img/icons/*.png', './src/assets/img/icons/**/*.png'])
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./build/chromium/assets/icons/'))
-        .pipe(dest('./build/firefox/assets/icons/'))
+        .pipe(dest('./dist/chromium/assets/img/icons/'))
+        .pipe(dest('./dist/firefox/assets/img/icons/'))
 
     src(['./src/assets/img/**/*.md'])
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./build/chromium/assets/img/'))
-        .pipe(dest('./build/firefox/assets/img/'))
+        .pipe(dest('./dist/chromium/assets/img/'))
+        .pipe(dest('./dist/firefox/assets/img/'))
 });
 
 //## Minify CSS  ##//
@@ -61,7 +62,7 @@ task('minifyCSS', async function () {
         .pipe(autoprefix('last 2 versions'))
         .pipe(insert.prepend(`/*\n${COPYRIGHT}*/\n\n`))
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./build/firefox/assets/styles/'))
+        .pipe(dest('./dist/firefox/assets/styles/'))
 
     src(['./src/assets/styles/*.css', './src/assets/styles/**/*.css', './src/assets/styles/**/**/*.css'])
         .pipe(replace('moz-extension://', 'chromium-extension://'))
@@ -69,7 +70,7 @@ task('minifyCSS', async function () {
         .pipe(autoprefix('last 2 versions'))
         .pipe(insert.prepend(`/*\n${COPYRIGHT}*/\n\n`))
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./build/chromium/assets/styles/'))
+        .pipe(dest('./dist/chromium/assets/styles/'))
 });
 
 //## Minify JS ##//
@@ -78,11 +79,15 @@ task('minifyJS', async function () {
         .pipe(uglify())
         .pipe(insert.prepend(COPYRIGHT))
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./build/chromium/assets/js/'))
-        .pipe(dest('./build/firefox/assets/js/'))
+        .pipe(
+            filter(['**', '!**/content.js', '!**/__*.js'])
+        )
+        .pipe(dest('./dist/chromium/assets/js/'))
+        .pipe(dest('./dist/firefox/assets/js/'))
+
 });
 
-task('babel_rollup_part', async function () {
+task('babelRollup', async function () {
     src('.')
         .pipe(shell(['npx rollup -c rollup.config.js']));
 });
@@ -93,67 +98,64 @@ task('minifyHTML', async function () {
         .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(insert.prepend(`<!--\n${COPYRIGHT}-->\n\n`))
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(dest('./build/chromium/content/'))
-        .pipe(dest('./build/firefox/content/'))
+        .pipe(dest('./dist/chromium/content/'))
+        .pipe(dest('./dist/firefox/content/'))
 });
 
 
 //## Add other files  ##//
 task('addOther', async function () {
     src(['./LICENSE.md', './package.json', './README.md', './SECURITY.md', './CONTRIBUTING.md'])
-        .pipe(dest('./build/chromium'))
-        .pipe(dest('./build/firefox'))
+        .pipe(dest('./dist/chromium'))
+        .pipe(dest('./dist/firefox'))
 
-    src('./src/manifest-chromium.json').pipe(rename("manifest.json")).pipe(dest('./build/chromium'));
-    src('./src/manifest-firefox.json').pipe(rename("manifest.json")).pipe(dest('./build/firefox'));
+    src('./src/manifest-chromium.json').pipe(rename("manifest.json")).pipe(dest('./dist/chromium'));
+    src('./src/manifest-firefox.json').pipe(rename("manifest.json")).pipe(dest('./dist/firefox'));
 
     src(['./src/_locales/**/*'])
-        .pipe(dest('./build/chromium/_locales'))
-        .pipe(dest('./build/firefox/_locales'))
+        .pipe(dest('./dist/chromium/_locales'))
+        .pipe(dest('./dist/firefox/_locales'))
 });
 
-//## SOURCE CODE ##//
+//## For source code .zip ##//
 task('source', async function () {
-    src(['./LICENSE.md', './package.json', './README.md', './SECURITY.md', './CONTRIBUTING.md', "./HOW_TO_FOR_FIREFOX_MODERATORS.txt"])
-        .pipe(dest('./build/source_code'));
-    src('./src/manifest-chromium.json').pipe(dest('./build/source_code'));
-    src('./src/manifest-firefox.json').pipe(dest('./build/source_code'));
-    src(['./src/_locales/**/*'])
-        .pipe(dest('./build/source_code/_locales'))
-    src(['./src/assets/**/*'])
-        .pipe(dest('./build/source_code/assets'))
-    src(['./src/content/*.html'])
-        .pipe(dest('./build/source_code/content/'))
+    const excludedDirs = ['dist', 'node_modules', 'previews', '.git'];
+    const excludedFiles = ['**', '!**/__*.js', '!**/*.zip', '.git', '.gitignore', '.DS_Store'];
 
-});
-
-//## Chrome extension reloader ##//
-task('reloadChrome', function () {
-    return src('build/chromium')
-    // .pipe(reloader());
-});
-
-//## Watch for changes and reload Chrome ##//
-task('watchChrome', function () {
-    watch('src/**/*', series('reloadChrome'));
+    src("./**/*")
+        .pipe(filter(['**', ...excludedFiles]))
+        .pipe(filter(['**', ...excludedDirs.map(e => [`!./${e}/**/*`, `!./${e}/`]).flat(2)]))
+        .pipe(dest('./dist/__source_code/'))
 });
 
 //## Firefox extension development task ##//
 task('developFirefox', function () {
     return webExt.cmd.run({
-        sourceDir: 'build/firefox',
+        sourceDir: 'dist/firefox',
         overwriteDest: true,
     });
 });
 
-//## Watch for changes and reload Firefox ##//
-task('watchFirefox', function () {
-    watch('src/**/*', series('developFirefox'));
+
+
+//## Firefox extension development task ##//
+task('test', function () {
+    return webExt.cmd.run({
+        sourceDir: 'dist/firefox',
+        overwriteDest: true,
+    });
 });
 
+task()
+
 //## Main build task (both Chrome and Firefox) ##//
-task('build', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babel_rollup_part', 'source'));
+task('build', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babelRollup'));
+task('build_md', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babelRollup', 'source'));
 
 //## Main development task (both Chrome and Firefox) ##//
-task('dev', series('minifyImg', 'minifyCSS', 'minifyJS', 'minifyHTML', 'addOther', 'babel_rollup_part', 'reloadChrome', 'developFirefox', 'watchChrome', 'watchFirefox'));
+task('dev', () => {
+    watch('./src/assets/js/**/*.js', series('minifyJS', 'babelRollup'))
+});
+
+
 export default series('build');

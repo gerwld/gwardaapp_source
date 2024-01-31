@@ -1,4 +1,4 @@
-1. pnpm i && rm -rf ./public && gulp build
-2. In public/firefox is build
+1. pnpm i && rm -rf ./dist && gulp -f gulpfile.js build
+2. In ./dist/firefox is build
 
-Thats it. Also you need gulp & rollup.js for build it, and it may work with npm if you don't use pnpm. Thanks!
+Thats it. Also you need gulp & rollup.js to build it, and it may work with npm if you don't use pnpm. Thanks!

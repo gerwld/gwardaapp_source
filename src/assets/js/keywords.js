@@ -2,6 +2,7 @@
   "use strict";
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("keywords__form");
+
     const amazon_d = {
       "CA": {
         "id": "A2EUQ1WTGCTBG2",
