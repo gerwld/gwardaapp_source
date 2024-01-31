@@ -2,6 +2,8 @@ import rateExtension from "./modules/rate_popup";
 
 
 let interval0;
+let interval2 = 5;
+console.log(interval2);
 const browser_cr = chrome ? chrome : browser;
 
 async function setOrRemoveContentItem(assetDir, state, item_class, parentSelector, setDown) {

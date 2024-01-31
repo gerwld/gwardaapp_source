@@ -37,7 +37,7 @@ export default [
         babelHelpers: 'bundled',
         exclude: 'node_modules/**', // Exclude node_modules from Babel
       }),
-      // terser(), // Minify JavaScript
+      terser(), // Minify JavaScript
       prependBannerPlugin({ banner: COPYRIGHT })
     ],
   }

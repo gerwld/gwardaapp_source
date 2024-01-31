@@ -1,5 +1,6 @@
 import gulp from 'gulp';
 import svgmin from 'gulp-svgmin';
+import zip from 'gulp-zip';
 import filter from 'gulp-filter';
 import autoprefix from 'gulp-autoprefixer';
 import cleanCSS from 'gulp-clean-css';
@@ -11,8 +12,12 @@ import rename from "gulp-rename";
 import replace from "gulp-replace";
 import shell from 'gulp-shell';
 import webExt from 'web-ext';
+import chalk from 'chalk';
 
-let { src, dest, task, series, watch } = gulp;
+let { src, dest, task, series, watch, on } = gulp;
+const link = chalk.hex('#5e98d9');
+const EXTENSION_NAME = 'gwardaapp'
+const EXTENSION_V = 'v.1.0.0'
 const COPYRIGHT = `//   - This file is part of GwardaApp Extension
 //  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
 //   - Copyright (C) 2023-present GwardaApp Extension
@@ -87,9 +92,9 @@ task('minifyJS', async function () {
 
 });
 
-task('babelRollup', async function () {
+task('babelRollup', async function (done) {
     src('.')
-        .pipe(shell(['npx rollup -c rollup.config.js']));
+        .pipe(shell(['npx rollup -c rollup.config.js']))
 });
 
 //## Minify HTML ##//
@@ -118,7 +123,7 @@ task('addOther', async function () {
 });
 
 //## For source code .zip ##//
-task('source', async function () {
+task('source', async function (done) {
     const excludedDirs = ['dist', 'node_modules', 'previews', '.git'];
     const excludedFiles = ['**', '!**/__*.js', '!**/*.zip', '.git', '.gitignore', '.DS_Store'];
 
@@ -126,35 +131,61 @@ task('source', async function () {
         .pipe(filter(['**', ...excludedFiles]))
         .pipe(filter(['**', ...excludedDirs.map(e => [`!./${e}/**/*`, `!./${e}/`]).flat(2)]))
         .pipe(dest('./dist/__source_code/'))
+
+    src("./**/*")
+        .pipe(filter(['**', ...excludedFiles]))
+        .pipe(filter(['**', ...excludedDirs.map(e => [`!./${e}/**/*`, `!./${e}/`]).flat(2)]))
+        .pipe(zip(`${EXTENSION_NAME}_${EXTENSION_V}_source_code.zip`))
+        .pipe(gulp.dest('./dist/'))
+        .on('end', function () {
+            console.log("Source finished, dest: " + link(`./dist/${EXTENSION_NAME}_${EXTENSION_V}_source_code.zip`));
+            done();
+        })
 });
 
-//## Firefox extension development task ##//
-task('developFirefox', function () {
+
+
+task('zipper', async function (done) {
+    setTimeout(function () {
+        const fn_base = `${EXTENSION_NAME}_${EXTENSION_V}`
+        console.log(chalk.green("Zipper started."));
+        src("./dist/firefox/**/*")
+            .pipe(zip(`${fn_base}_firefox.zip`))
+            .pipe(gulp.dest('./dist/'))
+            .on('end', function () {
+                console.log("Zipper finished, dest: " + link(`./dist/${fn_base}_firefox.zip`));
+                done();
+            });
+        src("./dist/chromium/**/*")
+            .pipe(zip(`${fn_base}_chromium.zip`))
+            .pipe(gulp.dest('./dist/'))
+            .on('end', function () {
+                console.log("Zipper finished, dest: " + link(`./dist/${fn_base}_chromium.zip`));
+                done();
+            });
+    }, 10000);
+});
+
+
+
+//## Browser update ##//
+task('updBrowsers', function () {
     return webExt.cmd.run({
         sourceDir: 'dist/firefox',
         overwriteDest: true,
     });
 });
-
-
-
-//## Firefox extension development task ##//
-task('test', function () {
-    return webExt.cmd.run({
-        sourceDir: 'dist/firefox',
-        overwriteDest: true,
-    });
-});
-
-task()
 
 //## Main build task (both Chrome and Firefox) ##//
 task('build', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babelRollup'));
-task('build_md', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babelRollup', 'source'));
+task('build_md', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babelRollup', 'source', 'zipper'));
 
 //## Main development task (both Chrome and Firefox) ##//
 task('dev', () => {
     watch('./src/assets/js/**/*.js', series('minifyJS', 'babelRollup'))
+    watch('./src/content/**/*.html', series('minifyHTML'))
+    watch('./src/assets/img/**/*', series('minifyImg'))
+    watch('./src/**/*', series('updBrowsers'))
 });
 
 
