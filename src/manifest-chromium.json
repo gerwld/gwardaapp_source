@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "1.0.0",
+  "version": "0.9.5",
   "default_locale": "en",
   "icons": {
     "128": "/assets/img/icons/icon128.png"
@@ -21,8 +21,7 @@
         "*://*.google.com/*"
       ],
       "js": [
-        "/assets/js/content.js",
-        "/assets/models/epqw/index.js"
+        "/assets/js/content.js"
       ],
       "run_at": "document_start"
     }

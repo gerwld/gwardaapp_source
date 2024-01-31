@@ -1,3 +1,20 @@
+//   - This file is part of GwardaApp Extension
+//  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
+//   - Copyright (C) 2023-present GwardaApp Extension
+//   -
+//   - GwardaApp Extension is a software: you can redistribute it, but you are not allowed to modify it under the terms of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License.
+//   -
+//   - GwardaApp Extension is distributed in the hope that it will be useful,
+//   - but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   - Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License for more details.
+//   -
+//   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
+//   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
+
+// Note: Amazon is a registered trademark of Amazon AB. This extension is not affiliated with or endorsed by Amazon AB.
+
+
 import gulp from 'gulp';
 import svgmin from 'gulp-svgmin';
 import zip from 'gulp-zip';
@@ -11,13 +28,12 @@ import htmlmin from "gulp-htmlmin";
 import rename from "gulp-rename";
 import replace from "gulp-replace";
 import shell from 'gulp-shell';
-import webExt from 'web-ext';
 import chalk from 'chalk';
 
 let { src, dest, task, series, watch, on } = gulp;
 const link = chalk.hex('#5e98d9');
 const EXTENSION_NAME = 'gwardaapp'
-const EXTENSION_V = 'v.1.0.0'
+const EXTENSION_V = 'v.0.9.5'
 const COPYRIGHT = `//   - This file is part of GwardaApp Extension
 //  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
 //   - Copyright (C) 2023-present GwardaApp Extension
@@ -80,7 +96,7 @@ task('minifyCSS', async function () {
 
 //## Minify JS ##//
 task('minifyJS', async function () {
-    src(['./src/assets/js/*.js'])
+    src(['./src/assets/js/**/*.js'])
         .pipe(uglify())
         .pipe(insert.prepend(COPYRIGHT))
         .pipe(gulpFlatten({ includeParents: 4 }))
@@ -163,17 +179,13 @@ task('zipper', async function (done) {
                 console.log("Zipper finished, dest: " + link(`./dist/${fn_base}_chromium.zip`));
                 done();
             });
-    }, 10000);
+    }, 6000);
 });
 
-
-
-//## Browser update ##//
-task('updBrowsers', function () {
-    return webExt.cmd.run({
-        sourceDir: 'dist/firefox',
-        overwriteDest: true,
-    });
+//## Firefox ##//
+gulp.task('webext', function () {
+    src('.')
+        .pipe(shell(['cd ./dist/firefox && web-ext run']))
 });
 
 //## Main build task (both Chrome and Firefox) ##//
@@ -181,12 +193,15 @@ task('build', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOth
 task('build_md', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babelRollup', 'source', 'zipper'));
 
 //## Main development task (both Chrome and Firefox) ##//
-task('dev', () => {
+task('dev_watch', () => {
+    series("build")
     watch('./src/assets/js/**/*.js', series('minifyJS', 'babelRollup'))
     watch('./src/content/**/*.html', series('minifyHTML'))
     watch('./src/assets/img/**/*', series('minifyImg'))
-    watch('./src/**/*', series('updBrowsers'))
+    watch(['./src/*.json', './src/*.md'], series('addOther'))
 });
 
+task('dev', series('build', 'dev_watch'));
 
-export default series('build');
+
+export default series('dev');
