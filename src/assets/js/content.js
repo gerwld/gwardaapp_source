@@ -16,7 +16,6 @@
   "use strict";
   (() => {
     let interval0;
-    let secLoad;
     const browser_cr = chrome ? chrome : browser;
 
     async function setOrRemoveContentItem(assetDir, state, item_class, parentSelector, setDown) {
@@ -46,6 +45,7 @@
             console.error("gwardaApp: Error fetching or injecting content:", error)
           );
       }
+
 
 
       let content;
@@ -122,20 +122,11 @@
         }
       }
 
-      function onInitLoad() {
-        setTimeout(checkParentAndProceed, 5000)
-      }
-
       // Entry point
       // - at the beginning
       checkParentAndProceed()
       // - observer (sometimes buggy but more efficient timeout)
       observeClassChanges(parentSelector, checkParentAndProceed)
-      // - fallback for observer, if it fail to find dynamicly added new items
-      // if (!secLoad)
-      // document.addEventListener("DOMContentLoaded", onInitLoad, false);
-      // - on DOMContentLoaded to reduce inj. time
-      // document.addEventListener("DOMContentLoaded", checkParentAndProceed, false);
     }
 
 
