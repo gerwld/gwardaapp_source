@@ -93,3 +93,6 @@ Thumbs.db
 
 # Build dir
 public/
+
+# zip files
+*.zip
