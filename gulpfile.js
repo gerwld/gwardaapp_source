@@ -96,13 +96,13 @@ task('minifyCSS', async function () {
 
 //## Minify JS ##//
 task('minifyJS', async function () {
-    src(['./src/assets/js/**/*.js'])
+    src(['./src/assets/js/*.js', './src/assets/js/pages/*.js'])
+        .pipe(
+            filter(['**', '!**/content.js', '!**/rate_popup.js', '!**/__*.js'])
+        )
         .pipe(uglify())
         .pipe(insert.prepend(COPYRIGHT))
         .pipe(gulpFlatten({ includeParents: 4 }))
-        .pipe(
-            filter(['**', '!**/content.js', '!**/__*.js'])
-        )
         .pipe(dest('./dist/chromium/assets/js/'))
         .pipe(dest('./dist/firefox/assets/js/'))
 

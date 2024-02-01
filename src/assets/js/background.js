@@ -36,47 +36,4 @@ browser_cr.runtime.onInstalled.addListener(function () {
 });
 
 
-// // Navigate to settings message listener
-// let preferencesTabId = null;
-// browser_cr.runtime.onMessage.addListener((request, sender, sendResponse) => {
-//   if (request.openPreferences) {
-//     if (preferencesTabId) {
-//       browser_cr.tabs.get(preferencesTabId, (tab) => {
-//         if (browser_cr.runtime.lastError || !tab) {
-//           preferencesTabId = null;
-//           createNewTab("/content/preferences.html");
-//         } else {
-//           browser_cr.tabs.update(preferencesTabId, { active: true }, () => {
-//             if (browser_cr.runtime.lastError) {
-//               preferencesTabId = null;
-//               createNewTab("/content/preferences.html");
-//             }
-//           });
-//         }
-//       });
-//     } else {
-//       createNewTab("/content/preferences.html");
-//     }
-//   }
-//   else if (request.openKeywords) {
-//     createNewTab("/content/keywords.html?k=" + encodeURIComponent(request.openKeywords.k) + "&mp=" + encodeURIComponent(request.openKeywords.mp));
-//   }
-// });
-
-// function createNewTab(url) {
-//   browser_cr.tabs.create({ url: url }, (tab) => {
-//     preferencesTabId = tab.id;
-//   });
-// }
-
-// // If was closed set to null
-// browser_cr.tabs.onRemoved.addListener((tabId, removeInfo) => {
-//   if (tabId === preferencesTabId) {
-//     preferencesTabId = null;
-//   }
-// });
-
-
-
-
 // browser_cr.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLScGXGlaC1KUSji5XzrVtB7PpRdoBbmRhoEVig1BPPrUY2ShKg/viewform?usp=sf_link");

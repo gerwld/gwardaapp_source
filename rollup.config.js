@@ -30,14 +30,12 @@ export default [
         file: 'dist/firefox/assets/js/content.js',
         format: 'iife',
       },
+
     ],
+
     plugins: [
       nodeResolve(), // Resolve external dependencies
-      babel({
-        babelHelpers: 'bundled',
-        exclude: 'node_modules/**', // Exclude node_modules from Babel
-      }),
-      terser(), // Minify JavaScript
+      // terser(), // Minify JavaScript
       prependBannerPlugin({ banner: COPYRIGHT })
     ],
   }

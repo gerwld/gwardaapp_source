@@ -9,45 +9,39 @@
   },
   "action": {
     "default_popup": "/content/popup.html",
-    "default_icon": {
-      "128": "/assets/img/icons/icon128.png"
-    }
+    "default_icon": "/assets/img/icons/icon128.png"
   },
-  "options_page": "/content/preferences.html",
   "content_scripts": [
     {
       "matches": [
-        "*://google.com/*",
-        "*://*.google.com/*"
+        "*://amazon.com/*",
+        "*://*.amazon.com/*"
       ],
       "js": [
         "/assets/js/content.js"
+      ],
+      "css": [
+        "/assets/styles/main.css"
       ],
       "run_at": "document_start"
     }
   ],
   "background": {
-    "service_worker": "/assets/js/background.js",
-    "type": "module"
+    "service_worker": "/assets/js/background.js"
   },
   "permissions": [
     "management",
-    "storage",
-    "tabs",
-    "activeTab",
-    "cookies",
-    "contextMenus",
-    "declarativeNetRequest",
-    "identity"
+    "storage"
   ],
-  "key": "lofndaolgaccbclbfgfdeipeehhojghi",
   "web_accessible_resources": [
     {
+      "resources": [
+        "/assets/*",
+        "/content/*.html",
+        "/assets/js/content.js"
+      ],
       "matches": [
         "<all_urls>"
-      ],
-      "resources": [
-        "/assets/*"
       ]
     }
   ]

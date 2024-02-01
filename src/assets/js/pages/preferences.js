@@ -12,6 +12,8 @@
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
+
+
 // Preferences Part
 (() => {
   "use strict";
