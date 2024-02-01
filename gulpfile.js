@@ -197,6 +197,7 @@ task('dev_watch', () => {
     series("build")
     watch('./src/assets/js/**/*.js', series('minifyJS', 'babelRollup'))
     watch('./src/content/**/*.html', series('minifyHTML'))
+    watch('./src/assets/**/*.css', series('minifyCSS'))
     watch('./src/assets/img/**/*', series('minifyImg'))
     watch(['./src/*.json', './src/*.md'], series('addOther'))
 });

@@ -1,10 +1,46 @@
 import moduleKeywords from "./modules/moduleKeywords";
 import moduleOverlay from "./modules/moduleOverlay";
 import moduleRate from "./modules/moduleRate";
-import injectorHTML from "./tools/injectorHTML";
 
 let interval0;
 const browser_cr = chrome ? chrome : browser;
+
+function setOrRemoveStylesOfItemLocal(css, item, item_class) {
+  let current = document.getElementById(item_class);
+  let style = document.createElement("style");
+  style.textContent = css;
+  style.setAttribute("id", item_class);
+  if (item && !current) document.head.appendChild(style);
+  else if (!item && current instanceof Node) document.head.removeChild(current);
+}
+
+function getCurrentState() {
+  browser_cr.storage.local.get("gpState", (result) => {
+    const state = result.gpState.disabled ? { disabled: true } : result.gpState;
+
+    // ------------------ SETTERS PART ------------------//
+    moduleOverlay(!state.disabled)
+    moduleRate(!state.disabled)
+    moduleKeywords(!state.disabled)
+
+  });
+}
+
+function initializeUpdate() {
+  getCurrentState();
+}
+initializeUpdate();
+// LISTENER: Listen for changes in local state with debounce
+let prevstate;
+browser_cr.storage.local.onChanged.addListener((changes) => {
+  let swop_prevstate = JSON.stringify({ ...changes.gpState.newValue }).replace(/\s/g, '');
+  if (changes.gpState.newValue && swop_prevstate !== prevstate) {
+    console.warn("gwardaApp: ls change");
+    prevstate = swop_prevstate;
+    initializeUpdate();
+  }
+});
+
 
 // async function setOrRemoveContentItem(assetDir, state, item_class, parentSelector, setDown) {
 
@@ -117,14 +153,7 @@ const browser_cr = chrome ? chrome : browser;
 // }
 
 
-function setOrRemoveStylesOfItemLocal(css, item, item_class) {
-  let current = document.getElementById(item_class);
-  let style = document.createElement("style");
-  style.textContent = css;
-  style.setAttribute("id", item_class);
-  if (item && !current) document.head.appendChild(style);
-  else if (!item && current instanceof Node) document.head.removeChild(current);
-}
+
 
 // function observeClassChanges(parentSelector, callback) {
 //   document.addEventListener("DOMContentLoaded", () => {
@@ -154,32 +183,19 @@ function setOrRemoveStylesOfItemLocal(css, item, item_class) {
 //   }, false);
 // }
 
-function getCurrentState() {
-  browser_cr.storage.local.get("gpState", (result) => {
-    const state = result.gpState.disabled ? { disabled: true } : result.gpState;
 
-    // ------------------ SETTERS PART ------------------//
-    // moduleAppendOverlay(!state.disabled)
+// const modules = [
+//   { className: "lqs_82c9e3ee-649b-4b3a-aa8d-01bb5d2e7e4a_ga", path: "/lqs/", state: state.lqs, parentSelector: "#productTitle" },
+//   { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: ['div[data-component-type="s-search-result"] .a-section.a-spacing-base'], setDown: true },
+//   { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".a-box-group"], setDown: true },
+//   { className: "keywords_afdafe90-8192-4c1a-8da7-3b01a3342a21_ga", path: "/keywords/", state: !state.disabled, parentSelector: '[data-component-type="s-messaging-widget-results-header"]', setDown: true },
+// ]
+
+// modules.forEach(module => {
+//   setOrRemoveContentItem('/assets/models/' + module.path, module.state, module.className, module.parentSelector, module.setDown)
+// })
 
 
-    moduleOverlay(!state.disabled)
-    moduleRate(!state.disabled)
-    moduleKeywords(!state.disabled)
-
-
-    // const modules = [
-    //   { className: "lqs_82c9e3ee-649b-4b3a-aa8d-01bb5d2e7e4a_ga", path: "/lqs/", state: state.lqs, parentSelector: "#productTitle" },
-    //   { className: "eppw_3a554ac1-e810-4e95-93b4-b27d3ad02d49_ga", path: "/quick_view/", state: state.quick_view, parentSelector: ['div[data-component-type="s-search-result"] .a-section.a-spacing-base'], setDown: true },
-    //   { className: "stock_status_abc71734-a087-49b8-bc19-86a3cbc280d7_ga", path: "/stock_status/", state: state.stock_status, parentSelector: [".a-box-group"], setDown: true },
-    //   { className: "keywords_afdafe90-8192-4c1a-8da7-3b01a3342a21_ga", path: "/keywords/", state: !state.disabled, parentSelector: '[data-component-type="s-messaging-widget-results-header"]', setDown: true },
-    // ]
-
-    // modules.forEach(module => {
-    //   setOrRemoveContentItem('/assets/models/' + module.path, module.state, module.className, module.parentSelector, module.setDown)
-    // })
-
-  });
-}
 
 
 //<><><><><><><><><><><><><><>
@@ -212,26 +228,12 @@ function getCurrentState() {
 //      ALL MODULES END
 //<><><><><><><><><><><><><><>
 
-function initializeUpdate() {
-  getCurrentState();
-}
-
-function contentLoaded() {
-  setTimeout(() =>
-    setOrRemoveStylesOfItemLocal(`.appear_anim {animation: none !important;}`, true, "hideanim_l3_appear"), 800)
-}
-
-initializeUpdate();
-// LISTENER: Listen for changes in local state with debounce
-let prevstate;
-browser_cr.storage.local.onChanged.addListener((changes) => {
-  let swop_prevstate = JSON.stringify({ ...changes.gpState.newValue }).replace(/\s/g, '');
-  if (changes.gpState.newValue && swop_prevstate !== prevstate) {
-    console.warn("gwardaApp: ls change");
-    prevstate = swop_prevstate;
-    initializeUpdate();
-  }
-});
 
 
-document.addEventListener("DOMContentLoaded", contentLoaded, false);
+// function contentLoaded() {
+
+// }
+
+
+
+// document.addEventListener("DOMContentLoaded", contentLoaded, false);

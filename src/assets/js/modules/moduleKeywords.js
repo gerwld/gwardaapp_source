@@ -5,9 +5,10 @@ import navigateOrSwitch from "../tools/navigateOrSwitch";
 // Generate keywords button
 export default function moduleKeywords(state) {
   const item = document.createElement('div');
-  const item_class = 'kwbtn_4ee3ec19-45e2-40a6-bc69-4760bf491928__gw';
+  const item_class = 'kwbtn_4ee3ec19-45e2-40a6-bc69-4760bf491928__gw',
+    exist = document.querySelectorAll("." + item_class)?.length
 
-  if (state) {
+  if (state && !exist) {
     const urlParam = new URLSearchParams(window.location.search).get('k'),
       domain = window.location.hostname.replace(/^www\./, ''),
       logo = getLogo();
@@ -23,6 +24,6 @@ export default function moduleKeywords(state) {
 
 
   // Injection part
-  injectorHTML(state, item, item_class, '[data-component-type="s-messaging-widget-results-header"]', true);
+  injectorHTML(state, item, item_class, ['[data-component-type="s-messaging-widget-results-header"]'], true);
 }
 
