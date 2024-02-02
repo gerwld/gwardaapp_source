@@ -195,7 +195,7 @@ task('build_md', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "add
 //## Main development task (both Chrome and Firefox) ##//
 task('dev_watch', () => {
     series("build")
-    watch('./src/assets/js/**/*.js', series('minifyJS', 'babelRollup'))
+    watch('./src/assets/**/*.js', series('minifyJS', 'babelRollup'))
     watch('./src/content/**/*.html', series('minifyHTML'))
     watch('./src/assets/**/*.css', series('minifyCSS'))
     watch('./src/assets/img/**/*', series('minifyImg'))
