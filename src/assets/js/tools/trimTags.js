@@ -3,4 +3,5 @@ export default function trimTags(innerHTML) {
     innerHTML = innerHTML + '';
     return innerHTML.replace(/<[^>]*>/g, '').trim()
   }
+  return null
 }

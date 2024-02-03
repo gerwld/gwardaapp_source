@@ -10,43 +10,47 @@ import trimTags from "../tools/trimTags";
 
 // Generate keywords button
 export default function moduleLQS(state) {
-  const item_class = 'lfmz_d6b368ee-947a-47a4-b8fc-c791acca1843__gw'
-  const find = ["#productTitle", "#feature-bullets ul", "#productDescription", "#acrCustomerReviewText", "#averageCustomerReviews", "#acrPopover .a-declarative", "#altImages>ul", "#imgTagWrapperId img"]
-  let store = {};
+  const is_location = window.location.pathname && window.location.pathname !== "/";
+  if (is_location) {
+    const item_class = 'lfmz_d6b368ee-947a-47a4-b8fc-c791acca1843__gw'
+    const find = ["#productTitle", "#feature-bullets ul", "#productDescription", "#acrCustomerReviewText", "#averageCustomerReviews", "#acrPopover .a-declarative", "#altImages>ul", "#imgTagWrapperId img", "#aplus"]
+    let store = {};
 
-  append(store)
+    append(store)
 
-  lazyFindElements(find)
-    .then(result => {
-      const main_img = result["#altImages>ul"].querySelectorAll("li.imageThumbnail img")[0] ?? null
-      const hires_img = result["#imgTagWrapperId img"].getAttribute("data-old-hires");
-      getMainImageBgColor(main_img).then(bg_color => {
-        getImageDimensionsFromURL(hires_img).then(main_dimensions => {
-          const f = {
-            title: result["#productTitle"].innerHTML.trim().length ?? null,
-            bullets: result["#feature-bullets ul"].querySelectorAll("li").length ?? null,
-            description: trimTags(result["#productDescription"].innerHTML).length ?? null,
-            ratings_total: result["#acrCustomerReviewText"] ? result["#acrCustomerReviewText"].innerHTML.split(" ")[0] / 1 : NaN,
-            rating_avg: trimTags(result["#acrPopover .a-declarative"].innerHTML).split(" ")[0] / 1 ?? NaN,
-            images_total: result["#altImages>ul"].querySelectorAll("li.imageThumbnail").length ?? NaN,
-            brand_content: result["#productDescription"]?.querySelector("img") ? result["#productDescription"].querySelector("img").length : 0,
-            main_dimensions: main_dimensions ?? NaN,
-            main_bg: bg_color
-          }
+    lazyFindElements(find)
+      .then(result => {
+        console.log((result["#productDescription"]?.querySelectorAll("img").length || 0) + (result["#aplus"]?.querySelectorAll("img").length || 0));
+        const main_img = result["#altImages>ul"].querySelectorAll("li.imageThumbnail img")[0] ?? null
+        const hires_img = result["#imgTagWrapperId img"].getAttribute("data-old-hires");
+        getMainImageBgColor(main_img).then(bg_color => {
+          getImageDimensionsFromURL(hires_img).then(main_dimensions => {
+            const f = {
+              title: result["#productTitle"]?.innerHTML.trim().length || null,
+              bullets: result["#feature-bullets ul"]?.querySelectorAll("li").length || null,
+              description: trimTags(result["#productDescription"]?.innerHTML)?.length || null,
+              ratings_total: result["#acrCustomerReviewText"] ? parseFloat(result["#acrCustomerReviewText"].innerHTML.split(" ")[0]) : NaN,
+              rating_avg: parseFloat(trimTags(result["#acrPopover .a-declarative"].innerHTML).split(" ")[0]) || NaN,
+              images_total: result["#altImages>ul"].querySelectorAll("li.imageThumbnail").length || NaN,
+              brand_content: (result["#productDescription"]?.querySelectorAll("img").length || 0) + (result["#aplus"]?.querySelectorAll("img").length || 0),
+              main_dimensions: main_dimensions || NaN,
+              main_bg: bg_color
+            };
 
-          let lqs = (getLQS(f) || null);
-          store = { ...store, ...f, lqs }
-          append(store)
-        });
-      })
-    }).catch(error => console.log(error))
+            let lqs = (getLQS(f) || null);
+            store = { ...store, ...f, lqs }
+            console.log(store);
+            append(store)
+          });
+        })
+      }).catch(error => console.log(error))
 
 
-  // Creation part
-  function createElement(store) {
-    const item = document.createElement('div');
-    let logo = getLogo();
-    item.innerHTML = `
+    // Creation part
+    function createElement(store) {
+      const item = document.createElement('div');
+      let logo = getLogo();
+      item.innerHTML = `
     <div class="lqswlx qfixgw">
     <button class="lqswlx__btn">
       <div class="lqswlx__logo">
@@ -69,7 +73,7 @@ export default function moduleLQS(state) {
         <tr>
           <td><span>Title:</td></span>
           <td><span>${store.title ? store.title + " chars." : "Error"}</td></span>
-          <td><span>More than 80 characters, up to 200. <a href="">Learn More</a></td></span>
+          <td><span>More than 80 characters, up to 200. <a class="lb" href="">Learn More</a></td></span>
         </tr>
         <tr>
           <td><span>Description:</td></span>
@@ -126,16 +130,16 @@ export default function moduleLQS(state) {
   </div></div>
   </div>
     `
-    item.classList.add(item_class);
-    return item;
-  }
+      item.classList.add(item_class);
+      return item;
+    }
 
 
-  // Injection part
-  function append(store) {
-    let item = createElement(store);
-    injectorHTML(state, item, item_class, ['#titleSection'], false);
-    console.log("Update");
+    // Injection part
+    function append(store) {
+      let item = createElement(store);
+      injectorHTML(state, item, item_class, ['#titleSection'], false);
+      console.log("Update");
+    }
   }
 }
-

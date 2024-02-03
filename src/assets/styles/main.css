@@ -338,8 +338,8 @@ body .a-size-large {
   overflow: hidden;
   pointer-events: none;
   user-select: none;
-  transform: translateY(-50px);
-  transition: 200ms ease;
+  transform: translateY(-30px);
+  transition: 150ms ease;
 }
 
 .lqswlx__content__wrapper:hover,
@@ -656,7 +656,7 @@ body .stwsl .ch_sp::after {
   display: inline-block;
   background-color: gray;
   border-radius: 5px;
-  min-width: 3rem;
+  min-width: 1rem;
   min-height: 15px;
   animation: skeleton-loading 1s linear infinite alternate;
 }
