@@ -323,16 +323,18 @@ body .a-size-large {
   width: min-content;
   margin-right: auto;
   z-index: 100;
+  font-size: 15px;
+  line-height: 100%;
 }
 
 .lqswlx__content__wrapper {
   position: absolute;
   left: 0;
-  left: calc(50% - 300px);
+  left: calc(50% - 305px);
   top: 100%;
   opacity: 0;
   max-height: 0;
-  width: 600px;
+  width: 620px;
   overflow: hidden;
   pointer-events: none;
   user-select: none;
@@ -414,21 +416,41 @@ body .a-size-large {
   font-weight: 400;
 }
 
+.lqswlx__group {
+  padding: 14px 0 0;
+}
+
+.lqswlx__group a {
+  margin-left: 0.4em;
+  font-size: 0.9em;
+}
+
+.lqswlx__group a.lb {
+  display: block;
+  margin: 0;
+}
+
+.lqswlx__group:nth-child(1) {
+  padding: 0;
+}
+
+
 .lqswlx__group table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.8rem;
+  font-size: 0.74em;
   font-weight: 400;
 }
 
 
 .lqswlx__group td {
-  padding: 10px 0;
+  padding: 0 0 8px;
+  min-height: 2em;
 }
 
 .lqswlx__group td:nth-child(1) {
   font-weight: 500;
-  width: 45%;
+  width: 40%;
   color: var(--text);
 }
 
@@ -441,17 +463,14 @@ body .a-size-large {
 
 .lqswlx__group td:nth-child(3) {
   color: var(--th-text);
-  width: 30%;
+  width: 35%;
 }
 
-.lqswlx__group td:nth-child(2),
-.lqswlx__group td:nth-child(3) {
-  text-align: left;
-}
+
 
 .lqswlx__content {
-  max-width: 600px;
-  padding: 10px 20px 20px;
+  max-width: 620px;
+  padding: 10px 14px 16px;
   border: 1px solid #e2e9ee;
   border-radius: 5px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -460,9 +479,11 @@ body .a-size-large {
 }
 
 .lqswlx__title {
-  margin: 0.6em 0 0.6em;
-  font-size: 1.1rem;
-  font-weight: 500;
+  margin: 0 0 0.8em;
+  padding: 0;
+  font-size: 1em;
+  line-height: 140%;
+  font-weight: 600;
   color: var(--text);
 }
 
@@ -598,3 +619,58 @@ body .stwsl .ch_sp::after {
 }
 
 /* KEYWORDS BTN END */
+
+/* SKELETON LOADER  */
+
+.lqswlx__btn__vals {
+  display: block;
+  min-width: 82px;
+}
+
+.skeletonls {
+  display: inline-block;
+  background-color: gray;
+
+  border-radius: 5px;
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.skeletonls,
+.skeletonls * {
+  color: transparent !important;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: hsl(200, 20%, 90%);
+  }
+
+  100% {
+    background-color: hsl(200, 20%, 97%);
+  }
+}
+
+
+
+.skeletoned span {
+  display: inline-block;
+  background-color: gray;
+  border-radius: 5px;
+  min-width: 3rem;
+  min-height: 15px;
+  animation: skeleton-loading 1s linear infinite alternate;
+}
+
+.skeletoned span,
+.skeletoned * {
+  color: transparent !important;
+}
+
+.skeletoned h3 span {
+  min-width: 5rem;
+}
+
+.skeletoned .lqswlx__group:nth-child(1) h3 span {
+  min-width: 8rem;
+  min-height: 18px;
+}

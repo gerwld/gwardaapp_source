@@ -12,6 +12,6 @@ while true; do
     else
         # If the command failed, display a message and sleep for a while before retrying
         echo "DEV failed. Retrying in 5 seconds..."
-        sleep 5
+        sleep 3
     fi
 done

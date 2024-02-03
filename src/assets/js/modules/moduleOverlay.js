@@ -30,6 +30,7 @@ export default function moduleOverlay(state) {
       font-size: 12px;
       opacity: 1;
       transition: transform 400ms ease, opacity 400ms ease 0ms;
+      z-index: 10000;
     }
 
     #gw__overlay:hover {

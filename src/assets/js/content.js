@@ -6,6 +6,7 @@ import moduleRate from "./modules/moduleRate";
 import moduleStocks from "./modules/moduleStocks";
 
 let interval0;
+console.log(`%c gwardaApp v.1.0.0 `, 'background: gray; color: yellow');
 const browser_cr = chrome ? chrome : browser;
 
 function setOrRemoveStylesOfItemLocal(css, item, item_class) {

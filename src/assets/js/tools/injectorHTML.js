@@ -37,16 +37,25 @@ export default function injectorHTML(state, item, item_class, parent_selectors, 
       if (parents && item) {
         // Else append one clone to each parent
         parents.forEach(r => {
-          if (!r.querySelector("." + item_class)) {
-            let block = document.createElement("div");
-            block.appendChild(item.cloneNode(true));
-            block.setAttribute("class", item_class);
+          let prev_block = r.querySelector("." + item_class);
+          let block = document.createElement("div");
+          block.appendChild(item.cloneNode(true));
+          block.setAttribute("class", item_class);
+
+          // Stringify and trim the content
+          let prevContent = prev_block ? JSON.stringify(prev_block.innerHTML.trim()) : null;
+          let newContent = JSON.stringify(block.innerHTML.trim());
+
+          // Check if the stringified and trimmed content is not equal or not exist.
+          // Then remove prev and inj new
+          if (!prevContent || prevContent !== newContent) {
+            r.querySelectorAll("." + item_class).forEach(e => e.remove())
             if (set_bottom)
               r.appendChild(block);
             else
-              r.insertBefore(block, r.firstChild)
+              r.insertBefore(block, r.firstChild);
           }
-        })
+        });
       }
     }
   }
