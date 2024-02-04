@@ -46,6 +46,10 @@ body .a-size-large {
   }
 }
 
+/* .puisg-row>.puisg-col:nth-child(2) {
+  margin-top: -5x;
+} */
+
 
 /* ----------------------- checkbox styles ----------------------- */
 .ch_hp,

@@ -1,4 +1,4 @@
-export default async function getImageDimensions(imageURL) {
+export default async function getImageDimensionsFromURL(imageURL) {
   return new Promise((resolve, reject) => {
     if (!imageURL) {
       resolve('unknown');

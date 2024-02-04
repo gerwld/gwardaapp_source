@@ -13,7 +13,7 @@ export default function injectorHTML(state, item, item_class, parent_selectors, 
     }
     // ---- ELSE INJECT ----- //
     else {
-      console.warn("gwardaApp: checkParentAndProceed exec.")
+      console.log("gwardaApp: checkParentAndProceed exec.")
       // If parent is root then dont clone node, append & break
       if (parent_selectors === "root") {
         let block = document.createElement("div");

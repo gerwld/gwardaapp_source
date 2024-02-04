@@ -1,10 +1,15 @@
+import filterByClass from "../tools/filterByClass";
 import getLogo from "../tools/getLogo";
 import getbyASIN from "../tools/getbyASIN";
 import injectorHTML from "../tools/injectorHTML";
 import navigateOrSwitch from "../tools/navigateOrSwitch";
 import observeClassChanges from "../tools/observeClassChages";
+import removeDuplicates from "../tools/removeDuplicates";
+
+
 
 // Quick View 
+let requested = []
 export default function moduleQuick(state) {
   const is_location = window.location.pathname && window.location.pathname !== "/";
   if (is_location) {
@@ -14,19 +19,18 @@ export default function moduleQuick(state) {
 
 
     // Creation part
-    function createElement() {
+    function createElement(data) {
       const item = document.createElement('div');
-      let logo = getLogo();
       item.innerHTML = `
     <div class="qgw qfixgw">
     <div class="qgw__dl">
       <div>
         <span class="qgw__dt">ASIN:</span>
-        <span class="qgw__dd">B0C6VT7YN5</span>
+        <span class="qgw__dd" data-part="asin">${data?.asin ?? "loading..."}</span>
       </div>
       <div>
         <span class="qgw__dt">LQS:</span>
-        <span class="qgw__dd">7.3</span>
+        <span class="qgw__dd">${data?.data?.lqs ?? "loading..."}</span>
       </div>
 
       <div>
@@ -55,38 +59,38 @@ export default function moduleQuick(state) {
   </div>
 
     `;
-      item.classList.add(item_class);
-      // if (is12of16)
-      //   item.classList.add('qwv__wide');
       return item;
     }
 
     // Initial injection part
     let item = createElement();
     injectorHTML(state, item, item_class, ['.s-result-list>[data-component-type="s-search-result"] .puis-card-container'], true);
-  }
 
-  function update() {
-    const items = document.querySelectorAll('[data-component-type="s-search-results"] .s-result-list>[data-component-type="s-search-result"]')
-    function getAssins() {
-      if (items) {
-        let newAssins = [...items].filter(e => !e.classList.contains("AdHolder")).map(e => e.getAttribute("data-asin") || null)
-        return newAssins?.filter((e, i) => e && newAssins.indexOf(e) === i)
+
+    function update() {
+      const items = document.querySelectorAll('[data-component-type="s-search-results"] .s-result-list>[data-component-type="s-search-result"]')
+      function getAsins() {
+        if (items) {
+          let newAssins = [...items].filter(e => !e.classList.contains("AdHolder")).map(e => e.getAttribute("data-asin") || null)
+          return newAssins?.filter((e, i) => e && newAssins.indexOf(e) === i)
+        }
       }
+      let asins = getAsins().filter(e => requested.indexOf(e) == -1);
+      requested.push(...asins)
+      getbyASIN(asins, append)
     }
-    let assins = getAssins();
-    getbyASIN(assins, append)
+
+    function append(payload) {
+      // console.log(payload.asin);
+      let item = createElement(payload);
+      injectorHTML(state, item, item_class, [`.s-result-list>[data-component-type="s-search-result"][data-asin=${payload.asin}] .puis-card-container`], true);
+    }
+
+
+
+
+    observeClassChanges('.s-result-list>[data-component-type="s-search-result"]', update)
   }
-
-  function append(newValues) {
-    console.log(newValues);
-
-  }
-
-
-
-
-  observeClassChanges('.s-result-list>[data-component-type="s-search-result"]', update)
 }
 
 

@@ -2,14 +2,14 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export default async function lazyFindElements(elementSelectors, maxAttempts = 20, delayTime = 400) {
+export default async function lazyFindElements(elementSelectors, current = document, maxAttempts = 20, delayTime = 400) {
   let attempts = 0;
   let foundElements = {};
 
   while (attempts < maxAttempts) {
     for (const selector of elementSelectors) {
       if (!foundElements[selector]) {
-        const element = document.querySelector(selector);
+        const element = current.querySelector(selector);
         if (element !== null) {
           foundElements[selector] = element;
         }
