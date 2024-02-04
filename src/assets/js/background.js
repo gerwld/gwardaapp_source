@@ -36,4 +36,28 @@ browser_cr.runtime.onInstalled.addListener(function () {
 });
 
 
+// Clear cache if > 4mb
+chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
+  let currentStorageUsage = bytesInUse / 1024 / 1024;
+  let storageLimit = 4;
+  if (currentStorageUsage > storageLimit) {
+    chrome.storage.local.remove("gpCache", function () {
+      console.warn("gwardaApp: cache removed due to storage limit");
+    });
+  }
+});
+
+// fetchData message, saves to ghCache
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  if (message.action === 'fetchData') {
+    const { arr, tabId } = message;
+    const result = await processBatch(arr);
+    chrome.storage.local.get("ghCache", () => {
+      chrome.storage.local.set({ ghCache: [...ghCache, ...result] });
+    });
+    chrome.tabs.sendMessage(tabId, { action: 'dataFetched' });
+  }
+});
+
+
 // browser_cr.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLScGXGlaC1KUSji5XzrVtB7PpRdoBbmRhoEVig1BPPrUY2ShKg/viewform?usp=sf_link");

@@ -1,12 +1,6 @@
-import filterByClass from "../tools/filterByClass";
-import getLogo from "../tools/getLogo";
 import getbyASIN from "../tools/getbyASIN";
 import injectorHTML from "../tools/injectorHTML";
-import navigateOrSwitch from "../tools/navigateOrSwitch";
 import observeClassChanges from "../tools/observeClassChages";
-import removeDuplicates from "../tools/removeDuplicates";
-
-
 
 // Quick View 
 let requested = []
@@ -63,8 +57,8 @@ export default function moduleQuick(state) {
     }
 
     // Initial injection part
-    let item = createElement();
-    injectorHTML(state, item, item_class, ['.s-result-list>[data-component-type="s-search-result"] .puis-card-container'], true);
+    // let item = createElement();
+    // injectorHTML(state, item, item_class, ['.s-result-list>[data-component-type="s-search-result"] .puis-card-container'], true);
 
 
     function update() {
@@ -81,18 +75,11 @@ export default function moduleQuick(state) {
     }
 
     function append(payload) {
-      // console.log(payload.asin);
       let item = createElement(payload);
       injectorHTML(state, item, item_class, [`.s-result-list>[data-component-type="s-search-result"][data-asin=${payload.asin}] .puis-card-container`], true);
     }
 
 
-
-
     observeClassChanges('.s-result-list>[data-component-type="s-search-result"]', update)
   }
 }
-
-
-// .sg-col-4-of-16
-// .s-result-list>.sg-col-12-of-16 
