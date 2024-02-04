@@ -29,14 +29,15 @@ body::-webkit-scrollbar {
 
 html,
 body {
-  --text: #424546;
+  --text: #484a50;
   --sec-text: #353639;
   --th-text: #97999d;
   --background: #f8fafc;
   --hover: #e3e7ea;
   --background-contrast: #fff;
   --background-contrast-2: #fafcfe;
-  --main-border: 1px solid hsl(206, 9%, 85%);
+  --background-contrast-3: #eff2f8;
+  --main-border: 1px solid #dfe3e8;
   --sec-border: 1px solid #caced3;
   --thr-border: 1px solid #eceff3;
   --scrollbar-color: #dde0e1;
@@ -51,14 +52,15 @@ body {
 
 html.dark_mode,
 html.dark_mode body {
-  --text: #ffffff;
+  --text: #bdc0ca;
   --sec-text: #d7d9de;
   --th-text: #d7d9de;
   --background: #25292b;
   --hover: #393e41;
   --background-contrast: #232323;
   --background-contrast-2: #2b2b2c;
-  --main-border: 1px solid #39393c;
+  --background-contrast-3: #232323;
+  --main-border: 1px solid #34353a;
   --sec-border: 1px solid #494949;
   --thr-border: 1px solid #2c2c2c;
   --scrollbar-color: #515454;
@@ -201,6 +203,14 @@ body {
   height: fit-content;
   font-size: 15px;
   -webkit-touch-callout: none;
+}
+
+html.mview body,
+html.mview {
+  width: 400px;
+  min-width: 400px;
+  max-width: 400px;
+  font-size: 14px;
 }
 
 body {
@@ -360,17 +370,16 @@ img {
   justify-content: flex-end;
   word-wrap: nowrap;
   white-space: nowrap;
-  padding: 8px 14px;
+  padding: 7px 14px;
 }
 
 .logo_img {
-  height: 40px;
+  height: 32px;
   padding-right: 10px;
-  margin-bottom: -2px;
 }
 
 .logo_title {
-  font-size: 1.22rem;
+  font-size: 1.12rem;
   line-height: 1.2rem;
   font-weight: 500;
   color: var(--background);
@@ -463,9 +472,9 @@ html.dark_mode body.disabled [data-action="disabled"] {
   background-color: #9f9f9f;
 }
 
-html.dark_mode [data-action="dark_mode"] {
+/* html.dark_mode [data-action="dark_mode"] {
   background-color: #444446;
-}
+} */
 
 html.dark_mode .btn_header:hover {
   opacity: 0.7;
@@ -480,6 +489,7 @@ html.dark_mode .btn_header:hover {
 
 #l3_settings {
   display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -564,7 +574,7 @@ body.disabled #l3_settings {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  padding: 5px 10px 7px;
+  padding: 4px 6px 6px;
   border-top: var(--main-border);
 }
 
@@ -594,10 +604,14 @@ a.version {
   display: block;
   padding: 3px 5px;
   margin: 0 auto 0 0;
-  color: gray;
+  color: #696e76;
   text-decoration: none;
   border-radius: 3px;
   font-size: 0.8rem;
+}
+
+.dark_mode a.version {
+  color: #838b97;
 }
 
 a img {
@@ -654,7 +668,7 @@ a img {
 }
 
 .ext_content {
-  padding: 20px 20px 30px;
+  padding: 10px 5px 15px 10px;
 }
 
 .ext_content h1 {
@@ -665,15 +679,15 @@ a img {
 .ext_content p {
   margin: 0;
   line-height: 170%;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
 }
 
 .ext_content ul {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   padding: 0 0 0 1rem;
   margin: 0.5rem 0;
   line-height: 160%;
-  color: var(--sec-text);
+  color: var(--th-text);
 }
 
 .donate_nav {
@@ -836,17 +850,22 @@ a.don_btn {
   display: inline-block;
   color: var(--text);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   text-decoration: none;
-  padding: 5px;
+  text-transform: lowercase;
+  padding: 5px 10px;
   margin: 0 0 5px -2px;
   border-radius: 5px;
   border: var(--thr-border);
+  background-color: var(--background-contrast-3);
+}
+
+.back_btn span {
+  user-select: none;
 }
 
 .back_btn:hover {
-  background-color: #353639;
-  color: #fff;
+  background-color: var(--background-contrast);
 }
 
 .ch_group {
@@ -1353,12 +1372,35 @@ a.don_btn {
 }
 
 .glb_menu_l2 a {
-  display: block;
-  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  padding: 11px 12px 11px 18px;
   text-decoration: none;
-  color: var(--th-text);
+  color: #484a50;
   font-size: 0.88rem;
+}
 
+.glb_menu_l2 li {
+  border-bottom: var(--thr-border);
+}
+
+.glb_menu_l2 li:nth-last-child(1) {
+  border: none;
+}
+
+.glb_menu_l2 .ic img,
+.glb_menu_l2 .ic {
+  width: 21px;
+  height: 21px;
+}
+
+.glb_menu_l2 .ic {
+  margin-right: 12px;
+}
+
+
+.dark_mode .glb_menu_l2 a {
+  color: #bdc0ca;
 }
 
 .glb_menu_l2 a:hover {
