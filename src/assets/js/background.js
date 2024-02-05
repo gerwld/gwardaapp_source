@@ -12,6 +12,10 @@
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
+import { fetchInBackground } from "./tools/fetch/getByAsinBackground";
+import { DOMParser, parseHTML } from 'linkedom';
+import getItemData from "./tools/getItemData";
+
 const initialState = {
   disabled: true,
   dark_mode: false,
@@ -47,17 +51,44 @@ chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
   }
 });
 
-// fetchData message, saves to ghCache
+const parser = new DOMParser()
+
+
+// fetchData message, saves to gpCache
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.action === 'fetchData') {
     const { arr, tabId } = message;
-    const result = await processBatch(arr);
-    chrome.storage.local.get("ghCache", () => {
-      chrome.storage.local.set({ ghCache: [...ghCache, ...result] });
-    });
-    chrome.tabs.sendMessage(tabId, { action: 'dataFetched' });
+    if (arr?.length) {
+      await fetchInBackground(arr).then(async (data) => {
+        console.log(data[0].data);
+        const parsedData = parser.parseFromString(data[0].data, 'text/html');
+        const find = [];
+        const final = await getItemData(null, find, parsedData).then(data => data);
+        console.log(parsedData, final);
+
+        chrome.storage.local.get("gpCache", (state) => {
+
+          // if (state?.length)
+          //   chrome.storage.local.set({ "gpCache": [...state, ...final] });
+          // else
+          //   chrome.storage.local.set({ "gpCache": [...final] });
+        });
+      })
+    }
+    chrome.runtime.sendMessage({ action: 'dataFetched' });
   }
-});
+})
 
 
+
+
+// setInterval(() => {
+//   const url = `https://www.amazon.com/dp/B0BRBFW77R?psc=1`;
+//   const response = fetch(url).then(e => {
+//     console.log(e);
+//   });
+//   console.log(response);
+
+
+// }, 400)
 // browser_cr.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLScGXGlaC1KUSji5XzrVtB7PpRdoBbmRhoEVig1BPPrUY2ShKg/viewform?usp=sf_link");

@@ -98,7 +98,7 @@ task('minifyCSS', async function () {
 task('minifyJS', async function () {
     src(['./src/assets/js/*.js', './src/assets/js/pages/*.js'])
         .pipe(
-            filter(['**', '!**/content.js', '!**/rate_popup.js', '!**/__*.js'])
+            filter(['**', '!**/content.js', '!**/background.js', '!**/rate_popup.js', '!**/__*.js'])
         )
         .pipe(uglify())
         .pipe(insert.prepend(COPYRIGHT))

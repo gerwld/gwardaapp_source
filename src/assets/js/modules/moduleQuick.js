@@ -1,4 +1,4 @@
-import getbyASIN from "../tools/getbyASIN";
+import getbyASIN from "../tools/fetch/getbyASIN";
 import injectorHTML from "../tools/injectorHTML";
 import observeClassChanges from "../tools/observeClassChages";
 
@@ -70,8 +70,10 @@ export default function moduleQuick(state) {
         }
       }
       let asins = getAsins().filter(e => requested.indexOf(e) == -1);
-      requested.push(...asins)
-      getbyASIN(asins, append)
+      if (asins.length) {
+        requested.push(...asins)
+        getbyASIN(asins, append)
+      }
     }
 
     function append(payload) {

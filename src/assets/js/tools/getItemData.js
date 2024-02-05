@@ -4,7 +4,7 @@ import getLQS from "./getLQS";
 import trimTags from "./trimTags";
 import getImageDimensionsFromURL from "./getImgDimensionsFromUrl";
 
-export default function getItemData(callback, find, current = document) {
+export default function getItemData(callback, find, current = document, isBackend) {
   const base = [
     "#productTitle",
     "#feature-bullets ul",
@@ -27,7 +27,7 @@ export default function getItemData(callback, find, current = document) {
       const hires_img = result["#imgTagWrapperId img"]?.getAttribute("data-old-hires") || null;
 
       const bg_color = main_img ? await getMainImageBgColor(main_img) : null;
-      const main_dimensions = hires_img ? await getImageDimensionsFromURL(hires_img) : null;
+      const main_dimensions = hires_img ? await getImageDimensionsFromURL(hires_img, isBackend) : null;
 
       const f = {
         title: result["#productTitle"]?.innerHTML.trim().length || null,

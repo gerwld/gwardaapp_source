@@ -1,6 +1,9 @@
 import terser from '@rollup/plugin-terser';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+
+
 
 const COPYRIGHT = `//   - This file is part of GwardaApp Extension
 //  <https://github.com/gerwld/GwardaApp-extension/blob/main/README.md>,
@@ -30,15 +33,45 @@ export default [
         file: 'dist/firefox/assets/js/content.js',
         format: 'iife',
       },
-
     ],
 
     plugins: [
-      nodeResolve(), // Resolve external dependencies
+      resolve({
+        preserveSymlinks: true,
+      }),
+      commonjs({
+        preserveSymlinks: true,
+      }),
+      // terser(), // Minify JavaScript
+      prependBannerPlugin({ banner: COPYRIGHT })
+    ],
+  },
+  {
+    input: 'src/assets/js/background.js',
+    output: [
+      {
+        file: 'dist/chromium/assets/js/background.js',
+        // format: 'iife',
+      }, {
+        file: 'dist/firefox/assets/js/background.js',
+        // format: 'iife',
+      },
+    ],
+
+    plugins: [
+      resolve({
+        preserveSymlinks: true,
+      }),
+      commonjs({
+        preserveSymlinks: true,
+      }),
       // terser(), // Minify JavaScript
       prependBannerPlugin({ banner: COPYRIGHT })
     ],
   }
+
+
+
 ];
 
 

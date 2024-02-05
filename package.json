@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "gerwld",
-  "license": "CC BY-NC-ND 4.0",
+  "license": "CC-BY-NC-ND-4.0",
   "devDependencies": {
     "@babel/preset-env": "^7.23.9",
     "@rollup/plugin-babel": "^6.0.4",
@@ -33,11 +33,16 @@
   "dependencies": {
     "@babel/core": "^7.23.9",
     "@babel/preset-react": "^7.23.3",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-replace": "^5.0.5",
     "babel-plugin-transform-react-jsx": "^6.24.1",
+    "boolbase": "^1.0.0",
     "chalk": "^5.3.0",
     "dom-chef": "^5.1.1",
+    "dom-parser": "^1.1.5",
     "gulp-wait": "^0.0.2",
     "gulp-zip": "^6.0.0",
+    "linkedom": "^0.16.8",
     "pm2": "^5.3.1"
   }
 }
