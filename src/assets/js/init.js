@@ -48,7 +48,7 @@
   }
 
   browser_cr.storage.onChanged.addListener(async (changes, areaName) => {
-    if (areaName === "local" && changes.gpState && changes.gpState.newValue && changes.gpState.newValue.lang_set) {
+    if (areaName === "local" && changes.gpState && changes.gpState?.newValue && changes.gpState.newValue.lang_set) {
       const newLang = changes.gpState.newValue.lang_set;
       if (newLang !== CURRENT_LANG) {
         await handleLanguage(newLang);
@@ -89,7 +89,8 @@
       let updateScheduled = false;
       browser_cr.storage.local.onChanged.addListener((changes, namespace) => {
         if (
-          changes.gpState.newValue &&
+          changes.gpState &&
+          changes.gpState?.newValue &&
           JSON.stringify({ ...changes.gpState.newValue }) !== prevstate
         ) {
           prevstate = JSON.stringify({ ...changes.gpState.newValue });

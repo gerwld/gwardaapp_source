@@ -97,8 +97,7 @@ export default function moduleQuick(state) {
       if (asins) {
         browser_cr.storage.local.get("gpCache", (result) => {
           console.log(result);
-          let newData = result?.gpCache;
-
+          let newData = result?.gpCache.filter(e => asins.indexOf(e.asin) !== -1);
           console.log('new_data from crCache:', result, newData, asins);
 
           newData?.forEach(i => {
@@ -113,8 +112,6 @@ export default function moduleQuick(state) {
 
     function append(payload) {
       let item = createElement(payload);
-
-      console.log(state, item, item_class, [`.s-result-list>[data-component-type="s-search-result"][data-asin="${payload.asin}"] .puis-card-container`], true);
       injectorHTML(state, item, item_class, [`.s-result-list>[data-component-type="s-search-result"][data-asin="${payload.asin}"] .puis-card-container`], true);
     }
 

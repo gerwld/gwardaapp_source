@@ -3,7 +3,7 @@
 
 import observeClassChanges from "./observeClassChages";
 
-export default function injectorHTML(state, item, item_class, parent_selectors, set_bottom) {
+export default function injectorHTML(state, item, item_class, parent_selectors, set_bottom, isinit) {
   let totalWaitTime = 0;
   function checkParentAndProceed() {
     // ---- CLEAN-UP ---- //
@@ -30,6 +30,9 @@ export default function injectorHTML(state, item, item_class, parent_selectors, 
         if (totalWaitTime < 10000) {
           setTimeout(checkParentAndProceed, 1000);
           totalWaitTime += 1000;
+          if (totalWaitTime > 2000 && isinit) {
+            totalWaitTime = 10000;
+          }
         } else {
           console.log("Maximum wait time reached. Exiting...");
         }
