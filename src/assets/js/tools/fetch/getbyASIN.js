@@ -2,12 +2,12 @@ import getItemData from "../getItemData";
 const browser_cr = chrome ? chrome : browser;
 
 
-if (!window.globalParser)
-  window.globalParser = new DOMParser();
+// if (!window.globalParser)
+//   window.globalParser = new DOMParser();
 
 // const processedASINs = new Set();
 // const processingASINs = new Set();
-const arrGlobal = [];
+
 // let totalRequests = 0;
 // const requestQueue = [];
 
@@ -35,14 +35,14 @@ function initializeUpdate(state) {
 }
 
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'processNextInQueue') {
-    // processNextInQueue();
-  }
-  else if (message.action === 'dataFetched') {
-    readDataFromStorage();
-  }
-});
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//   if (message.action === 'processNextInQueue') {
+//     // processNextInQueue();
+//   }
+//   else if (message.action === 'dataFetched') {
+//     readDataFromStorage();
+//   }
+// });
 
 // async function processBatch(batch) {
 // console.log("processBatch call, args:", batch);
@@ -134,38 +134,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 
 
-function sendProcessNextInQueueMessage() {
-  chrome.runtime.sendMessage({ action: 'processNextInQueue' });
-}
+// function sendProcessNextInQueueMessage() {
+//   chrome.runtime.sendMessage({ action: 'processNextInQueue' });
+// }
 
-function readDataFromStorage() {
-  // Read data from chrome.storage.local
-  chrome.storage.local.get('gpCache', (result) => {
-    const gpCache = result.gpCache;
-    if (gpCache) {
-      // Process the data as needed
-      console.log('Data fetched from storage:', gpCache);
-    }
-  });
-}
-
+// function readDataFromStorage() {
+//   // Read data from chrome.storage.local
+//   chrome.storage.local.get('gpCache', (result) => {
+//     const gpCache = result.gpCache;
+//     if (gpCache) {
+//       // Process the data as needed
+//       console.log('Data fetched from storage:', gpCache);
+//     }
+//   });
+// }
 
 export default async function getbyASIN(arr, callback) {
-  const combinedArr = [...new Set([arr])];
-  if (combinedArr?.length) {
-    arrGlobal.push(...arr, "123123", "123");
-    arrGlobal.splice(0, arr.length);
-
-    // const batchSize = 3;
-    // const batches = [];
-
-    // for (let i = 0; i < combinedArr.length; i += batchSize) {
-    //   const batch = combinedArr.slice(i, i + batchSize);
-    //   batches.push(batch);
-    // }
-
-    chrome.runtime.sendMessage({ action: 'fetchData', arr: arrGlobal });
-  }
+  const combinedArr = [...arr];
+  console.log('getbyASIN sendMessage');
+  chrome.runtime.sendMessage({ action: 'fetchData', arr: combinedArr });
 }
 
 

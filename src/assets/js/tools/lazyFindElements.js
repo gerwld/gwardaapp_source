@@ -2,7 +2,7 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export default async function lazyFindElements(elementSelectors, current = document, maxAttempts = 20, delayTime = 400) {
+export default async function lazyFindElements(elementSelectors, current = document, maxAttempts = 200, delayTime = 200) {
   let attempts = 0;
   let foundElements = {};
 
@@ -32,5 +32,5 @@ export default async function lazyFindElements(elementSelectors, current = docum
 
   return Object.keys(filteredFoundElements).length > 0
     ? Promise.resolve(filteredFoundElements)
-    : Promise.reject(new Error("No elements found within the specified attempts."));
+    : Promise.reject(console.log("No elements found within the specified attempts."));
 }

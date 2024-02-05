@@ -44,8 +44,29 @@ export default [
         preserveSymlinks: true,
       }),
       replace({
-        'CSSOM.CSSKeyframesRule = CSSKeyframesRule.CSSKeyframesRule;': '',
+        delimiters: ['', ''], // to avoid adding extra quotes around the replacement
+        values: {
+          'CSSOM.CSSStyleSheet = requireCSSStyleSheet().CSSStyleSheet;': 'CSSOM.CSSStyleSheet = requireCSSStyleSheet()?.CSSStyleSheet;',
+          'CSSOM.CSSStyleRule = requireCSSStyleRule().CSSStyleRule;': 'CSSOM.CSSStyleRule = requireCSSStyleRule()?.CSSStyleRule;',
+          'CSSOM.CSSImportRule = requireCSSImportRule().CSSImportRule;': 'CSSOM.CSSImportRule = requireCSSImportRule()?.CSSImportRule;',
+          'CSSOM.CSSGroupingRule = CSSGroupingRule.CSSGroupingRule;': 'CSSOM.CSSGroupingRule = CSSGroupingRule?.CSSGroupingRule;',
+          'CSSOM.CSSMediaRule = CSSMediaRule.CSSMediaRule;': 'CSSOM.CSSMediaRule = CSSMediaRule?.CSSMediaRule;',
+          'CSSOM.CSSConditionRule = CSSConditionRule.CSSConditionRule;': 'CSSOM.CSSConditionRule = CSSConditionRule?.CSSConditionRule;',
+          'CSSOM.CSSSupportsRule = CSSSupportsRule.CSSSupportsRule;': 'CSSOM.CSSSupportsRule = CSSSupportsRule?.CSSSupportsRule;',
+          'CSSOM.CSSFontFaceRule = requireCSSFontFaceRule().CSSFontFaceRule;': 'CSSOM.CSSFontFaceRule = requireCSSFontFaceRule()?.CSSFontFaceRule;',
+          'CSSOM.CSSHostRule = CSSHostRule.CSSHostRule;': 'CSSOM.CSSHostRule = CSSHostRule?.CSSHostRule;',
+          'CSSOM.CSSStyleDeclaration = requireCSSStyleDeclaration().CSSStyleDeclaration;': 'CSSOM.CSSStyleDeclaration = requireCSSStyleDeclaration()?.CSSStyleDeclaration;',
+          'CSSOM.CSSKeyframeRule = requireCSSKeyframeRule().CSSKeyframeRule;': 'CSSOM.CSSKeyframeRule = requireCSSKeyframeRule()?.CSSKeyframeRule;',
+          'CSSOM.CSSKeyframesRule = CSSKeyframesRule.CSSKeyframesRule;': 'CSSOM.CSSKeyframesRule = CSSKeyframesRule?.CSSKeyframesRule;',
+          'CSSOM.CSSValueExpression = CSSValueExpression.CSSValueExpression;': 'CSSOM.CSSValueExpression = CSSValueExpression?.CSSValueExpression;',
+          'CSSOM.CSSDocumentRule = CSSDocumentRule.CSSDocumentRule;': 'CSSOM.CSSDocumentRule = CSSDocumentRule?.CSSDocumentRule;',
+          'MediaList: MediaList.MediaList': 'MediaList: MediaList?.MediaList',
+          'CSSOM.CSSValueExpression = CSSValueExpression.CSSValueExpression;': 'CSSOM.CSSValueExpression = CSSValueExpression?.CSSValueExpression;',
+          'CSSKeyframeRule.CSSKeyframeRule = CSSOM.CSSKeyframeRule;': 'CSSKeyframeRule.CSSKeyframeRule = CSSOM?.CSSKeyframeRule;',
+          'CSSImportRule.CSSImportRule = CSSOM.CSSImportRule;': 'CSSImportRule.CSSImportRule = CSSOM?.CSSImportRule;'
+        }
       }),
+
       // terser(), // Minify JavaScript
       prependBannerPlugin({ banner: COPYRIGHT })
     ],
@@ -70,7 +91,28 @@ export default [
         preserveSymlinks: true,
       }),
       replace({
-        'CSSOM.CSSKeyframesRule = CSSKeyframesRule.CSSKeyframesRule;': '',
+        delimiters: ['', ''], // to avoid adding extra quotes around the replacement
+        values: {
+          'CSSOM.CSSStyleSheet = requireCSSStyleSheet().CSSStyleSheet;': 'CSSOM.CSSStyleSheet = requireCSSStyleSheet()?.CSSStyleSheet;',
+          'CSSOM.CSSStyleRule = requireCSSStyleRule().CSSStyleRule;': 'CSSOM.CSSStyleRule = requireCSSStyleRule()?.CSSStyleRule;',
+          'CSSOM.CSSImportRule = requireCSSImportRule().CSSImportRule;': 'CSSOM.CSSImportRule = requireCSSImportRule()?.CSSImportRule;',
+          'CSSOM.CSSGroupingRule = CSSGroupingRule.CSSGroupingRule;': 'CSSOM.CSSGroupingRule = CSSGroupingRule?.CSSGroupingRule;',
+          'CSSOM.CSSMediaRule = CSSMediaRule.CSSMediaRule;': 'CSSOM.CSSMediaRule = CSSMediaRule?.CSSMediaRule;',
+          'CSSOM.CSSConditionRule = CSSConditionRule.CSSConditionRule;': 'CSSOM.CSSConditionRule = CSSConditionRule?.CSSConditionRule;',
+          'CSSOM.CSSSupportsRule = CSSSupportsRule.CSSSupportsRule;': 'CSSOM.CSSSupportsRule = CSSSupportsRule?.CSSSupportsRule;',
+          'CSSOM.CSSFontFaceRule = requireCSSFontFaceRule().CSSFontFaceRule;': 'CSSOM.CSSFontFaceRule = requireCSSFontFaceRule()?.CSSFontFaceRule;',
+          'CSSOM.CSSHostRule = CSSHostRule.CSSHostRule;': 'CSSOM.CSSHostRule = CSSHostRule?.CSSHostRule;',
+          'CSSOM.CSSStyleDeclaration = requireCSSStyleDeclaration().CSSStyleDeclaration;': 'CSSOM.CSSStyleDeclaration = requireCSSStyleDeclaration()?.CSSStyleDeclaration;',
+          'CSSOM.CSSKeyframeRule = requireCSSKeyframeRule().CSSKeyframeRule;': 'CSSOM.CSSKeyframeRule = requireCSSKeyframeRule()?.CSSKeyframeRule;',
+          'CSSOM.CSSKeyframesRule = CSSKeyframesRule.CSSKeyframesRule;': 'CSSOM.CSSKeyframesRule = CSSKeyframesRule?.CSSKeyframesRule;',
+          'CSSOM.CSSValueExpression = CSSValueExpression.CSSValueExpression;': 'CSSOM.CSSValueExpression = CSSValueExpression?.CSSValueExpression;',
+          'CSSOM.CSSDocumentRule = CSSDocumentRule.CSSDocumentRule;': 'CSSOM.CSSDocumentRule = CSSDocumentRule?.CSSDocumentRule;',
+          'MediaList: MediaList.MediaList': 'MediaList: MediaList?.MediaList',
+          'CSSOM.CSSValueExpression = CSSValueExpression.CSSValueExpression;': 'CSSOM.CSSValueExpression = CSSValueExpression?.CSSValueExpression;',
+          'CSSKeyframeRule.CSSKeyframeRule = CSSOM.CSSKeyframeRule;': 'CSSKeyframeRule.CSSKeyframeRule = CSSOM?.CSSKeyframeRule;',
+          'CSSImportRule.CSSImportRule = CSSOM.CSSImportRule;': 'CSSImportRule.CSSImportRule = CSSOM?.CSSImportRule;'
+
+        }
       }),
       // terser(), // Minify JavaScript
       prependBannerPlugin({ banner: COPYRIGHT })

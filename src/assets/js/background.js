@@ -53,26 +53,13 @@ chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
 
 
 
-// fetchData message, saves to gpCache
+// fetchData message
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   if (message.action === 'fetchData') {
-    const { arr, tabId } = message;
-    if (arr?.length) {
-      await fetchInBackground(arr).then(async (data) => {
-        console.log(data);
-
-        // console.log(parsedData, final);
-
-        chrome.storage.local.get("gpCache", (state) => {
-
-          // if (state?.length)
-          //   chrome.storage.local.set({ "gpCache": [...state, ...final] });
-          // else
-          //   chrome.storage.local.set({ "gpCache": [...final] });
-        });
-      })
-    }
-    chrome.runtime.sendMessage({ action: 'dataFetched' });
+    const { arr } = message;
+    console.log('getbyASIN sendMessage recieved:', message);
+    if (arr?.length)
+      await fetchInBackground(arr)
   }
 })
 

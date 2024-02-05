@@ -21,13 +21,15 @@ export default function getItemData(callback, find, current = document, isBacken
 
   return new Promise(async (resolve, reject) => {
     try {
-      const result = await lazyFindElements(find, current);
+      const result = await lazyFindElements(find, current, 20, 20, true);
 
       const main_img = result["#altImages>ul"]?.querySelector("li.imageThumbnail img") || null;
       const hires_img = result["#imgTagWrapperId img"]?.getAttribute("data-old-hires") || null;
 
       const bg_color = main_img ? await getMainImageBgColor(main_img) : null;
-      const main_dimensions = hires_img ? await getImageDimensionsFromURL(hires_img, isBackend) : null;
+      let main_dimensions;
+      if (!isBackend)
+        main_dimensions = hires_img ? await getImageDimensionsFromURL(hires_img, isBackend) : null;
 
       const f = {
         title: result["#productTitle"]?.innerHTML.trim().length || null,
@@ -47,7 +49,7 @@ export default function getItemData(callback, find, current = document, isBacken
       if (callback) callback(store);
       resolve(store);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       reject(error);
     }
   });
