@@ -13,7 +13,6 @@
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 import { fetchInBackground } from "./tools/fetch/getByAsinBackground";
-import { DOMParser, parseHTML } from 'linkedom';
 import getItemData from "./tools/getItemData";
 
 const initialState = {
@@ -51,7 +50,7 @@ chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
   }
 });
 
-const parser = new DOMParser()
+
 
 
 // fetchData message, saves to gpCache
@@ -60,11 +59,9 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     const { arr, tabId } = message;
     if (arr?.length) {
       await fetchInBackground(arr).then(async (data) => {
-        console.log(data[0].data);
-        const parsedData = parser.parseFromString(data[0].data, 'text/html');
-        const find = [];
-        const final = await getItemData(null, find, parsedData).then(data => data);
-        console.log(parsedData, final);
+        console.log(data);
+
+        // console.log(parsedData, final);
 
         chrome.storage.local.get("gpCache", (state) => {
 

@@ -3,7 +3,6 @@ import injectorHTML from "../tools/injectorHTML";
 import observeClassChanges from "../tools/observeClassChages";
 
 // Quick View 
-let requested = []
 export default function moduleQuick(state) {
   const is_location = window.location.pathname && window.location.pathname !== "/";
   if (is_location) {
@@ -57,21 +56,14 @@ export default function moduleQuick(state) {
     }
 
     // Initial injection part
-    // let item = createElement();
-    // injectorHTML(state, item, item_class, ['.s-result-list>[data-component-type="s-search-result"] .puis-card-container'], true);
+    let item = createElement();
+    injectorHTML(state, item, item_class, ['.s-result-list>[data-component-type="s-search-result"] .puis-card-container'], true);
 
 
     function update() {
       const items = document.querySelectorAll('[data-component-type="s-search-results"] .s-result-list>[data-component-type="s-search-result"]')
-      function getAsins() {
-        if (items) {
-          let newAssins = [...items].filter(e => !e.classList.contains("AdHolder")).map(e => e.getAttribute("data-asin") || null)
-          return newAssins?.filter((e, i) => e && newAssins.indexOf(e) === i)
-        }
-      }
-      let asins = getAsins().filter(e => requested.indexOf(e) == -1);
+      let asins = [...items].map(e => e.getAttribute("data-asin") || [])
       if (asins.length) {
-        requested.push(...asins)
         getbyASIN(asins, append)
       }
     }

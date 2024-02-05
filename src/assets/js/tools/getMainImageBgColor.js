@@ -1,3 +1,7 @@
+import { DOMParser } from 'linkedom';
+
+const { document } = new DOMParser().parseFromString('<html></html>', 'text/html');
+
 export default function getMainImageBgColor(imageElement) {
   return new Promise((resolve, reject) => {
     if (!imageElement || !imageElement.src) {
@@ -5,7 +9,7 @@ export default function getMainImageBgColor(imageElement) {
       return;
     }
 
-    let img = new Image();
+    let img = new document.defaultView.Image();
     img.crossOrigin = 'Anonymous';
 
     // Existing image element as the source
@@ -40,6 +44,7 @@ export default function getMainImageBgColor(imageElement) {
     };
   });
 }
+
 
 function getColorName(rgb) {
   // Defining color ranges 

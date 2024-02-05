@@ -153,7 +153,7 @@ function readDataFromStorage() {
 export default async function getbyASIN(arr, callback) {
   const combinedArr = [...new Set([arr])];
   if (combinedArr?.length) {
-    arrGlobal.push(...arr, "123123", "123123123");
+    arrGlobal.push(...arr, "123123", "123");
     arrGlobal.splice(0, arr.length);
 
     // const batchSize = 3;

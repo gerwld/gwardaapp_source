@@ -2,6 +2,7 @@ import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 
 
 
@@ -42,6 +43,9 @@ export default [
       commonjs({
         preserveSymlinks: true,
       }),
+      replace({
+        'CSSOM.CSSKeyframesRule = CSSKeyframesRule.CSSKeyframesRule;': '',
+      }),
       // terser(), // Minify JavaScript
       prependBannerPlugin({ banner: COPYRIGHT })
     ],
@@ -64,6 +68,9 @@ export default [
       }),
       commonjs({
         preserveSymlinks: true,
+      }),
+      replace({
+        'CSSOM.CSSKeyframesRule = CSSKeyframesRule.CSSKeyframesRule;': '',
       }),
       // terser(), // Minify JavaScript
       prependBannerPlugin({ banner: COPYRIGHT })
