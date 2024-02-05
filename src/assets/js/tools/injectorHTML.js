@@ -27,12 +27,9 @@ export default function injectorHTML(state, item, item_class, parent_selectors, 
 
       // If not found parent repeat for 10000ms, then break execution
       if (!parents && state || Array.isArray(parent_selectors) && parents.length === 0) {
-        if (totalWaitTime < 10000) {
+        if (totalWaitTime < 5000) {
           setTimeout(checkParentAndProceed, 1000);
           totalWaitTime += 1000;
-          if (totalWaitTime > 2000 && isinit) {
-            totalWaitTime = 10000;
-          }
         } else {
           console.log("Maximum wait time reached. Exiting...");
         }
@@ -42,24 +39,19 @@ export default function injectorHTML(state, item, item_class, parent_selectors, 
       if (parents && item) {
         // Else append one clone to each parent
         parents.forEach(r => {
-          let prev_block = r.querySelector("." + item_class);
+          let prev_block = r.classList.contains(item_class) || r.parentElement.classList.contains(item_class);
           let block = document.createElement("div");
           block.appendChild(item.cloneNode(true));
           block.setAttribute("class", item_class);
 
-          // Stringify and trim the content
-          let prevContent = prev_block ? JSON.stringify(prev_block.innerHTML.trim()) : null;
-          let newContent = JSON.stringify(block.innerHTML.trim());
-
           // Check if the stringified and trimmed content is not equal or not exist.
           // Then remove prev and inj new
-          if (!prevContent || prevContent !== newContent) {
-            r.querySelectorAll("." + item_class).forEach(e => e.remove())
+          if (!r.querySelector('.' + item_class))
             if (set_bottom)
               r.appendChild(block);
             else
               r.insertBefore(block, r.firstChild);
-          }
+
         });
       }
     }

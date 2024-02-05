@@ -1,6 +1,7 @@
 import getbyASIN from "../tools/fetch/getbyASIN";
 import injectorHTML from "../tools/injectorHTML";
 import observeClassChanges from "../tools/observeClassChages";
+import updateHTML from "../tools/updateHTML";
 
 const browser_cr = chrome ? chrome : browser;
 
@@ -15,10 +16,9 @@ export default function moduleQuick(state) {
 
     // Creation part
     function createElement(data) {
-      console.log('createElement arg:', data?.asin);
       const item = document.createElement('div');
       item.innerHTML = `
-      <div class="qgw qfixgw" >
+      <div class="qgw qfixgw" data-type="content">
         <div class="qgw__dl">
           <div>
             <span class="qgw__dt">ASIN:</span>
@@ -54,22 +54,65 @@ export default function moduleQuick(state) {
         </div>
       </div>
             `;
-
-      console.log(item);
       return item;
     }
 
+    function updateElement(data) {
+      console.log('updateElement arg:', data?.asin);
+      const content = document.createElement('div');
+      content.setAttribute('data-type', 'content')
+      content.classList.add('qgw', 'qfixgw')
+
+      content.innerHTML = `
+        <div class="qgw__dl">
+          <div>
+            <span class="qgw__dt">ASIN:</span>
+            <span class="qgw__dd" data-part="asin">${data?.asin || "aaaooo..."}</span>
+          </div>
+          <div>
+            <span class="qgw__dt">LQS:</span>
+            <span class="qgw__dd">${data?.data?.lqs ?? "aaaooo..."}</span>
+          </div>
+
+          <div>
+            <span class="qgw__dt">Weight:</span>
+            <span class="qgw__dd">0:</span>
+          </div>
+          <div>
+            <span class="qgw__dt">Pub. date:</span>
+            <span class="qgw__dd">0:</span>
+          </div>
+          <div>
+            <span class="qgw__dt">Last 30d sales:</span>
+            <span class="qgw__dd">0:</span>
+          </div>
+          <div>
+            <span class="qgw__dt">Dimensions:</span>
+            <span class="qgw__dd">20/25/400 in</span>
+          </div>
+        </div>
+        <div class="qgw__nav">
+          <a href="#">Link</a>
+          <a href="#">1688</a>
+          <a href="#">Alibaba</a>
+          <a href="#">Aliexress.com</a>
+        </div>
+            `;
+      console.log(content);
+      return content;
+    }
+
     // Initial injection part
-    // let item = createElement();
-    // injectorHTML(state, item, item_class, ['.s-result-list>[data-component-type="s-search-result"] .puis-card-container'], true);
+    let item = createElement();
+    injectorHTML(state, item, item_class, ['.s-result-list>[data-component-type="s-search-result"] .puis-card-container'], true);
 
 
     // sends request to backend
-    function update() {
+    function observeAndFetch() {
       const items = document.querySelectorAll('[data-component-type="s-search-results"] .s-result-list>[data-component-type="s-search-result"]')
       let asins = [...items].map(e => e.getAttribute("data-asin") || [])
       if (asins.length) {
-        getbyASIN(asins, append)
+        getbyASIN(asins)
         console.log('update in module, entry:', asins);
       }
 
@@ -97,11 +140,11 @@ export default function moduleQuick(state) {
       if (asins) {
         browser_cr.storage.local.get("gpCache", (result) => {
           console.log(result);
-          let newData = result?.gpCache.filter(e => asins.indexOf(e.asin) !== -1);
+          let newData = result?.gpCache?.filter(e => asins.indexOf(e.asin) !== -1) || [];
           console.log('new_data from crCache:', result, newData, asins);
 
           newData?.forEach(i => {
-            append(i)
+            updateExist(i)
           })
         });
       }
@@ -110,12 +153,14 @@ export default function moduleQuick(state) {
 
 
 
-    function append(payload) {
-      let item = createElement(payload);
-      injectorHTML(state, item, item_class, [`.s-result-list>[data-component-type="s-search-result"][data-asin="${payload.asin}"] .puis-card-container`], true);
+    function updateExist(payload) {
+      let item = updateElement(payload);
+      // injectorHTML(state, item, item_class, [`.s-result-list>[data-component-type="s-search-result"][data-asin="${payload.asin}"] .puis-card-container`], true);
+      updateHTML(item, item_class, [`.s-result-list>[data-component-type="s-search-result"][data-asin="${payload.asin}"] .${item_class}`], true)
     }
 
-
-    observeClassChanges('.s-result-list>[data-component-type="s-search-result"]', update)
+    observeAndFetch()
+    document.addEventListener("DOMContentLoaded", observeAndFetch)
+    observeClassChanges('.s-result-list>[data-component-type="s-search-result"]', observeAndFetch)
   }
 }

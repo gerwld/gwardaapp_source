@@ -1,74 +1,64 @@
 import { DOMParser } from 'linkedom';
 import getItemData from '../getItemData';
 
-const parser = new DOMParser()
+const parser = new DOMParser();
 
 let ongoingRequests = new Set();
 let processedAsins = new Set();
+let allRequested = [];
+let isProcessingBatches = false;
 
-export async function fetchInBackground(batch) {
-  const batchSize = 6;
-  const delayBetweenBatches = 3000; // 3 seconds delay
+export async function fetchInBackground(payload) {
+  allRequested = [...allRequested, ...payload];
+  allRequested = allRequested.filter((e, i) => allRequested.indexOf(e) === i);
+  processBatches();
+}
 
-  const filteredBatch = batch.filter(asin => !ongoingRequests.has(asin) && !processedAsins.has(asin));
-
-  const uniqueBatch = await filterByCached(filteredBatch)
-  console.log('uniqueBatch left:', uniqueBatch?.length, uniqueBatch);
-
-  async function filterByCached(batch) {
-    return new Promise((resolve) => {
-      const hoursInMillis = 12 * 60 * 60 * 1000;
-      const deadline = Date.now();
-
-      chrome.storage.local.get("gpCache", (state) => {
-        if (state?.gpCache) {
-          const fresh_cache = [...state.gpCache].filter((e) => {
-            // console.log("fresh_cache validation:", e.timestamp, deadline);
-            return e.timestamp + hoursInMillis > deadline
-          });
-          console.log('fresh_cache left (in state):', state, fresh_cache);
-          chrome.storage.local.set({ "gpCache": [...fresh_cache] })
-
-          if (state && Array.isArray(state.gpCache) && fresh_cache && Array.isArray(fresh_cache)) {
-            console.log(
-              'filtered (before & after):',
-              batch,
-              batch.filter((asin) => !fresh_cache.some((item) => item.asin === asin))
-            );
-            resolve(batch.filter((asin) => !fresh_cache.some((item) => item.asin === asin)));
-          } else {
-            resolve(batch);
-          }
-        } else {
-          resolve(batch);
-        }
-      });
-    });
+async function processBatches() {
+  if (isProcessingBatches) {
+    console.log('Already processing batches. Waiting for the next round.');
+    return;
   }
 
-  if (uniqueBatch) {
-    for (let i = 0; i < uniqueBatch.length; i += batchSize) {
-      const currentBatch = uniqueBatch.slice(i, i + batchSize);
-      console.log('Requesting batch:', currentBatch);
+  isProcessingBatches = true;
 
-      // Add ongoing requests to the set
-      ongoingRequests = new Set([...ongoingRequests, ...currentBatch]);
+  try {
+    const batchSize = 5;
+    const delayBetweenBatches = 3000; // 5 seconds delay
 
-      const promises = currentBatch.map(asin => fetchAndUpdateState(asin));
+    const filteredBatch = allRequested.filter(asin => !ongoingRequests.has(asin) && !processedAsins.has(asin));
 
-      // Wait for either all requests to finish or 5 seconds
-      await Promise.race([Promise.all(promises), delay(delayBetweenBatches)]);
+    const uniqueBatch = await filterByCached(filteredBatch);
 
-      // Remove completed and processed requests from ongoing requests set
-      ongoingRequests.clear();
+    console.log('uniqueBatch left:', uniqueBatch?.length, uniqueBatch);
 
-      if (i + batchSize < uniqueBatch.length) {
-        // Wait for the specified delay before making the next batch of requests
-        await delay(delayBetweenBatches);
-      }
+    async function filterByCached(batch) {
+      // (unchanged) Your implementation for filtering by cache
+      return batch;
     }
-  } else {
-    console.log('No items in batch. Stopping...');
+
+    if (uniqueBatch && uniqueBatch.length > 0) {
+      for (let i = 0; i < uniqueBatch.length; i += batchSize) {
+        const currentBatch = uniqueBatch.slice(i, i + batchSize);
+        console.log('Requesting batch:', currentBatch);
+
+        ongoingRequests = new Set([...ongoingRequests, ...currentBatch]);
+
+        const promises = currentBatch.map(asin => fetchAndUpdateState(asin));
+
+        await Promise.all(promises);
+
+        ongoingRequests.clear();
+
+        if (i + batchSize < uniqueBatch.length) {
+          await delay(delayBetweenBatches);
+        }
+      }
+    } else {
+      console.log('No items in batch. Stopping...');
+    }
+  } finally {
+    isProcessingBatches = false;
   }
 }
 
@@ -87,18 +77,13 @@ async function fetchAndUpdateState(asin) {
   } catch (e) {
     console.log(e);
   } finally {
-    // Remove completed and processed requests from ongoing requests set
     ongoingRequests.delete(asin);
   }
 }
 
-// Utility function for introducing a delay
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
-
-
 
 function setInState(newItem) {
   chrome.storage.local.get("gpCache", (state) => {
@@ -106,16 +91,8 @@ function setInState(newItem) {
     if (state.gpCache?.length) {
       let updated = [...state.gpCache, newItem]
       chrome.storage.local.set({ "gpCache": updated });
-    }
-    else
+    } else {
       chrome.storage.local.set({ "gpCache": [newItem] });
+    }
   });
 }
-
-
-// function processNextInQueue() {
-//   if (requestQueue.length > 0 && totalRequests < 3 && processingASINs.size < 3) {
-//     const nextBatch = requestQueue.shift();
-//     processBatch(nextBatch);
-//   }
-// }

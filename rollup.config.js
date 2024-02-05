@@ -63,7 +63,9 @@ export default [
           'MediaList: MediaList.MediaList': 'MediaList: MediaList?.MediaList',
           'CSSOM.CSSValueExpression = CSSValueExpression.CSSValueExpression;': 'CSSOM.CSSValueExpression = CSSValueExpression?.CSSValueExpression;',
           'CSSKeyframeRule.CSSKeyframeRule = CSSOM.CSSKeyframeRule;': 'CSSKeyframeRule.CSSKeyframeRule = CSSOM?.CSSKeyframeRule;',
-          'CSSImportRule.CSSImportRule = CSSOM.CSSImportRule;': 'CSSImportRule.CSSImportRule = CSSOM?.CSSImportRule;'
+          'CSSImportRule.CSSImportRule = CSSOM.CSSImportRule;': 'CSSImportRule.CSSImportRule = CSSOM?.CSSImportRule;',
+          'CSSOM.CSSKeyframeRule = CSSKeyframeRule.CSSKeyframeRule;': 'CSSOM.CSSKeyframeRule = CSSKeyframeRule?.CSSKeyframeRule;'
+
         }
       }),
 
@@ -110,7 +112,8 @@ export default [
           'MediaList: MediaList.MediaList': 'MediaList: MediaList?.MediaList',
           'CSSOM.CSSValueExpression = CSSValueExpression.CSSValueExpression;': 'CSSOM.CSSValueExpression = CSSValueExpression?.CSSValueExpression;',
           'CSSKeyframeRule.CSSKeyframeRule = CSSOM.CSSKeyframeRule;': 'CSSKeyframeRule.CSSKeyframeRule = CSSOM?.CSSKeyframeRule;',
-          'CSSImportRule.CSSImportRule = CSSOM.CSSImportRule;': 'CSSImportRule.CSSImportRule = CSSOM?.CSSImportRule;'
+          'CSSImportRule.CSSImportRule = CSSOM.CSSImportRule;': 'CSSImportRule.CSSImportRule = CSSOM?.CSSImportRule;',
+          'CSSOM.CSSKeyframeRule = CSSKeyframeRule.CSSKeyframeRule;': 'CSSOM.CSSKeyframeRule = CSSKeyframeRule?.CSSKeyframeRule;'
 
         }
       }),

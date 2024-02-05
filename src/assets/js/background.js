@@ -66,13 +66,4 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 
 
 
-// setInterval(() => {
-//   const url = `https://www.amazon.com/dp/B0BRBFW77R?psc=1`;
-//   const response = fetch(url).then(e => {
-//     console.log(e);
-//   });
-//   console.log(response);
-
-
-// }, 400)
 // browser_cr.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLScGXGlaC1KUSji5XzrVtB7PpRdoBbmRhoEVig1BPPrUY2ShKg/viewform?usp=sf_link");

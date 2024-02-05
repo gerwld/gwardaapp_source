@@ -21,7 +21,7 @@ export default function getItemData(callback, find, current = document, isBacken
 
   return new Promise(async (resolve, reject) => {
     try {
-      const result = await lazyFindElements(find, current, 20, 20, true);
+      const result = await lazyFindElements(find, current, 21, 400);
 
       const main_img = result["#altImages>ul"]?.querySelector("li.imageThumbnail img") || null;
       const hires_img = result["#imgTagWrapperId img"]?.getAttribute("data-old-hires") || null;

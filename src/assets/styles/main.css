@@ -30,6 +30,10 @@ body .a-size-large {
   line-height: 120%;
 }
 
+.a-section {
+  margin-bottom: 0 !important;
+}
+
 
 [data-component-type="s-messaging-widget-results-header"] .a-size-base.a-color-secondary.a-text-normal {
   width: calc(.75 * (100vw - 28px));
