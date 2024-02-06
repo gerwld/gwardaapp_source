@@ -23,12 +23,13 @@ function getCurrentState() {
     const state = result.gpState.disabled ? { disabled: true } : result.gpState;
 
     // ------------------ SETTERS PART ------------------//
+    moduleQuick(!state.disabled)
     moduleOverlay(!state.disabled)
     moduleRate(!state.disabled)
     moduleKeywords(!state.disabled)
     moduleLQS(!state.disabled)
     moduleStocks(!state.disabled)
-    moduleQuick(!state.disabled)
+
     console.warn('gwardaApp: getCurrentState exec.');
   });
 }

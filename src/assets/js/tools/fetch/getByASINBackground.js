@@ -1,5 +1,6 @@
 import { DOMParser } from 'linkedom';
 import getItemData from '../getItemData';
+import stripSoup from '../stripSoup';
 
 const parser = new DOMParser();
 
@@ -8,8 +9,6 @@ let processedAsins = new Set();
 let allRequested = [];
 
 export async function fetchInBackground(payload) {
-
-
 
   //TODO: TEST MODE
   const hasCommonItems = payload.some(item => allRequested.includes(item));
@@ -37,7 +36,7 @@ export async function fetchInBackground(payload) {
 async function processBatches() {
 
   const batchSize = 3;
-  const delayBetweenBatches = 1000; // 3 seconds delay
+  const delayBetweenBatches = 2000; // 3 seconds delay
 
   const filteredBatch = allRequested.filter(asin => !ongoingRequests.has(asin) && !processedAsins.has(asin));
 
@@ -70,8 +69,8 @@ async function processBatches() {
   } else {
     console.log('No items in batch. Stopping...');
   }
-
 }
+let retryTotal = 3;
 
 async function fetchAndUpdateState(asin) {
   processedAsins.add(asin);
@@ -80,17 +79,32 @@ async function fetchAndUpdateState(asin) {
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.text();
-      const parsedData = parser.parseFromString(data, 'text/html');
-      const final = await getItemData(null, [], parsedData, true).then((data) => data);
-
-      setInState({ asin, timestamp: Date.now(), data: final });
+      let soup = stripSoup(data + '');
+      if (soup) {
+        const parsedData = parser.parseFromString(soup, 'text/html');
+        await getItemData(null, [], parsedData, true)
+          .then((data) => setInState({ asin, timestamp: Date.now(), data }))
+          .catch((e) => retry(asin, e));
+      }
     }
   } catch (e) {
-    console.log(e);
+    retry(asin, e);
   } finally {
     ongoingRequests.delete(asin);
   }
 }
+
+async function retry(asin, error) {
+  if (retryTotal > 0) {
+    retryTotal--;
+    console.log(`Retrying for ASIN ${asin}, retry count: ${retryTotal}`);
+    await fetchAndUpdateState(asin); // Retry the function
+  } else {
+    console.log('Maximum retry limit reached.');
+    throw error; // Throw the error if retry limit exceeded
+  }
+}
+
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -98,12 +112,14 @@ function delay(ms) {
 
 function setInState(newItem) {
   chrome.storage.local.get("gpCache", (state) => {
-    console.log("gpCache update with:", newItem, state);
     if (state.gpCache?.length) {
       let updated = [...state.gpCache, newItem]
+      console.log("gpCache update with:", newItem, updated);
       chrome.storage.local.set({ "gpCache": updated });
     }
-    else
+    else {
+      console.log("gpCache initialized with:", newItem, state);
       chrome.storage.local.set({ "gpCache": [newItem] });
+    }
   });
 }

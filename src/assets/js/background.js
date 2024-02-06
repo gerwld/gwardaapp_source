@@ -39,7 +39,7 @@ browser_cr.runtime.onInstalled.addListener(function () {
 });
 
 
-// Clear cache if > 4mb
+// Clear cache if > 4mb or item
 chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
   let currentStorageUsage = bytesInUse / 1024 / 1024;
   let storageLimit = 4;
@@ -50,8 +50,23 @@ chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
   }
 });
 
-
-
+// Clear cache if expired
+chrome.storage.local.get('gpCache', function(payload) {
+  let oneDayInMillis = 1000 * 60 * 60 * 24;
+  if (payload?.gpCache && payload.gpCache.length) {
+    
+    let exp = []
+    let new_cache = payload.gpCache.filter(e => {
+      let not_expired = (e.timestamp + oneDayInMillis) > Date.now()
+      if (!not_expired) 
+        exp.push(e)
+      return not_expired;
+    });
+    console.log('gpCache old cache clear (24h)', exp);
+    console.log('gpCache after clear:', new_cache);
+    chrome.storage.local.set({"gpCache": [...new_cache]});
+  }
+});
 
 // fetchData message
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {

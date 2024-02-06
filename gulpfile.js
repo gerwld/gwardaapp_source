@@ -116,6 +116,9 @@ task('babelRollup', async function (done) {
 //## Minify HTML ##//
 task('minifyHTML', async function () {
     src(['./src/content/*.html'])
+        .pipe(
+            filter(['**', '!**/__*.html'])
+        )
         .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(insert.prepend(`<!--\n${COPYRIGHT}-->\n\n`))
         .pipe(gulpFlatten({ includeParents: 4 }))

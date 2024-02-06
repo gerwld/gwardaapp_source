@@ -32,5 +32,5 @@ export default async function lazyFindElements(elementSelectors, current = docum
 
   return Object.keys(filteredFoundElements).length > 0
     ? Promise.resolve(filteredFoundElements)
-    : Promise.reject(console.log("No elements found within the specified attempts."));
+    : Promise.reject({message: "No elements found within the specified attempts."});
 }

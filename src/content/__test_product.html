@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  <script>
+    async function fetchAndUpdateState(asin) {
+      const url = `https://www.amazon.com/dp/${asin}?psc=1`;
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          let data = await response.text();
+
+          function getStringSizeInMB(str) {
+            const byteSize = new Blob([str]).size;
+            const megabytes = byteSize / (1024 * 1024);
+            return megabytes.toFixed(2); 
+          }
+
+          function stripSoup(soup){
+            // All general removes (big chunks)
+            soup = soup.replace(/<head\b[^<]*(?:(?!<\/head>)<[^<]*)*<\/head>/gi, '');
+            soup = soup.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+            soup = soup.replace(/<link\b[^>]*>/gi, '');    
+            soup = soup.replace(/<meta\b[^>]*>/gi, '');
+            
+            // Visuals
+            soup = soup.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
+            soup = soup.replace(/<svg\b[^<]*(?:(?!<\/svg>)<[^<]*)*<\/svg>/gi, '');
+
+            // Remove html comments
+            soup = soup.replace(/<\!--[\s\S]*?-->/g, '');
+
+            // Remove onload js parts
+            soup = soup.replace(/onload/g, 'soup-onload');
+
+            return soup.replace(/\s/g, ' ');
+          }            
+
+
+          document.documentElement.innerHTML = stripSoup(data)
+          console.log(getStringSizeInMB(data)+"mb", getStringSizeInMB(stripSoup(data))+"mb");
+
+
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+
+      }
+    }
+    fetchAndUpdateState("B000052XHI");
+  </script>
+
+</body>
+
+</html>
