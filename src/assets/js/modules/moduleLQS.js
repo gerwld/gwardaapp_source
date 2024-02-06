@@ -43,7 +43,7 @@ export default function moduleLQS(state) {
             append(store)
           });
         })
-      }).catch(error => console.log(error))
+      }).catch(error => console.log(error.message))
 
 
     // Creation part
