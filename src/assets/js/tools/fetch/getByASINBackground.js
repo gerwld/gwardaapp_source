@@ -1,4 +1,4 @@
-import { DOMParser } from 'linkedom';
+// import { DOMParser } from 'linkedom';
 import getItemData from '../getItemData';
 import stripSoup from '../stripSoup';
 

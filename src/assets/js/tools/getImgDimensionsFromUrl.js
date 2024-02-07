@@ -1,4 +1,4 @@
-import { parseHTML } from 'linkedom';
+// import { parseHTML } from 'linkedom';
 
 export default async function getImageDimensionsFromURL(imageURL) {
   return new Promise((resolve) => {
@@ -10,7 +10,7 @@ export default async function getImageDimensionsFromURL(imageURL) {
       .then(response => response.text())
       .then(html => {
         // Parse the HTML using linkedom
-        const { document } = parseHTML(html);
+        // const { document } = parseHTML(html);
         // Find the image element
         const imgElement = document.querySelector('img');
         if (imgElement) {

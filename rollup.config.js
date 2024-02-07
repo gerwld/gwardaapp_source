@@ -44,6 +44,7 @@ export default [
         preserveSymlinks: true,
       }),
       replace({
+        preventAssignment: true,
         delimiters: ['', ''], // to avoid adding extra quotes around the replacement
         values: {
           'CSSOM.CSSStyleSheet = requireCSSStyleSheet().CSSStyleSheet;': 'CSSOM.CSSStyleSheet = requireCSSStyleSheet()?.CSSStyleSheet;',
@@ -93,6 +94,7 @@ export default [
         preserveSymlinks: true,
       }),
       replace({
+        preventAssignment: true,
         delimiters: ['', ''], // to avoid adding extra quotes around the replacement
         values: {
           'CSSOM.CSSStyleSheet = requireCSSStyleSheet().CSSStyleSheet;': 'CSSOM.CSSStyleSheet = requireCSSStyleSheet()?.CSSStyleSheet;',
