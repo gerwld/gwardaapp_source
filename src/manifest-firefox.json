@@ -35,6 +35,7 @@
     "persistent": false
   },
   "permissions": [
+    "*://*.amazon.com/*",
     "management",
     "storage"
   ],

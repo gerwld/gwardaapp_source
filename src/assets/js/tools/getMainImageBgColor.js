@@ -1,6 +1,6 @@
 // import { DOMParser } from 'linkedom';
 
-const { document } = new DOMParser().parseFromString('<html></html>', 'text/html');
+// const { document } = new DOMParser().parseFromString('<html></html>', 'text/html');
 
 export default function getMainImageBgColor(imageElement) {
   return new Promise((resolve, reject) => {
@@ -9,7 +9,7 @@ export default function getMainImageBgColor(imageElement) {
       return;
     }
 
-    let img = new document.defaultView.Image();
+    let img = new Image();
     img.crossOrigin = 'Anonymous';
 
     // Existing image element as the source

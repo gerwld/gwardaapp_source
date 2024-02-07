@@ -59,7 +59,7 @@ export default function moduleQuick(state) {
     }
 
     function updateElement(data) {
-      console.log('updateElement arg:', data?.asin);
+      console.log('updateElement arg:', data);
       const content = document.createElement('div');
       content.setAttribute('data-type', 'content')
       content.classList.add('qgw', 'qfixgw')

@@ -1,10 +1,10 @@
 import delay from "../delay";
 import getItemData from "../getItemData";
 
-const BATCH_SIZE = 2;
+const BATCH_SIZE = 4;
 const DELAY = 2000;
 let isWorking = false;
-let allRequested = []
+let allRequested = [];
 
 export default async function getbyASIN(arr) {
   let filteredArr = [...arr];
@@ -23,22 +23,34 @@ export default async function getbyASIN(arr) {
 }
 
 
-function recieveFetchFromBackend(payload) {
-  console.log(payload);
+async function recieveFetchFromBackend(payload) {
+  console.log("recieveFetchFromBackend", payload);
   if (payload && payload.error) {
-    console.error(payload.error)
-  }
-  else if (payload) {
-    let scrapped = [...payload].map(item => ({ asin: item.asin, timestamp: item.timestamp, data: getDataFromSSR(item.data) }))
-    console.log(scrapped);
-    updateCache(scrapped);
+    console.error(payload.error);
+  } else if (payload) {
+    Promise.all(payload.map(item => getDataFromSSR(item.data)
+      .then(data => ({
+        asin: item.asin,
+        timestamp: item.timestamp,
+        data: data
+      }))
+    ))
+      .then(scrapped => {
+        console.log("recieveFetchFromBackend scrapped", scrapped);
+        updateCache(scrapped);
+      })
+      .catch(error => {
+        console.warn('recieveFetchFromBackend getDataFromSSR error:', error);
+      });
   }
 }
 
 
-async function fetchOnBackendInBatch(asins) {
+
+async function fetchOnBackendInBatch(asins, isRetry) {
   allRequested.push(...asins)
-  allRequested.filter((e, i) => allRequested.indexOf(e) === i)
+  allRequested = allRequested.filter((e, i) => allRequested.indexOf(e) === i)
+
 
   if (!isWorking) {
     isWorking = true;
@@ -56,10 +68,11 @@ async function fetchOnBackendInBatch(asins) {
   }
 }
 
-function getDataFromSSR(page) {
+async function getDataFromSSR(page) {
   const parser = new DOMParser();
   const soup = parser.parseFromString(page, 'text/html');
-  return getItemData(null, [], soup)
+  const data = await getItemData(null, [], soup, 1, 1);
+  return data;
 }
 
 function updateCache(payload) {

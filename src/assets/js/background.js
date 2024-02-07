@@ -12,7 +12,7 @@
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
-import fetchInBackground from "./tools/test/fetchInBackground";
+import fetchInBackground from "./tools/fetch/fetchInBackground";
 
 const initialState = {
   disabled: true,
@@ -38,34 +38,34 @@ browser_cr.runtime.onInstalled.addListener(function () {
 });
 
 
-// // Clear cache if > 4mb or item
-// chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
-//   let currentStorageUsage = bytesInUse / 1024 / 1024;
-//   let storageLimit = 4;
-//   if (currentStorageUsage > storageLimit) {
-//     chrome.storage.local.remove("gpCache", function () {
-//       console.warn("gwardaApp: cache removed due to storage limit");
-//     });
-//   }
-// });
+// Clear cache if > 4mb or item
+chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
+  let currentStorageUsage = bytesInUse / 1024 / 1024;
+  let storageLimit = 4;
+  if (currentStorageUsage > storageLimit) {
+    chrome.storage.local.remove("gpCache", function () {
+      console.warn("gwardaApp: cache removed due to storage limit");
+    });
+  }
+});
 
-// // Clear cache if expired
-// chrome.storage.local.get('gpCache', function(payload) {
-//   let oneDayInMillis = 1000 * 60 * 60 * 24;
-//   if (payload?.gpCache && payload.gpCache.length) {
+// Clear cache if expired
+chrome.storage.local.get('gpCache', function (payload) {
+  let oneDayInMillis = 1000 * 60 * 60 * 24;
+  if (payload?.gpCache && payload.gpCache.length) {
 
-//     let exp = []
-//     let new_cache = payload.gpCache.filter(e => {
-//       let not_expired = (e.timestamp + oneDayInMillis) > Date.now()
-//       if (!not_expired) 
-//         exp.push(e)
-//       return not_expired;
-//     });
-//     console.log('gpCache old cache clear (24h)', exp);
-//     console.log('gpCache after clear:', new_cache);
-//     chrome.storage.local.set({"gpCache": [...new_cache]});
-//   }
-// });
+    let exp = []
+    let new_cache = payload.gpCache.filter(e => {
+      let not_expired = (e.timestamp + oneDayInMillis) > Date.now()
+      if (!not_expired)
+        exp.push(e)
+      return not_expired;
+    });
+    console.log('gpCache old cache clear (24h)', exp);
+    console.log('gpCache after clear:', new_cache);
+    chrome.storage.local.set({ "gpCache": [...new_cache] });
+  }
+});
 
 // fetchData message, message.arr = batch from frontend
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

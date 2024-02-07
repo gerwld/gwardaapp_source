@@ -3,7 +3,7 @@
 
 import observeClassChanges from "./observeClassChages";
 
-export default function injectorHTML(state, item, item_class, parent_selectors, set_bottom, isinit) {
+export default function injectorHTML(state, item, item_class, parent_selectors, set_bottom, replace) {
   let totalWaitTime = 0;
   function checkParentAndProceed() {
     // ---- CLEAN-UP ---- //
@@ -39,18 +39,21 @@ export default function injectorHTML(state, item, item_class, parent_selectors, 
       if (parents && item) {
         // Else append one clone to each parent
         parents.forEach(r => {
-          let prev_block = r.classList.contains(item_class) || r.parentElement.classList.contains(item_class);
+          let prev_block = r.parentElement.classList.contains(item_class) ? r.parentElement : r.querySelector('.' + item_class);
           let block = document.createElement("div");
           block.appendChild(item.cloneNode(true));
           block.setAttribute("class", item_class);
 
           // Check if the stringified and trimmed content is not equal or not exist.
           // Then remove prev and inj new
-          if (!r.querySelector('.' + item_class))
+          if (!prev_block || replace) {
+            if (replace && prev_block)
+              prev_block.remove()
             if (set_bottom)
               r.appendChild(block);
             else
               r.insertBefore(block, r.firstChild);
+          }
 
         });
       }
