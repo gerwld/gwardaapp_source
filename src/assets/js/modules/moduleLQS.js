@@ -1,14 +1,9 @@
 "use strict"
 
-import getImageDimensionsFromURL from "../tools/getImgDimensionsFromUrl";
 import getItemData from "../tools/getItemData";
-import getLQS from "../tools/getLQS";
 import getLogo from "../tools/getLogo";
-import getMainImageBgColor from "../tools/getMainImageBgColor";
 import injectorHTML from "../tools/injectorHTML";
-import lazyFindElements from "../tools/lazyFindElements";
 import observeClassChanges from "../tools/observeClassChages";
-import trimTags from "../tools/trimTags";
 
 // Generate keywords button
 export default function moduleLQS(state) {
@@ -50,18 +45,18 @@ export default function moduleLQS(state) {
       <table>
         <tr>
           <td><span>Title:</td></span>
-          <td><span>${store?.title ? store.title + " chars." : "Error"}</td></span>
+          <td><span>${store?.title ? store.title + " chars" : "Error"}</td></span>
           <td><span>More than 80 characters, up to 200. <a class="lb" href="">Learn More</a></td></span>
         </tr>
         <tr>
           <td><span>Description:</td></span>
-          <td><span>${store?.description ? store.description + " chars." : "Error"}</td></span>
+          <td><span>${store?.description ? (store.description > 2500 ? '2500+' : store.description) + " chars" : "Error"}</td></span>
           <td><span>More than 1000 characters, up to 2500. <a href="">Learn More</a></td></span>
         </tr>
         <tr>
           <td><span>Bullets:</td></span>
           <td><span>${store?.bullets ?? "Error"}</td></span>
-          <td><span>Minimum of 5 bullet points to highlight key features and benefits.<a href="">Learn More</a></td></span>
+          <td><span>Minimum 5 bullet points.<a href="">Learn More</a></td></span>
         </tr>
       </table>
     </div>

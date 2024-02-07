@@ -18,7 +18,7 @@ export default function moduleKeywords(state) {
   function createElement() {
     const item = document.createElement('div');
     let logo = getLogo();
-    item.innerHTML = `<button class="keywordsgws__btn" id="keywordsgws"><div class="keywordsgws__logo"><img src="${logo}" alt="Logo"></div><span>Generate Keywords?</span></button>`
+    item.innerHTML = `<button class="keywordsgws__btn" id="keywordsgws"><div class="keywordsgws__logo"><img src="${logo}" alt="Logo"></div><span>Generate Keywords</span></button>`
     item.classList.add(item_class);
     document.removeEventListener("click", onKeywordsGen)
     document.addEventListener("click", onKeywordsGen)

@@ -68,32 +68,45 @@ export default function moduleQuick(state) {
         <div class="qgw__dl">
           <div>
             <span class="qgw__dt">ASIN:</span>
-            <span class="qgw__dd" data-part="asin">${data?.asin || "aaaooo..."}</span>
+            <span class="qgw__dd" data-part="asin">${data?.asin || "-"}</span>
           </div>
           <div>
             <span class="qgw__dt">LQS:</span>
-            <span class="qgw__dd">${data?.data?.lqs ?? "aaaooo..."}</span>
+            <span class="qgw__dd">${data?.data?.lqs ?? "-"}</span>
           </div>
 
           <div>
             <span class="qgw__dt">Weight:</span>
-            <span class="qgw__dd">0:</span>
+            <span class="qgw__dd">${data?.data?.weight ?? "-"}</span>
           </div>
           <div>
             <span class="qgw__dt">Pub. date:</span>
-            <span class="qgw__dd">0:</span>
+            <span class="qgw__dd">${data?.data?.pubdate ?? "-"}</span>
           </div>
           <div>
             <span class="qgw__dt">Last 30d sales:</span>
-            <span class="qgw__dd">0:</span>
+            <span class="qgw__dd">-</span>
           </div>
           <div>
-            <span class="qgw__dt">Dimensions:</span>
-            <span class="qgw__dd">20/25/400 in</span>
+            <span class="qgw__dt">Rating(avg/total):</span>
+            <span class="qgw__dd">${data?.data?.rating ?? "-"}</span>
+            <span class="qgw__label">
+              <span>A+</span>
+            </span>
+          </div>
+          <div class="qgw__group">
+            <div>
+              <span class="qgw__dt">FBA Fees:</span>
+              <span class="qgw__dd">${data?.data?.fbafees ?? "-"}</span>
+            </div>
+            <div>
+              <span class="qgw__dt">Options:</span>
+              <span class="qgw__dd">${data?.data?.lqs ?? "-"}</span>
+            </div>
           </div>
         </div>
         <div class="qgw__nav">
-          <a href="#">Link</a>
+          <a href="#">Ads Insights</a>
           <a href="#">1688</a>
           <a href="#">Alibaba</a>
           <a href="#">Aliexress.com</a>

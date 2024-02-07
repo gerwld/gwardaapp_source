@@ -1,7 +1,3 @@
-// import { DOMParser } from 'linkedom';
-
-// const { document } = new DOMParser().parseFromString('<html></html>', 'text/html');
-
 export default function getMainImageBgColor(imageElement) {
   return new Promise((resolve, reject) => {
     if (!imageElement || !imageElement.src) {

@@ -283,13 +283,18 @@ body .a-size-large {
   background-color: rgba(255, 128, 0, 0.3);
   border: 1px solid rgba(255, 128, 0, 0.3);
   text-decoration: none;
+  white-space: nowrap;
+  font-size: 0.82rem;
   border-radius: 5px;
   transition: 100ms ease;
 }
 
 .qgw__nav a:hover {
-  color: #fff;
   background-color: rgba(255, 128, 0, 0.6);
+}
+
+.qgw__label {
+  margin-left: 5px;
 }
 
 .sg-col-12-of-16 .qgw {
@@ -305,10 +310,15 @@ body .a-size-large {
   width: 100%;
   position: relative;
   border-left: none;
+  height: 132px;
+  margin-top: 1px;
+  padding-top: 1px;
+  background-color: #fff;
 }
 
+
 .sg-col-12-of-16 .qgw .qgw__nav {
-  top: 1px;
+  top: 0px;
 }
 
 .sg-col-4-of-16 .qgw .qgw__nav {
@@ -319,7 +329,22 @@ body .a-size-large {
   position: relative;
 }
 
+.qgw__group {
+  display: flex;
+}
 
+.qgw__group>div {
+  margin-right: 12px;
+  color: gray;
+  margin-top: 2px;
+}
+.qgw__group>div:nth-last-child(1) {
+  margin-right: 0;
+}
+
+.qgw__group .qgw__dt {
+  margin-right: 4px;
+}
 
 
 /* QUICKVIEW END */
@@ -338,16 +363,15 @@ body .a-size-large {
 .lqswlx__content__wrapper {
   position: absolute;
   left: 0;
-  left: calc(50% - 305px);
+  left: calc(50% - 300px);
   top: 100%;
   opacity: 0;
   max-height: 0;
-  width: 620px;
-  overflow: hidden;
+  width: 600px;
   pointer-events: none;
   user-select: none;
   transform: translateY(-30px);
-  transition: 150ms ease;
+  transition: 150ms ease 200ms;
 }
 
 .lqswlx__content__wrapper:hover,
@@ -361,8 +385,8 @@ body .a-size-large {
 }
 
 .lqswlx__logo {
-  width: 43px;
-  height: 43px;
+  width: 40px;
+  height: 40px;
   margin: 0;
   overflow: hidden;
   border: 1px solid #dee4e8;
@@ -389,6 +413,7 @@ body .a-size-large {
   margin: -10px 0 0 0;
   font-size: 14px;
   font-size: 12.5px;
+  transition: opacity 200ms ease 20ms;
 }
 
 
@@ -400,32 +425,31 @@ body .a-size-large {
   display: flex;
   align-items: center;
   background-color: #fff;
-  padding: 8px 8px 8px 14px;
+  padding: 7px 5px 7px 12px;
   margin-left: -10px;
   border-radius: 0 8px 8px 0;
-  border: 1px solid #dee4e8;
-
-  box-shadow: 0px 1px 2px #f6f6f6;
+  border: 1px solid #eee;
   white-space: nowrap !important;
 }
 
-.lqswlx__lab {
-  margin-right: 0.3em;
-}
-
 .lqswlx__tot {
-  margin-left: 0.4em;
   color: #727f89;
-  margin-left: 0.3em;
   font-size: 0.9em;
 }
 
 .lqswlx__value {
   font-weight: 400;
+  margin: 0 0.2em;
+  font-size: 0.9em;
 }
 
 .lqswlx__group {
-  padding: 14px 0 0;
+  padding: 8px 0 6px;
+  border-bottom: 1px dashed #eee;
+}
+
+.lqswlx__group:nth-child(1) {
+  padding: 0 0 6px;
 }
 
 .lqswlx__group a {
@@ -436,10 +460,6 @@ body .a-size-large {
 .lqswlx__group a.lb {
   display: block;
   margin: 0;
-}
-
-.lqswlx__group:nth-child(1) {
-  padding: 0;
 }
 
 
@@ -453,12 +473,17 @@ body .a-size-large {
 
 .lqswlx__group td {
   padding: 0 0 8px;
-  min-height: 2em;
 }
+
+.lqswlx__group td > span {
+  display: inline-block;
+  min-height: 30px;
+}
+
 
 .lqswlx__group td:nth-child(1) {
   font-weight: 500;
-  width: 40%;
+  width: 30%;
   color: var(--text);
 }
 
@@ -474,16 +499,21 @@ body .a-size-large {
   width: 35%;
 }
 
+.lqswlx__group td:nth-child(3) span {
+  margin-top: -10px;
+}
+
 
 
 .lqswlx__content {
-  max-width: 620px;
-  padding: 10px 14px 16px;
-  border: 1px solid #e2e9ee;
+  max-width: 600px;
+  padding: 10px 14px 8px;
+  border: none;
   border-radius: 5px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   z-index: 90;
   background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 2px, rgba(0, 0, 0, 0.04) 0px 2px 4px, rgba(0, 0, 0, 0.04) 0px 4px 8px, rgba(0, 0, 0, 0.04) 0px 8px 16px, rgba(0, 0, 0, 0.04) 0px 16px 32px, rgba(0, 0, 0, 0.04) 0px 32px 64px
 }
 
 .lqswlx__title {
@@ -607,7 +637,7 @@ body .stwsl .ch_sp::after {
   position: relative;
   color: #232425;
   background-color: #fff;
-  border: 1px solid #dfe2e5;
+  border: 1px solid #eee;
   border-radius: 5px;
 
 }
@@ -619,7 +649,7 @@ body .stwsl .ch_sp::after {
 .keywordsgws__logo {
   width: 1.8em;
   height: 1.8em;
-  margin: 0 0.4em 0 0;
+  margin: 0 0.42em 0 0;
 }
 
 .keywordsgws__btn span {

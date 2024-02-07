@@ -98,11 +98,12 @@
 
 .lqswlx__group td {
   padding: 10px 0;
+  min-height: 50px;
 }
 
 .lqswlx__group td:nth-child(1) {
   font-weight: 500;
-  width: 45%;
+  width: 30%;
   color: var(--text);
 }
 

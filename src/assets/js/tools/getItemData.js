@@ -1,8 +1,8 @@
-import lazyFindElements from "./lazyFindElements";
-import getMainImageBgColor from "./getMainImageBgColor";
 import getLQS from "./getLQS";
 import trimTags from "./trimTags";
-import getImageDimensionsFromURL from "./getImgDimensionsFromUrl";
+import lazyFindElements from "./lazyFindElements";
+import getMainImageBgColor from "./processing/getMainImageBgColor";
+import getImageDimensionsFromURL from "./processing/getImgDimensionsFromUrl";
 
 export default function getItemData(callback, find, current = document, maxAttempts = 200, delay = 200) {
   const base = [
