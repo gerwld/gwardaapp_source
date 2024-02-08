@@ -1,21 +1,22 @@
 "use strict"
 
+import delay from "../tools/delay";
 import getItemData from "../tools/getItemData";
 import getLogo from "../tools/getLogo";
 import injectorHTML from "../tools/injectorHTML";
 import observeClassChanges from "../tools/observeClassChages";
 
 // Generate keywords button
-export default function moduleLQS(state) {
-  const is_location = window.location.pathname && window.location.pathname !== "/";
-  if (is_location) {
-    const item_class = 'lfmz_d6b368ee-947a-47a4-b8fc-c791acca1843__gw'
+export default async function moduleLQS(state) {
+  const item_class = 'lfmz_d6b368ee-947a-47a4-b8fc-c791acca1843__gw'
+  const is_location = window.location.pathname && window.location.pathname !== "/" && !window.location.pathname.includes("/s?");
 
+  if (is_location) {
     function initializeUpdate() {
       getItemData(null, [], document, 20, 20)
         .then(data => {
           append(data)
-        }).catch(error => console.error(error))
+        }).catch(error => console.error(error?.message))
     }
 
 
@@ -55,7 +56,7 @@ export default function moduleLQS(state) {
         </tr>
         <tr>
           <td><span>Bullets:</td></span>
-          <td><span>${store?.bullets ?? "Error"}</td></span>
+          <td><span>${store?.bullets ?? "0"}</td></span>
           <td><span>Minimum 5 bullet points.<a href="">Learn More</a></td></span>
         </tr>
       </table>
@@ -80,7 +81,7 @@ export default function moduleLQS(state) {
         </tr>
         <tr>
         <td><span>Brand Content:</td></span>
-        <td><span>${store?.brand_content}</td></span>
+        <td><span>${store?.brand_content ?? "0"}</td></span>
         <td><span>Description contain at least 1 image</td></span>
       </tr>
       </table>
@@ -118,6 +119,6 @@ export default function moduleLQS(state) {
     append()
     initializeUpdate()
     document.addEventListener("DOMContentLoaded", initializeUpdate)
-    observeClassChanges("body", initializeUpdate)
+    observeClassChanges("#titleSection", initializeUpdate)
   }
 }

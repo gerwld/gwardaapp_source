@@ -1,7 +1,9 @@
 import getbyASIN from "../tools/fetch/getbyASIN";
+import getLogo from "../tools/getLogo";
 import injectorHTML from "../tools/injectorHTML";
 import { hashObject, shallowEqual } from "../tools/objects";
 import observeClassChanges from "../tools/observeClassChages";
+import getASINTrust from "../tools/processing/getASINTrust";
 import updateHTML from "../tools/updateHTML";
 
 const browser_cr = chrome ? chrome : browser;
@@ -77,11 +79,11 @@ export default function moduleQuick(state) {
 
           <div>
             <span class="qgw__dt">Weight:</span>
-            <span class="qgw__dd">${data?.data?.weight ?? "-"}</span>
+            <span class="qgw__dd">${data?.data?.ms?.weight ?? "-"}</span>
           </div>
           <div>
             <span class="qgw__dt">Pub. date:</span>
-            <span class="qgw__dd">${data?.data?.pubdate ?? "-"}</span>
+            <span class="qgw__dd">${data?.data?.date ?? "-"}</span>
           </div>
           <div>
             <span class="qgw__dt">Last 30d sales:</span>
@@ -89,9 +91,11 @@ export default function moduleQuick(state) {
           </div>
           <div>
             <span class="qgw__dt">Rating(avg/total):</span>
-            <span class="qgw__dd">${data?.data?.rating ?? "-"}</span>
-            <span class="qgw__label">
-              <span>A+</span>
+            <span class="qgw__dd">${`${data?.data?.rating_avg}<span class="qgw__rttot">(${data?.data?.ratings_total})</span>` ?? "-"}</span>
+            <span class="qgw__label qgw__trustl2">
+              <span class="qgw__loader">
+                <img src="${getLogo('assets/img/loader.gif')}"/>
+              </span>
             </span>
           </div>
           <div class="qgw__group">
@@ -100,8 +104,8 @@ export default function moduleQuick(state) {
               <span class="qgw__dd">${data?.data?.fbafees ?? "-"}</span>
             </div>
             <div>
-              <span class="qgw__dt">Options:</span>
-              <span class="qgw__dd">${data?.data?.lqs ?? "-"}</span>
+              <span class="qgw__dt">Variations:</span>
+              <span class="qgw__dd">${data?.data?.variations ?? "1"}</span>
             </div>
           </div>
         </div>
@@ -129,6 +133,19 @@ export default function moduleQuick(state) {
       console.log("observeAndFetch call, asins to fetch:", asins);
       if (asins.length) {
         getbyASIN(asins)
+        getASINTrust(asins).then(results => {
+          if (results) {
+            Object.keys(results).forEach(key => {
+              console.log("KEY:".key);
+              const parente = document.querySelector(`[data-asin="${key}"] .${item_class}`);
+              if (parente) {
+                let string = `<span>${results[key][0]}</span>`;
+                parente.querySelector(".qgw__trustl2").innerHTML = string;
+              }
+            })
+          }
+        })
+
         console.log('entry fetch point observeAndFetch() call. update in moduleQuick:', asins);
       }
     }
@@ -146,8 +163,6 @@ export default function moduleQuick(state) {
         }
       }
     });
-
-
 
     function initializeUpdate() {
       console.log('moduleQuick -> initializeUpdate call');

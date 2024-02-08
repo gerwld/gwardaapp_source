@@ -41,6 +41,8 @@
   ],
   "web_accessible_resources": [
     "/assets/*",
-    "/content/*.html"
+    "/content/*.html",
+    "/assets/js/content.js",
+    "/assets/img/loader.gif"
   ]
 }

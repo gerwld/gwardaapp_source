@@ -60,7 +60,7 @@ task('minifyImg', async function () {
         .pipe(dest('./dist/chromium/assets/img/'))
         .pipe(dest('./dist/firefox/assets/img/'))
 
-    src(['./src/assets/img/*.png', './src/assets/img/**/*.png'])
+    src(['./src/assets/img/*.png', './src/assets/img/**/*.png', './src/assets/img/*.gif'])
         .pipe(gulpFlatten({ includeParents: 4 }))
         .pipe(dest('./dist/chromium/assets/img/'))
         .pipe(dest('./dist/firefox/assets/img/'))

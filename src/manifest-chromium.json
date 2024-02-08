@@ -38,7 +38,8 @@
       "resources": [
         "/assets/*",
         "/content/*.html",
-        "/assets/js/content.js"
+        "/assets/js/content.js",
+        "/assets/img/loader.gif"
       ],
       "matches": [
         "<all_urls>"

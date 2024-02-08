@@ -286,15 +286,20 @@ body .a-size-large {
   white-space: nowrap;
   font-size: 0.82rem;
   border-radius: 5px;
-  transition: 100ms ease;
+  transition: 50ms ease!important;
+
+  padding: 1px 4px;
+  margin: 0px 0px 4px 4px;
+  border-radius: 4px;
 }
 
 .qgw__nav a:hover {
-  background-color: rgba(255, 128, 0, 0.6);
+  color: rgba(255, 128, 0) !important;
+  background-color: rgba(255, 128, 0, 0.5);
 }
 
 .qgw__label {
-  margin-left: 5px;
+  margin-left: 4px;
 }
 
 .sg-col-12-of-16 .qgw {
@@ -303,6 +308,8 @@ body .a-size-large {
   right: 0;
   width: 260px;
   max-width: 280px;
+  height: 132px;
+  background: #fff;
   border-left: 1px dashed #e8e4e4;
 }
 
@@ -316,9 +323,50 @@ body .a-size-large {
   background-color: #fff;
 }
 
+.qgw__loader {
+  height: 100%;
+  display: inline-block;
+}
+
+.qgw__loader img {
+  height: 15px;
+}
+
+.qgw__rttot {
+  color: #788390;
+  margin-left: 0.2em;
+}
+
+body .puisg-col-inner .puisg-row {
+  overflow: visible!important;
+}
+
+body .sg-col-12-of-16 [data-cy="product-details-recipe"] {
+  margin-top: -14px!important;
+  padding: 0 8px 0 0!important;
+}
+
+html body .sg-col-12-of-16 [data-cy="product-details-recipe"] > *,
+html body .sg-col-12-of-16 [data-cy="product-details-recipe"] a,
+html body .sg-col-12-of-16 [data-cy="product-details-recipe"] span,
+html body .sg-col-12-of-16 [data-cy="product-details-recipe"] .a-size-base {
+  font-size: 11px!important;
+  line-height: 120%!important;
+}
+
+@media only screen and (min-width: 1400px) {
+  html body .sg-col-12-of-16 [data-cy="product-details-recipe"] > *,
+  html body .sg-col-12-of-16 [data-cy="product-details-recipe"] a,
+  html body .sg-col-12-of-16 [data-cy="product-details-recipe"] span,
+  html body .sg-col-12-of-16 [data-cy="product-details-recipe"] .a-size-base {
+    font-size: 14px!important;
+    line-height: 120%!important;
+  }
+}
+
 
 .sg-col-12-of-16 .qgw .qgw__nav {
-  top: 0px;
+  top: -1px;
 }
 
 .sg-col-4-of-16 .qgw .qgw__nav {
@@ -434,13 +482,20 @@ body .a-size-large {
 
 .lqswlx__tot {
   color: #727f89;
-  font-size: 0.9em;
+  margin-bottom: -0.5px;
 }
 
 .lqswlx__value {
+  display: block;
+  min-width: 1.5em;
   font-weight: 400;
-  margin: 0 0.2em;
-  font-size: 0.9em;
+  text-align: center;
+}
+
+.lqswlx__value,
+.lqswlx__tot  {
+  font-size: 0.9em; 
+  line-height: 100%;
 }
 
 .lqswlx__group {
@@ -639,6 +694,7 @@ body .stwsl .ch_sp::after {
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 5px;
+  transition: opacity 200ms ease 20ms;
 
 }
 
@@ -661,8 +717,16 @@ body .stwsl .ch_sp::after {
 /* SKELETON LOADER  */
 
 .lqswlx__btn__vals {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  margin: 0 5px;
+}
+
+.lqswlx__btn__vals.skeletonls {
   display: block;
-  min-width: 82px;
+  height: 1rem;
 }
 
 .skeletonls {
@@ -696,6 +760,7 @@ body .stwsl .ch_sp::after {
   border-radius: 5px;
   min-width: 1rem;
   min-height: 15px;
+  margin-top: 5px;
   animation: skeleton-loading 1s linear infinite alternate;
 }
 
