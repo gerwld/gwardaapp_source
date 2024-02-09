@@ -18,6 +18,11 @@ import fetchStocksInBackground from "./tools/fetch/fetchStocksInBackground";
 const initialState = {
   disabled: true,
   dark_mode: false,
+  gn_keywords: false,
+  stock_status: false,
+  lqs: false,
+  quick_view: false,
+  public_data: false
 };
 
 const browser_cr = chrome ? chrome : browser;
@@ -89,20 +94,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
   else if (message.action === 'fetchStocks') {
     fetchStocksInBackground(message.arr)
-    .then(data => {
-      if (chrome.runtime.lastError) {
-        console.error("Runtime error:", chrome.runtime.lastError);
-      } else {
-        console.log(data);
-        sendResponse(data);
-      }
-    })
-    .catch(error => {
-      console.error("Error fetching data:", error);
-      sendResponse({ error: "Error fetching data" });
-    });
+      .then(data => {
+        if (chrome.runtime.lastError) {
+          console.error("Runtime error:", chrome.runtime.lastError);
+        } else {
+          console.log(data);
+          sendResponse(data);
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+        sendResponse({ error: "Error fetching data" });
+      });
     // Return true to approve the async type of the listener
-  return true;
+    return true;
   }
 });
 

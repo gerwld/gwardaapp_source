@@ -14,8 +14,6 @@ export default function moduleQuick(state) {
   if (is_location) {
     console.log('moduleQuick was called');
     const item_class = 'qwv_617330cb-0d46-4305-adba-241c658be85d__gw'
-    
-
 
 
     // Creation part
@@ -142,13 +140,13 @@ export default function moduleQuick(state) {
 
     function updateTrust(results) {
       console.log('updateTrust result processing:', results);
-    
+
       if (results) {
         Object.keys(results).forEach(key => {
-          if(window.gwApp)
-            window.gwApp = {...window.gwApp, asin_trust: {...results}}
+          if (window.gwApp)
+            window.gwApp = { ...window.gwApp, asin_trust: { ...results } }
           else
-            window.gwApp = {asin_trust: {...results}}
+            window.gwApp = { asin_trust: { ...results } }
 
           const parente = document.querySelector(`[data-asin= "${key}"] .${item_class} `);
           const notInit = parente?.querySelector('.qgw__loader') && !parente.querySelector(".qgw__loader__prev");
@@ -200,7 +198,7 @@ export default function moduleQuick(state) {
       const items = document.querySelectorAll('[data-component-type="s-search-results"] .s-result-list> [data-component-type="s-search-result"]');
       const asins_prev = [...items].filter(e => !e.classList.contains('AdHolder')).map(item => item.getAttribute("data-asin"));
       const asins = asins_prev.filter((e, i) => e && asins_prev.indexOf(e) === i);
-      if (asins.length> 0) {
+      if (asins.length > 0) {
         browser_cr.storage.local.get("gpCache", (result) => {
           console.log(result);
           const cachedData = result?.gpCache || [];

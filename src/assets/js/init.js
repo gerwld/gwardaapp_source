@@ -268,3 +268,23 @@
     }
   });
 })();
+
+
+(() => {
+  "use strict"
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var smartLinks = document.querySelectorAll('[data-attr="smart-link"]');
+    smartLinks.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        var url = this.getAttribute('href');
+        var newWindow = window.open(url, "_blank");
+        if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+          window.location.href = url;
+        }
+      });
+    });
+  });
+
+})()
