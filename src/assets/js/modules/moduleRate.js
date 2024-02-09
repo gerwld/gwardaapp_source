@@ -10,10 +10,10 @@ export default function moduleRate(state) {
   const MAX_CLOSE_COUNT = 4;
   const browser_cr = chrome ? chrome : browser;
   const STORE_LINKS = {
-    "chrome": "https://chromewebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write",
+    "browser_cr": "https://browser_crwebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write",
     "firefox": "https://addons.mozilla.org/en-US/firefox/addon/GwardaApp/reviews/",
-    "edge": "https://chromewebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write",
-    "opera": "https://chromewebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write"
+    "edge": "https://browser_crwebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write",
+    "opera": "https://browser_crwebstore.google.com/detail/ijkboaojikgaanlgigobkmbpnjgjljnc/reviews/write"
   }
   const item_class = 'ext_show__edf3235a-d1d3-4d2d-8c15-76ce4202c010__gw',
     exist = document.querySelectorAll("." + item_class)?.length
@@ -26,9 +26,9 @@ export default function moduleRate(state) {
       const agent = navigator.userAgent;
       if (agent.includes("Edg")) return "edge";
       if (agent.includes("OPR")) return "opera";
-      if (agent.includes("Chrome")) return "chrome";
+      if (agent.includes("browser_cr")) return "browser_cr";
       if (agent.includes("Firefox")) return "firefox";
-      return "chrome";
+      return "browser_cr";
     }
 
     function createItem() {

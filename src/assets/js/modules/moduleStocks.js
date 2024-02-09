@@ -1,6 +1,7 @@
 import getLogo from "../tools/getLogo";
 import injectorHTML from "../tools/injectorHTML";
 import updateHTML from "../tools/updateHTML";
+const browser_cr = chrome ? chrome : browser;
 
 // Generate keywords button
 let store = []
@@ -64,7 +65,7 @@ export default function moduleStocks(state) {
     async function fetchStocksOnBackend(asin) {
       if ((!store || Object.keys(store).length === 0) && asin) {
         console.log('fetchStocksOnBackend call');
-        await chrome.runtime.sendMessage({ action: 'fetchStocks', arr: [asin] }, async resp => {
+        await browser_cr.runtime.sendMessage({ action: 'fetchStocks', arr: [asin] }, async resp => {
           getStocksPopoverData(parser.parseFromString(resp, 'text/html'));
         });
       }

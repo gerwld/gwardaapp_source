@@ -18,45 +18,46 @@ import fetchStocksInBackground from "./tools/fetch/fetchStocksInBackground";
 const initialState = {
   disabled: true,
   dark_mode: false,
-  gn_keywords: false,
-  stock_status: false,
-  lqs: false,
-  quick_view: false,
-  public_data: false
+  gn_keywords: true,
+  stock_status: true,
+  lqs: true,
+  quick_view: true,
+  public_data: true
 };
 
 const browser_cr = chrome ? chrome : browser;
 
-// Init gpState (state prop)
-browser_cr.storage.local.get("gpState", (result) => {
-  browser_cr.storage.local.set({ "gpState": { ...initialState, ...result?.gpState } });
-});
 
 // Show accept cookies if not cookies_gal20 (state prop)
 browser_cr.runtime.onInstalled.addListener(function () {
   browser_cr.storage.local.get(null, (result) => {
     // If no cookies accept, disable extension & open accept window
     if (!result?.cookies_gal20) {
-      browser_cr.storage.local.set({ "gpState": { ...result.gpState, disabled: true } })
+      browser_cr.storage.local.set({ "gpState": { ...initialState, disabled: true } })
       browser_cr.tabs.create({ url: "/content/preferences.html" });
     }
   });
 });
 
+// Init gpState (state prop)
+browser_cr.storage.local.get("gpState", (result) => {
+  browser_cr.storage.local.set({ "gpState": { ...initialState, ...result?.gpState } });
+});
+
 
 // Clear cache if > 4mb or item
-chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
+browser_cr.storage.local.getBytesInUse(null, function (bytesInUse) {
   let currentStorageUsage = bytesInUse / 1024 / 1024;
   let storageLimit = 3;
   if (currentStorageUsage > storageLimit) {
-    chrome.storage.local.remove("gpCache", function () {
+    browser_cr.storage.local.remove("gpCache", function () {
       console.warn("gwardaApp: cache removed due to storage limit");
     });
   }
 });
 
 // Clear cache if expired
-chrome.storage.local.get('gpCache', function (payload) {
+browser_cr.storage.local.get('gpCache', function (payload) {
   let oneDayInMillis = 1000 * 60 * 60 * 24;
   if (payload?.gpCache && payload.gpCache.length) {
 
@@ -69,17 +70,17 @@ chrome.storage.local.get('gpCache', function (payload) {
     });
     console.log('gpCache old cache clear (24h)', exp);
     console.log('gpCache after clear:', new_cache);
-    chrome.storage.local.set({ "gpCache": [...new_cache] });
+    browser_cr.storage.local.set({ "gpCache": [...new_cache] });
   }
 });
 
 // fetchData message, message.arr = batch from frontend
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+browser_cr.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'fetchData') {
     fetchInBackground(message.arr)
       .then(data => {
-        if (chrome.runtime.lastError) {
-          console.error("Runtime error:", chrome.runtime.lastError);
+        if (browser_cr.runtime.lastError) {
+          console.error("Runtime error:", browser_cr.runtime.lastError);
         } else {
           console.log(data);
           sendResponse(data);
@@ -95,8 +96,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   else if (message.action === 'fetchStocks') {
     fetchStocksInBackground(message.arr)
       .then(data => {
-        if (chrome.runtime.lastError) {
-          console.error("Runtime error:", chrome.runtime.lastError);
+        if (browser_cr.runtime.lastError) {
+          console.error("Runtime error:", browser_cr.runtime.lastError);
         } else {
           console.log(data);
           sendResponse(data);

@@ -1,5 +1,6 @@
 import delay from "../delay";
 import getItemData from "../getItemData";
+const browser_cr = chrome ? chrome : browser;
 
 const BATCH_SIZE = 5;
 const DELAY = 2000;
@@ -10,8 +11,8 @@ let allProcessed = [];
 export default async function getbyASIN(arr) {
   let filteredArr = [...arr];
 
-  // retrieves gpCache from chrome storage
-  chrome.storage.local.get("gpCache", (payload) => {
+  // retrieves gpCache from browser_cr storage
+  browser_cr.storage.local.get("gpCache", (payload) => {
     console.log(payload);
     let state = payload.gpCache ? payload.gpCache : []
     if (state.length)
@@ -40,7 +41,7 @@ async function recieveFetchFromBackend(payload) {
         console.log("recieveFetchFromBackend scrapped", scrapped);
         updateCache(scrapped);
         scrapped.forEach(e => {
-         if(e?.asin)
+          if (e?.asin)
             allProcessed.push(e.asin)
         })
       })
@@ -65,7 +66,7 @@ async function fetchOnBackendInBatch(asins, isRetry) {
 
       // Fetching with callback to recieveFetchFromBackend
       if (currentBatch && currentBatch.length) {
-        await chrome.runtime.sendMessage({ action: 'fetchData', arr: currentBatch }, response => {
+        await browser_cr.runtime.sendMessage({ action: 'fetchData', arr: currentBatch }, response => {
           recieveFetchFromBackend(response);
         });
         await delay(DELAY);
@@ -83,13 +84,13 @@ async function getDataFromSSR(page) {
 }
 
 function updateCache(payload) {
-  chrome.storage.local.get("gpCache", cache => {
+  browser_cr.storage.local.get("gpCache", cache => {
     let new_cache;
     if (cache && cache.gpCache && cache.gpCache.length)
       new_cache = [...cache.gpCache, ...payload]
     else
       new_cache = [...payload]
-    chrome.storage.local.set({ "gpCache": new_cache })
+    browser_cr.storage.local.set({ "gpCache": new_cache })
 
   })
 }

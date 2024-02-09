@@ -1322,6 +1322,13 @@ a.don_btn {
   margin: 0.5em 0 0.7em;
 }
 
+.accept_cookies h1,
+.accept_cookies h2,
+.accept_cookies h3 {
+  color: #232427 !important;
+  color: #232427;
+}
+
 .accept_cookies > * {
   user-select: auto !important;
 }
@@ -1705,6 +1712,38 @@ a.don_btn {
   background-color: rgb(81 97 109);
   box-shadow: 0px 2px 0 0 #212223;
   text-shadow: 1px 1px 2px #a0bfe045;
+}
+
+.main_l43fModal {
+  min-height: 200px;
+}
+
+.main_l43fModal__cookies .content {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+.initializeCookies__title {
+  display: block;
+  text-align: left;
+  padding: 0 0 0 20px;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 500;
+  margin: 1.5em 0 1.5em;
+}
+.main_l43fModal__cookies ul {
+  border-top: var(--main-border);
+  border-bottom: var(--main-border);
+}
+
+html body .glb_menu_l2__accept li {
+  border-top: var(--main-border) !important;
+  border-bottom: var(--main-border) !important;
 }
 
 @media only screen and (max-width: 670px) {

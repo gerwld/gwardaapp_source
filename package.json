@@ -40,6 +40,7 @@
     "chalk": "^5.3.0",
     "dom-chef": "^5.1.1",
     "dom-parser": "^1.1.5",
+    "gulp-strip-debug": "^6.0.0",
     "gulp-wait": "^0.0.2",
     "gulp-zip": "^6.0.0",
     "jsdom": "^24.0.0",

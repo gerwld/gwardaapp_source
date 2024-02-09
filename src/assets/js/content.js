@@ -9,17 +9,25 @@ console.log(`%c gwardaApp v.0.9.5 beta `, 'background: gray; color: yellow');
 const browser_cr = chrome ? chrome : browser;
 
 function getCurrentState() {
-  browser_cr.storage.local.get("gpState", (result) => {
-    const state = result.gpState.disabled ? { disabled: true } : result.gpState;
+  browser_cr.storage.local.get(null, (result) => {
+    let state;
+    if (result.cookies_gal20 !== true) {
+      state = { disabled: true }
+    }
+    else {
+      state = result.gpState.disabled ? { disabled: true } : result.gpState;
+    }
 
     // ------------------ SETTERS PART ------------------//
 
-    moduleQuick(state.quick_view)
-    moduleOverlay(!state.disabled)
-    moduleRate(!state.disabled)
-    moduleKeywords(state.gn_keywords)
-    moduleLQS(state.lqs)
-    moduleStocks(state.stock_status)
+    if (!state.disabled && state) {
+      moduleQuick(state.quick_view)
+      moduleOverlay(!state.disabled)
+      moduleRate(!state.disabled)
+      moduleKeywords(state.gn_keywords)
+      moduleLQS(state.lqs)
+      moduleStocks(state.stock_status)
+    }
 
     console.warn('gwardaApp: getCurrentState exec.');
   });

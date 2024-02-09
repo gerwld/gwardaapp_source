@@ -12,7 +12,7 @@
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
-// Note: Amazon is a registered trademark of Amazon AB. This extension is not affiliated with or endorsed by Amazon AB.
+// Note: Amazon is a registered trademark of Amazon and all related Marks are Trademarks of Amazon.com, Inc. or its affiliates. This extension is not affiliated with or endorsed by Amazon.com, Inc or / and its affiliates.
 
 
 import gulp from 'gulp';
@@ -29,6 +29,7 @@ import rename from "gulp-rename";
 import replace from "gulp-replace";
 import shell from 'gulp-shell';
 import chalk from 'chalk';
+import stripDebug from 'gulp-strip-debug';
 
 let { src, dest, task, series, watch, on } = gulp;
 const link = chalk.hex('#5e98d9');
@@ -49,7 +50,7 @@ const COPYRIGHT = `//   - This file is part of GwardaApp Extension
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 
-// Note: Amazon is a registered trademark of Amazon AB. This extension is not affiliated with or endorsed by Amazon AB.
+// Note: Amazon is a registered trademark of Amazon and all related Marks are Trademarks of Amazon.com, Inc. or its affiliates. This extension is not affiliated with or endorsed by Amazon.com, Inc or / and its affiliates.
 `
 
 //## Minify Images  ##//
@@ -100,6 +101,7 @@ task('minifyJS', async function () {
         .pipe(
             filter(['**', '!**/content.js', '!**/background.js', '!**/rate_popup.js', '!**/__*.js'])
         )
+        .pipe(stripDebug())
         .pipe(uglify())
         .pipe(insert.prepend(COPYRIGHT))
         .pipe(gulpFlatten({ includeParents: 4 }))
@@ -191,11 +193,11 @@ gulp.task('webext', function () {
         .pipe(shell(['cd ./dist/firefox && web-ext run']))
 });
 
-//## Main build task (both Chrome and Firefox) ##//
+//## Main build task (both browser_cr and Firefox) ##//
 task('build', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babelRollup'));
 task('build_md', series('minifyImg', "minifyCSS", "minifyJS", "minifyHTML", "addOther", 'babelRollup', 'source', 'zipper'));
 
-//## Main development task (both Chrome and Firefox) ##//
+//## Main development task (both browser_cr and Firefox) ##//
 task('dev_watch', () => {
     series("build")
     watch('./src/assets/**/*.js', series('minifyJS', 'babelRollup'))

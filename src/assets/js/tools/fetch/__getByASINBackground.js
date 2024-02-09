@@ -111,15 +111,15 @@ function delay(ms) {
 }
 
 function setInState(newItem) {
-  chrome.storage.local.get("gpCache", (state) => {
+  browser_cr.storage.local.get("gpCache", (state) => {
     if (state.gpCache?.length) {
       let updated = [...state.gpCache, newItem]
       console.log("gpCache update with:", newItem, updated);
-      chrome.storage.local.set({ "gpCache": updated });
+      browser_cr.storage.local.set({ "gpCache": updated });
     }
     else {
       console.log("gpCache initialized with:", newItem, state);
-      chrome.storage.local.set({ "gpCache": [newItem] });
+      browser_cr.storage.local.set({ "gpCache": [newItem] });
     }
   });
 }

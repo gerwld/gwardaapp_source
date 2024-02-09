@@ -26,11 +26,16 @@
       let prevstate;
       let updateScheduled = false;
       browser_cr.storage.local.onChanged.addListener((changes, namespace) => {
+        let newState;
+        if (changes?.gpState?.newValue) {
+          newState = JSON.stringify({ ...changes?.gpState?.newValue || {} })
+        }
         if (
+          !changes.gpState?.newValue ||
           changes.gpState.newValue &&
-          JSON.stringify({ ...changes.gpState.newValue }) !== prevstate
+          newState !== prevstate
         ) {
-          prevstate = JSON.stringify({ ...changes.gpState.newValue });
+          prevstate = newState;
           if (!updateScheduled) {
             updateScheduled = true;
             setTimeout(() => {
@@ -55,7 +60,14 @@
         (() => {
           return new Promise((resolve) => {
             browser_cr.storage.local.get(null, (result) => {
-              let gpState = result?.gpState ? result?.gpState : {};
+              let gpState;
+              if (result.cookies_gal20 !== true) {
+                gpState = { ...result.gpState, disabled: true }
+              }
+              else {
+                gpState = result.gpState;
+              }
+
               resolve(gpState);
             })
           })
@@ -169,7 +181,10 @@
           case "accept_cookies":
             cookies_popup.classList.add("hidden");
             browser_cr.storage.local.get(null, (result) => {
-              browser_cr.storage.local.set({ ...result, "cookies_gal20": true })
+              console.log(result);
+              browser_cr.storage.local.set({ "cookies_gal20": true })
+              if (result.gpState)
+                browser_cr.storage.local.set({ "gpState": { ...result.gpState, disabled: false } })
             });
             setBodyFixed(null);
             break;

@@ -32,6 +32,9 @@ dependencies:
   dom-parser:
     specifier: ^1.1.5
     version: 1.1.5
+  gulp-strip-debug:
+    specifier: ^6.0.0
+    version: 6.0.0(gulp@4.0.2)
   gulp-wait:
     specifier: ^0.0.2
     version: 0.0.2
@@ -1644,6 +1647,35 @@ packages:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
     dev: true
+
+  /@types/babel__core@7.20.5:
+    resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
+    dependencies:
+      '@babel/parser': 7.23.9
+      '@babel/types': 7.23.9
+      '@types/babel__generator': 7.6.8
+      '@types/babel__template': 7.4.4
+      '@types/babel__traverse': 7.20.5
+    dev: false
+
+  /@types/babel__generator@7.6.8:
+    resolution: {integrity: sha512-ASsj+tpEDsEiFr1arWrlN6V3mdfjRMZt6LtK/Vp/kreFLnr5QH5+DhvD5nINYZXzwJvXeGq+05iUXcAzVrqWtw==}
+    dependencies:
+      '@babel/types': 7.23.9
+    dev: false
+
+  /@types/babel__template@7.4.4:
+    resolution: {integrity: sha512-h/NUaSyG5EyxBIp8YRxo4RMe2/qQgvyowRwVMzhYhBCONbW8PUsg4lkFMrhgZhUe5z3L3MiLDuvyJ/CaPa2A8A==}
+    dependencies:
+      '@babel/parser': 7.23.9
+      '@babel/types': 7.23.9
+    dev: false
+
+  /@types/babel__traverse@7.20.5:
+    resolution: {integrity: sha512-WXCyOcRtH37HAUkpXhUduaxdm82b4GSlyTqajXviN4EfiuPgNYR109xMCKvpl6zPIpua0DGlMEDCq+g8EdoheQ==}
+    dependencies:
+      '@babel/types': 7.23.9
+    dev: false
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
@@ -3354,6 +3386,23 @@ packages:
       through2: 3.0.2
       tslib: 1.14.1
     dev: true
+
+  /gulp-strip-debug@6.0.0(gulp@4.0.2):
+    resolution: {integrity: sha512-eFw0grOwCzDtIi0SLJwaxaHZBCH/8nSEtJk1RoU0KRCDwcfik1jkLUCkKDDsQCwoyVc4CVP/LWoNxnBvDl6LDg==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      gulp: '>=4'
+    peerDependenciesMeta:
+      gulp:
+        optional: true
+    dependencies:
+      '@babel/core': 7.23.9
+      gulp: 4.0.2
+      gulp-plugin-extras: 0.3.0
+      strip-debug: 7.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /gulp-svgmin@4.1.0:
     resolution: {integrity: sha512-WKpif+yu3+oIlp1e11CQi5F64YddP699l2mFmxpz8swv8/P8dhxVcMKdCPFWouArlVyn7Ma1eWCJHw5gx4NMtw==}
@@ -5216,6 +5265,13 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       is-utf8: 0.2.1
+
+  /strip-debug@7.0.0:
+    resolution: {integrity: sha512-RX5z3LmGD9850X/kdblmrcZDEIXtP36Dy2uSKQRLKZDGW6bZT4s++JZk2v6MsWh5+kiXrq1BuEl1dZZ59Qr5mA==}
+    engines: {node: '>=14.16'}
+    dependencies:
+      '@types/babel__core': 7.20.5
+    dev: false
 
   /supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}

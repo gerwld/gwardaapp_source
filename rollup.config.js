@@ -20,7 +20,8 @@ const COPYRIGHT = `//   - This file is part of GwardaApp Extension
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
-// Note: Amazon is a registered trademark of Amazon AB. This extension is not affiliated with or endorsed by Amazon AB.
+// Note: Amazon is a registered trademark of Amazon and all related Marks are Trademarks of Amazon.com, Inc. or its affiliates. This extension is not affiliated with or endorsed by Amazon.com, Inc or / and its affiliates.
+
 `
 
 export default [
@@ -69,9 +70,12 @@ export default [
 
         }
       }),
-
-      // terser(), // Minify JavaScript
-      prependBannerPlugin({ banner: COPYRIGHT })
+      terser({ // Minify js
+        compress: {
+          drop_console: true
+        }
+      }),
+      prependBannerPlugin({ banner: COPYRIGHT + "console.log(`%c gwardaApp v.0.9.5 beta `, 'background: gray; color: yellow');\n" })
     ],
   },
   {
@@ -79,10 +83,10 @@ export default [
     output: [
       {
         file: 'dist/chromium/assets/js/background.js',
-        // format: 'iife',
+        format: 'iife',
       }, {
         file: 'dist/firefox/assets/js/background.js',
-        // format: 'iife',
+        format: 'iife',
       },
     ],
 
@@ -116,10 +120,13 @@ export default [
           'CSSKeyframeRule.CSSKeyframeRule = CSSOM.CSSKeyframeRule;': 'CSSKeyframeRule.CSSKeyframeRule = CSSOM?.CSSKeyframeRule;',
           'CSSImportRule.CSSImportRule = CSSOM.CSSImportRule;': 'CSSImportRule.CSSImportRule = CSSOM?.CSSImportRule;',
           'CSSOM.CSSKeyframeRule = CSSKeyframeRule.CSSKeyframeRule;': 'CSSOM.CSSKeyframeRule = CSSKeyframeRule?.CSSKeyframeRule;'
-
         }
       }),
-      // terser(), // Minify JavaScript
+      terser({ // Minify js
+        compress: {
+          drop_console: true
+        }
+      }),
       prependBannerPlugin({ banner: COPYRIGHT })
     ],
   }
