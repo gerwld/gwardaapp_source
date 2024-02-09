@@ -1,6 +1,10 @@
 let lastFetchTime = 0;
-
+let prevData;
 export default async function fetchASINTrust(asins) {
+  let current = asins.join(',');
+  if(current !== prevData) {
+    prevData = current;
+
   console.log('fetchASINTrust:', asins);
   if (!asins || !asins.length)
     throw new Error("No data received in fetchASINTrust (asin argument)");
@@ -8,7 +12,7 @@ export default async function fetchASINTrust(asins) {
   const currentTime = Date.now();
   const timeSinceLastFetch = currentTime - lastFetchTime;
 
-  // Дебаунс на 1 секунд
+  // 1s Debounce 
   if (timeSinceLastFetch < 1) {
     console.log(`Debouncing fetchASINTrust. Remaining time: ${1000 - timeSinceLastFetch}ms`);
     return;
@@ -18,7 +22,7 @@ export default async function fetchASINTrust(asins) {
 
   async function fetchPages() {
     const data = {
-      asins: asins.join(","),
+      asins: current,
       tld: "com"
     };
     try {
@@ -30,7 +34,7 @@ export default async function fetchASINTrust(asins) {
         body: JSON.stringify(data)
       });
       if (response.ok) {
-        const jsonData = await response.json(); // Await here to get the actual data
+        const jsonData = await response.json();
         console.log("TRUST:", jsonData);
         return jsonData;
       } else {
@@ -46,11 +50,12 @@ export default async function fetchASINTrust(asins) {
     if (retryTotal > 0) {
       retryTotal--;
       console.log(`Retrying for ASIN ${asins}, retry count: ${retryTotal}`);
-      return fetchPages(); // No need to pass 'asin' as a parameter
+      return fetchPages();
     } else {
       throw new Error('Maximum retry limit reached.', error);
     }
   }
 
   return fetchPages();
+}
 }

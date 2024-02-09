@@ -13,6 +13,7 @@
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
 import fetchInBackground from "./tools/fetch/fetchInBackground";
+import fetchStocksInBackground from "./tools/fetch/fetchStocksInBackground";
 
 const initialState = {
   disabled: true,
@@ -41,7 +42,7 @@ browser_cr.runtime.onInstalled.addListener(function () {
 // Clear cache if > 4mb or item
 chrome.storage.local.getBytesInUse(null, function (bytesInUse) {
   let currentStorageUsage = bytesInUse / 1024 / 1024;
-  let storageLimit = 4;
+  let storageLimit = 3;
   if (currentStorageUsage > storageLimit) {
     chrome.storage.local.remove("gpCache", function () {
       console.warn("gwardaApp: cache removed due to storage limit");
@@ -56,10 +57,10 @@ chrome.storage.local.get('gpCache', function (payload) {
 
     let exp = []
     let new_cache = payload.gpCache.filter(e => {
-      let not_expired = (e.timestamp + oneDayInMillis) > Date.now()
+      let not_expired = (e?.timestamp + oneDayInMillis) > Date.now()
       if (!not_expired)
         exp.push(e)
-      return not_expired;
+      return not_expired && e;
     });
     console.log('gpCache old cache clear (24h)', exp);
     console.log('gpCache after clear:', new_cache);
@@ -83,8 +84,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.error("Error fetching data:", error);
         sendResponse({ error: "Error fetching data" });
       });
-    // Повертаємо true, щоб підтвердити асинхронний характер обробника
+    // Return true to approve the async type of the listener
     return true;
+  }
+  else if (message.action === 'fetchStocks') {
+    fetchStocksInBackground(message.arr)
+    .then(data => {
+      if (chrome.runtime.lastError) {
+        console.error("Runtime error:", chrome.runtime.lastError);
+      } else {
+        console.log(data);
+        sendResponse(data);
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching data:", error);
+      sendResponse({ error: "Error fetching data" });
+    });
+    // Return true to approve the async type of the listener
+  return true;
   }
 });
 

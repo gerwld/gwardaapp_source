@@ -18,13 +18,14 @@ export default function getItemData(callback, find, current = document, maxAttem
     "#imgTagWrapperId img",
     "#aplus",
     "#twister",
-    '#corePrice_feature_div'
+    '#corePrice_feature_div',
+    '[data-feature-name="merchantInfoFeature"] a'
   ];
   let find_swap = [...find, ...base];
   find = find_swap.filter((e, i) => find_swap.indexOf(e) === i);
 
-  const ms = findItemMeasurments(current) || [];
-  const data = findItemReleaseDate(current) || [];
+  const ms = findItemMeasurments(current) ?? [];
+  const data = findItemReleaseDate(current) ?? [];
 
   return new Promise(async (resolve, reject) => {
     try {
@@ -37,19 +38,23 @@ export default function getItemData(callback, find, current = document, maxAttem
       const main_dimensions = hires_img ? await getImageDimensionsFromURL(hires_img) : null;
 
       const f = {
-        title: result["#productTitle"]?.innerHTML.trim().length || null,
+        title: result["#productTitle"]?.innerHTML?.trim()?.length || null,
         bullets: result["#feature-bullets ul"]?.querySelectorAll("li").length || null,
         description: (trimTags(result["#productDescription"]?.innerHTML)?.length || 0) + (trimTags(result["#aplus"]?.innerHTML)?.length || 0),
         ratings_total: result["#acrCustomerReviewText"] ? (result["#acrCustomerReviewText"]?.innerText?.replace(",", "")?.split(" ")[0] / 1) || null : null,
         rating_avg: parseFloat(trimTags(result["#acrPopover .a-declarative"]?.innerHTML)?.split(" ")[0]) || null,
-        images_total: result["#altImages>ul"]?.querySelectorAll("li.imageThumbnail").length || null,
-        brand_content: (result["#productDescription"]?.querySelectorAll("img").length || 0) + (result["#aplus"]?.querySelectorAll("img").length || 0) || null,
+        images_total: result["#altImages>ul"]?.querySelectorAll("li.imageThumbnail")?.length || null,
+        brand_content: (result["#productDescription"]?.querySelectorAll("img")?.length || 0) + (result["#aplus"]?.querySelectorAll("img").length || 0) || null,
         main_dimensions: main_dimensions || null,
         main_bg: bg_color || null,
-        variations: result["#twister"]?.querySelectorAll("li").length || null,
-        price: result["#corePrice_feature_div"]?.innerText ? result["#corePrice_feature_div"]?.innerText.split(/[;:\n\t<>]/)[0] : null,
+        variations: result["#twister"]?.querySelectorAll("li")?.length || null,
+        price: result["#corePrice_feature_div"]?.innerText ? result["#corePrice_feature_div"]?.innerText?.split(/[;:\n\t<>]/)[0] : null,
         ms,
-        ...data
+        ...data,
+        seller: {
+          label: result['[data-feature-name="merchantInfoFeature"] a']?.innerHTML?.trim() || null,
+          link: result['[data-feature-name="merchantInfoFeature"] a']?.href || null,
+        }
       };
 
       let lqs = getLQS(f) || null;

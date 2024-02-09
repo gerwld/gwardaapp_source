@@ -1,10 +1,11 @@
 import delay from "../delay";
 import getItemData from "../getItemData";
 
-const BATCH_SIZE = 4;
+const BATCH_SIZE = 5;
 const DELAY = 2000;
 let isWorking = false;
 let allRequested = [];
+let allProcessed = [];
 
 export default async function getbyASIN(arr) {
   let filteredArr = [...arr];
@@ -38,6 +39,10 @@ async function recieveFetchFromBackend(payload) {
       .then(scrapped => {
         console.log("recieveFetchFromBackend scrapped", scrapped);
         updateCache(scrapped);
+        scrapped.forEach(e => {
+         if(e?.asin)
+            allProcessed.push(e.asin)
+        })
       })
       .catch(error => {
         console.warn('recieveFetchFromBackend getDataFromSSR error:', error);
@@ -55,14 +60,16 @@ async function fetchOnBackendInBatch(asins, isRetry) {
   if (!isWorking) {
     isWorking = true;
     for (let i = 0; i < allRequested.length; i += BATCH_SIZE) {
-      const currentBatch = allRequested.slice(i, i + BATCH_SIZE);
+      const currentBatch = allRequested.slice(i, i + BATCH_SIZE).filter(e => allProcessed.indexOf(e) === -1);
       console.log('Requesting batch:', currentBatch);
 
       // Fetching with callback to recieveFetchFromBackend
-      await chrome.runtime.sendMessage({ action: 'fetchData', arr: currentBatch }, response => {
-        recieveFetchFromBackend(response);
-      });
-      await delay(DELAY);
+      if (currentBatch && currentBatch.length) {
+        await chrome.runtime.sendMessage({ action: 'fetchData', arr: currentBatch }, response => {
+          recieveFetchFromBackend(response);
+        });
+        await delay(DELAY);
+      }
     }
     isWorking = false;
   }

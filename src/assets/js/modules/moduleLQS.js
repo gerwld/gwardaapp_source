@@ -9,14 +9,14 @@ import observeClassChanges from "../tools/observeClassChages";
 // Generate keywords button
 export default async function moduleLQS(state) {
   const item_class = 'lfmz_d6b368ee-947a-47a4-b8fc-c791acca1843__gw'
-  const is_location = window.location.pathname && window.location.pathname !== "/" && !window.location.pathname.includes("/s?");
+  const is_location = window.location.pathname && window.location.pathname !== "/" && window.location.pathname !== "/s";
 
   if (is_location) {
     function initializeUpdate() {
       getItemData(null, [], document, 20, 20)
         .then(data => {
           append(data)
-        }).catch(error => console.error(error?.message))
+        }).catch(error => { console.error(error?.message); console.log(error) })
     }
 
 

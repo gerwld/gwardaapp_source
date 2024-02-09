@@ -35,7 +35,6 @@ export default function moduleRate(state) {
       let logo = getLogo();
       const item = document.createElement('div');
       item.innerHTML = `
-      
       <div id="ext_show"><div><div class="groupl">${logo ? `<img src = "${logo}" alt = "logo" /> ` : ''}
       <h1>It would really help.</h1></div><p>If you enjoy using this extension,
       would you mind rate it on the webstore,
