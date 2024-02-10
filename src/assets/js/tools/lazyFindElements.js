@@ -26,11 +26,22 @@ export default async function lazyFindElements(elementSelectors, current = docum
     attempts++
   }
 
-  const filteredFoundElements = Object.fromEntries(
-    Object.entries(foundElements).filter(([_, element]) => element !== null)
-  );
+  function filterNullElements(obj) {
+    const filteredObj = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (value !== null) {
+        filteredObj[key] = value;
+      }
+    }
+    return filteredObj;
+  }
 
-  return Object.keys(filteredFoundElements).length > 0
-    ? Promise.resolve(filteredFoundElements)
-    : Promise.reject({ message: "No elements found within the specified attempts." });
+  const filteredFoundElements = filterNullElements(foundElements)
+
+  if (Object.keys(filteredFoundElements).length > 0) {
+    return Promise.resolve(filteredFoundElements)
+  } else {
+    console.warn("lazyFindElements elements not found:", [foundElements, filteredFoundElements])
+    return Promise.resolve({ isError: true });
+  }
 }

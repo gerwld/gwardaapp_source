@@ -78,8 +78,16 @@ export default function moduleQuick(state) {
       const content = document.createElement('div');
       content.setAttribute('data-type', 'content')
       content.classList.add('qgw', 'qfixgw')
-
-      content.innerHTML = `
+      console.log(data);
+      if (data.data.isError === true)
+        content.innerHTML = `
+        <div class="qgw__error">
+          <span>fetching product info error</span>
+          <a href="#">learn more</a>
+        </div>
+        `
+      else
+        content.innerHTML = `
         <div class="qgw__dl">
           <div>
             <span class="qgw__dt">ASIN:</span>
@@ -104,16 +112,16 @@ export default function moduleQuick(state) {
           </div>
           <div>
             <span class="qgw__dt">Rating(avg/total):</span>
-            <span class="qgw__dd">${`${data?.data?.rating_avg}<span class="qgw__rttot">(${data?.data?.ratings_total})</span>` ?? "-"}</span>
+            <span class="qgw__dd">${`${data?.data?.rating_avg || 0}<span class="qgw__rttot">(${data?.data?.ratings_total || 0})</span>`}</span>
             <span class="qgw__label qgw__trustl2">
 
         ${trust && trust[data?.asin] ?
-          `<span class="qgw__trustl2w ${trust[data?.asin] ? `qgw__trustl2w__` + trust[data?.asin][0] : ""}"> <span>${trust[data?.asin][0]}</span></span>`
+            `<span class="qgw__trustl2w ${trust[data?.asin] ? `qgw__trustl2w__` + trust[data?.asin][0] : ""}"> <span>${trust[data?.asin][0]}</span></span>`
 
-          :
+            :
 
-          `<span class="qgw__loader"><img src="${getLogo('assets/img/loader.gif')}" /></span>`
-        }
+            `<span class="qgw__loader"><img src="${getLogo('assets/img/loader.gif')}" /></span>`
+          }
             </span>
           </div>
       <div class="qgw__group">
@@ -224,7 +232,7 @@ export default function moduleQuick(state) {
 
     // observeAndFetch()
     document.addEventListener("DOMContentLoaded", observeAndFetch)
-    setInterval(observeAndFetch, 1000)
+    // setInterval(observeAndFetch, 1000)
     observeClassChanges('[data-component-type="s-search-results"] .s-result-list> [data-component-type="s-search-result"]', observeAndFetch)
   }
 }

@@ -354,6 +354,23 @@ body .a-size-large {
   letter-spacing: 0;
 }
 
+.qgw__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 95%;
+}
+
+.qgw__error span {
+  font-size: 12px;
+}
+
+.qgw__error a {
+  font-size: 12px;
+}
+
 .sg-col-12-of-16 .qgw {
   position: absolute;
   bottom: 0;
