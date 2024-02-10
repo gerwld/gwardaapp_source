@@ -148,7 +148,7 @@ export default function moduleQuick(state) {
           else
             window.gwApp = { asin_trust: { ...results } }
 
-          const parente = document.querySelector(`[data-asin= "${key}"] .${item_class} `);
+          const parente = document.querySelector(`[data-asin="${key}"] .${item_class} `);
           const notInit = parente?.querySelector('.qgw__loader') && !parente.querySelector(".qgw__loader__prev");
           if (parente && notInit) {
             let string = `<span class="qgw__trustl2w ${results[key] ? `qgw__trustl2w__` + results[key][0] : ""}"> <span>${results[key][0]}</span></span> `;
@@ -169,7 +169,7 @@ export default function moduleQuick(state) {
     // sends request to backend
     function observeAndFetch() {
       initializeUpdate();
-      const items = document.querySelectorAll('[data-component-type="s-search-results"] .s-result-list>[data-component-type="s-search-result"]')
+      const items = document.querySelectorAll('[data-component-type="s-search-result"]')
       let asins = [...items].filter(e => !e.classList.contains('AdHolder')).map(e => e.getAttribute("data-asin") || [])
       console.log("observeAndFetch call, asins to fetch:", asins);
       if (asins.length) {
@@ -222,7 +222,7 @@ export default function moduleQuick(state) {
       }
     }
 
-    observeAndFetch()
+    // observeAndFetch()
     document.addEventListener("DOMContentLoaded", observeAndFetch)
     setInterval(observeAndFetch, 1000)
     observeClassChanges('[data-component-type="s-search-results"] .s-result-list> [data-component-type="s-search-result"]', observeAndFetch)

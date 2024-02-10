@@ -18,9 +18,11 @@ export default async function getbyASIN(arr) {
     if (state.length)
       filteredArr = filteredArr.filter(f => !state.some(i => i.asin === f));
 
+    // allProcessed = [...allProcessed, ...allRequested.filter(e => state.indexOf(e) !== -1)]
+
     // sends message after filtering
     fetchOnBackendInBatch(filteredArr)
-    console.log('getbyASIN sendMessage: (filtered, orig, state)', filteredArr, arr, payload);
+    console.log('getbyASIN sendMessage: (filtered, orig, state)', filteredArr, arr, payload, allProcessed);
   });
 }
 
@@ -79,11 +81,12 @@ async function fetchOnBackendInBatch(asins, isRetry) {
 async function getDataFromSSR(page) {
   const parser = new DOMParser();
   const soup = parser.parseFromString(page, 'text/html');
-  const data = await getItemData(null, [], soup, 1, 1);
+  const data = await getItemData(null, [], soup, 2, 2);
   return data;
 }
 
 function updateCache(payload) {
+  console.log(`updateCache: ${payload.asin}`, payload);
   browser_cr.storage.local.get("gpCache", cache => {
     let new_cache;
     if (cache && cache.gpCache && cache.gpCache.length)

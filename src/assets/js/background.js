@@ -30,7 +30,7 @@ const browser_cr = chrome ? chrome : browser;
 
 // Show accept cookies if not cookies_gal20 (state prop)
 browser_cr.runtime.onInstalled.addListener(function () {
-  browser_cr.storage.local.get(null, (result) => {
+  browser_cr.storage.sync.get("cookies_gal20", (result) => {
     // If no cookies accept, disable extension & open accept window
     if (!result?.cookies_gal20) {
       browser_cr.storage.local.set({ "gpState": { ...initialState, disabled: true } })

@@ -11,28 +11,19 @@
     "default_popup": "/content/popup.html",
     "default_icon": "/assets/img/icons/icon128.png"
   },
+  "options_page": "/content/preferences.html",
   "content_scripts": [
     {
-      "matches": [
-        "*://amazon.com/*",
-        "*://*.amazon.com/*"
-      ],
-      "js": [
-        "/assets/js/content.js"
-      ],
-      "css": [
-        "/assets/styles/main.css"
-      ],
+      "matches": ["*://amazon.com/*", "*://*.amazon.com/*"],
+      "js": ["/assets/js/content.js"],
+      "css": ["/assets/styles/main.css"],
       "run_at": "document_start"
     }
   ],
   "background": {
     "service_worker": "/assets/js/background.js"
   },
-  "permissions": [
-    "management",
-    "storage"
-  ],
+  "permissions": ["management", "storage"],
   "web_accessible_resources": [
     {
       "resources": [
@@ -41,9 +32,7 @@
         "/assets/js/content.js",
         "/assets/img/loader.gif"
       ],
-      "matches": [
-        "<all_urls>"
-      ]
+      "matches": ["<all_urls>"]
     }
   ]
 }

@@ -36,7 +36,7 @@
 
       // Listen for changes in cookies_gal20
       let prevstateCookies;
-      browser_cr.storage.local.onChanged.addListener((changes, namespace) => {
+      browser_cr.storage.sync.onChanged.addListener((changes, namespace) => {
         if (
           changes.cookies_gal20 &&
           changes.cookies_gal20.newValue &&
@@ -49,7 +49,7 @@
 
 
       function initializeCookies(updated) {
-        browser_cr.storage.local.get("cookies_gal20", (result) => {
+        browser_cr.storage.sync.get("cookies_gal20", (result) => {
           let state = result.cookies_gal20;
           if (!state) {
             console.log("initializeCookies msg");

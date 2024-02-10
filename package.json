@@ -5,7 +5,8 @@
   "main": "gulpfile.js",
   "type": "module",
   "scripts": {
-    "build": "clear && rm -rf ./dist && gulp build_md",
+    "build": "clear && rm -rf ./dist && gulp build",
+    "gbuild": "clear && rm -rf ./dist && gulp build_md",
     "dev": "chmod +x dev.sh && ./dev.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

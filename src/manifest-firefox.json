@@ -13,32 +13,20 @@
       "128": "/assets/img/icons/icon128.png"
     }
   },
+  "options_page": "/content/preferences.html",
   "content_scripts": [
     {
-      "matches": [
-        "*://amazon.com/*",
-        "*://*.amazon.com/*"
-      ],
-      "js": [
-        "/assets/js/content.js"
-      ],
-      "css": [
-        "/assets/styles/main.css"
-      ],
+      "matches": ["*://amazon.com/*", "*://*.amazon.com/*"],
+      "js": ["/assets/js/content.js"],
+      "css": ["/assets/styles/main.css"],
       "run_at": "document_start"
     }
   ],
   "background": {
-    "scripts": [
-      "/assets/js/background.js"
-    ],
+    "scripts": ["/assets/js/background.js"],
     "persistent": false
   },
-  "permissions": [
-    "*://*.amazon.com/*",
-    "management",
-    "storage"
-  ],
+  "permissions": ["*://*.amazon.com/*", "management", "storage"],
   "web_accessible_resources": [
     "/assets/*",
     "/content/*.html",

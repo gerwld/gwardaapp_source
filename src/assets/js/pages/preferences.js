@@ -59,16 +59,19 @@
         const eventListeners = [];
         (() => {
           return new Promise((resolve) => {
-            browser_cr.storage.local.get(null, (result) => {
-              let gpState;
-              if (result.cookies_gal20 !== true) {
-                gpState = { ...result.gpState, disabled: true }
-              }
-              else {
-                gpState = result.gpState;
-              }
+            browser_cr.storage.local.get("gpState", (result) => {
+              browser_cr.storage.sync.get("cookies_gal20", (syncres) => {
 
-              resolve(gpState);
+                let gpState;
+                if (syncres.cookies_gal20 !== true) {
+                  gpState = { ...result.gpState, disabled: true }
+                }
+                else {
+                  gpState = result.gpState;
+                }
+
+                resolve(gpState);
+              })
             })
           })
         })().then((state) => {
@@ -86,8 +89,9 @@
               state[input.name] = value;
 
             // Save the updated state to extension storage
-            browser_cr.storage.local.get(null, (gs) => {
-              browser_cr.storage.local.set({ ...gs, gpState: { ...state } }, dispatchStateChangeEvent);
+            browser_cr.storage.local.get("gpState", (gs) => {
+              let prevSt = gs?.gpState ?? {};
+              browser_cr.storage.local.set({ "gpState": { ...prevSt, ...state } }, dispatchStateChangeEvent);
             });
           }
 
@@ -166,7 +170,7 @@
     }
 
     // Show cookies modal if not true
-    browser_cr.storage.local.get(null, (data) => {
+    browser_cr.storage.sync.get("cookies_gal20", (data) => {
       setBodyFixed(!data?.cookies_gal20);
       if (!data?.cookies_gal20) {
         cookies_popup.classList.remove('hidden')
@@ -180,12 +184,13 @@
         switch (action) {
           case "accept_cookies":
             cookies_popup.classList.add("hidden");
-            browser_cr.storage.local.get(null, (result) => {
-              console.log(result);
-              browser_cr.storage.local.set({ "cookies_gal20": true })
-              if (result.gpState)
-                browser_cr.storage.local.set({ "gpState": { ...result.gpState, disabled: false } })
+            browser_cr.storage.sync.set({ "cookies_gal20": true })
+            browser_cr.storage.local.get("gpState", (result) => {
+              if (result.gpState) {
+                browser_cr.storage.local.set({ "gpState": { ...result.gpState, disabled: false } });
+              }
             });
+
             setBodyFixed(null);
             break;
           case "pref_cookies":

@@ -70,11 +70,11 @@ export default [
 
         }
       }),
-      terser({ // Minify js
-        compress: {
-          drop_console: true
-        }
-      }),
+      // terser({ // Minify js
+      //   compress: {
+      //     drop_console: true
+      //   }
+      // }),
       prependBannerPlugin({ banner: COPYRIGHT + "console.log(`%c gwardaApp v.0.9.5 beta `, 'background: gray; color: yellow');\n" })
     ],
   },
@@ -122,11 +122,11 @@ export default [
           'CSSOM.CSSKeyframeRule = CSSKeyframeRule.CSSKeyframeRule;': 'CSSOM.CSSKeyframeRule = CSSKeyframeRule?.CSSKeyframeRule;'
         }
       }),
-      terser({ // Minify js
-        compress: {
-          drop_console: true
-        }
-      }),
+      // terser({ // Minify js
+      //   compress: {
+      //     drop_console: true
+      //   }
+      // }),
       prependBannerPlugin({ banner: COPYRIGHT })
     ],
   }
