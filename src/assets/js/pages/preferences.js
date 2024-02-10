@@ -194,7 +194,7 @@
             setBodyFixed(null);
             break;
           case "pref_cookies":
-            cookies_popup.querySelector('.accept_cookies__pref').classList.add("visible");
+            // cookies_popup.querySelector('.accept_cookies__pref').classList.add("visible");
             break;
           case "delete_cookies":
             browser_cr.management.uninstallSelf();

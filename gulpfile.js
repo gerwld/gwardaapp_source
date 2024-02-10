@@ -134,6 +134,7 @@ task('addOther', async function () {
     src(['./LICENSE.md', './package.json', './README.md', './SECURITY.md', './CONTRIBUTING.md'])
         .pipe(dest('./dist/chromium'))
         .pipe(dest('./dist/firefox'))
+        .pipe(dest('./dist/'))
 
     src('./src/manifest-chromium.json').pipe(rename("manifest.json")).pipe(dest('./dist/chromium'));
     src('./src/manifest-firefox.json').pipe(rename("manifest.json")).pipe(dest('./dist/firefox'));

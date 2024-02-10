@@ -46,15 +46,24 @@ browser_cr.storage.local.get("gpState", (result) => {
 
 
 // Clear cache if > 4mb or item
-browser_cr.storage.local.getBytesInUse(null, function (bytesInUse) {
+function clearCache(bytesInUse) {
   let currentStorageUsage = bytesInUse / 1024 / 1024;
-  let storageLimit = 3;
+  let storageLimit = 4;
   if (currentStorageUsage > storageLimit) {
     browser_cr.storage.local.remove("gpCache", function () {
       console.warn("gwardaApp: cache removed due to storage limit");
     });
   }
-});
+}
+if (browser_cr.storage.local?.getBytesInUse)
+  browser_cr.storage.local.getBytesInUse(null, function (b) {
+    clearCache(b);
+  });
+else {
+  browser_cr.storage.local.get(null, function (items) {
+    clearCache(JSON.stringify(items).length);
+  })
+}
 
 // Clear cache if expired
 browser_cr.storage.local.get('gpCache', function (payload) {

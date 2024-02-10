@@ -11,7 +11,10 @@
     "default_popup": "/content/popup.html",
     "default_icon": "/assets/img/icons/icon128.png"
   },
-  "options_page": "/content/preferences.html",
+  "options_ui": {
+    "page": "/content/preferences.html",
+    "open_in_tab": false
+  },
   "content_scripts": [
     {
       "matches": ["*://amazon.com/*", "*://*.amazon.com/*"],
