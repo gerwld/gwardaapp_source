@@ -29,7 +29,17 @@
     "scripts": ["/assets/js/background.js"],
     "persistent": false
   },
-  "permissions": ["*://*.amazon.com/*", "management", "storage"],
+  "applications": {
+    "gecko": {
+      "id": "{460c16bd-4cfb-4a87-85f0-beb062549a2a}"
+    }
+  },
+  "permissions": [
+    "*://*.amazon.com/*",
+    "management",
+    "storage",
+    "*://trustwerty.com/*"
+  ],
   "web_accessible_resources": [
     "/assets/*",
     "/content/*.html",

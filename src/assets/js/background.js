@@ -123,4 +123,4 @@ browser_cr.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 
 
-// browser_cr.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLScGXGlaC1KUSji5XzrVtB7PpRdoBbmRhoEVig1BPPrUY2ShKg/viewform?usp=sf_link");
+// browser_cr.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSfECVugYsy9buYIcIu6mMuHqTZPylcBJPl60Dz6mc7Pboz9Pg/viewform?usp=sf_link");

@@ -50,8 +50,8 @@
 
       function initializeCookies(updated) {
         browser_cr.storage.sync.get("cookies_gal20", (result) => {
-          let state = result.cookies_gal20;
-          if (!state) {
+          let state = result?.cookies_gal20;
+          if (state !== true) {
             console.log("initializeCookies msg");
             let toggle_disable = document.querySelector('[data-action="disabled"]');
             if (!toggle_disable) {

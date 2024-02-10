@@ -63,7 +63,7 @@
               browser_cr.storage.sync.get("cookies_gal20", (syncres) => {
 
                 let gpState;
-                if (syncres.cookies_gal20 !== true) {
+                if (syncres?.cookies_gal20 !== true) {
                   gpState = { ...result.gpState, disabled: true }
                 }
                 else {

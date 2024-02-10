@@ -13,7 +13,7 @@ function getCurrentState() {
     browser_cr.storage.sync.get("cookies_gal20", (cookies) => {
       console.log("COOKIES:", cookies);
       let state;
-      if (cookies.cookies_gal20 !== true) {
+      if (cookies?.cookies_gal20 !== true) {
         state = { disabled: true }
       }
       else {

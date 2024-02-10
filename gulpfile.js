@@ -102,7 +102,7 @@ task('minifyJS', async function () {
             filter(['**', '!**/content.js', '!**/background.js', '!**/rate_popup.js', '!**/__*.js'])
         )
         .pipe(stripDebug())
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(insert.prepend(COPYRIGHT))
         .pipe(gulpFlatten({ includeParents: 4 }))
         .pipe(dest('./dist/chromium/assets/js/'))
