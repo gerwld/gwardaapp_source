@@ -49,4 +49,4 @@ We may update this policy from time to time to reflect changes in our practices 
 
 If you have any questions or concerns about this policy or our data practices related to Amazon, please contact us at pjaworski.dev@gmail.com.
 
-By using our extension on Amazon, you acknowledge that you have read and understood this policy and agree to its terms and conditions.
+By using our extension (GwardaApp), you acknowledge that you have read and understood this policy and agree to its terms and conditions.

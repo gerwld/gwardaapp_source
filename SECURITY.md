@@ -28,4 +28,4 @@ If you have any concerns, questions, or feedback regarding the security of Gward
 
 GwardaApp aims to provide a safe, customizable, and enjoyable Amazon experience without compromising your privacy or security. Thank you for choosing GwardaApp as your Amazon enhancement tool.
 
-Note: Amazon is a registered trademark of Amazon AB. This extension is not affiliated with or endorsed by Amazon AB.
+Impotant Note: Amazon is a registered trademark of Amazon and all related Marks are Trademarks of Amazon.com, Inc. or its affiliates. This extension is not affiliated with or endorsed by Amazon.com, Inc or / and its affiliates.

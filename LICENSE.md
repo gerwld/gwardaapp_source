@@ -34,4 +34,4 @@ For more information about the CC BY-NC-ND 4.0 license, visit the full license d
 
 For any questions or permission requests, please contact me at pjaworski.dev@gmail.com.
 
-Note: Amazon is a registered trademark of Amazon AB. This extension is not affiliated with or endorsed by Amazon AB.
+Impotant Note: Amazon is a registered trademark of Amazon and all related Marks are Trademarks of Amazon.com, Inc. or its affiliates. This extension is not affiliated with or endorsed by Amazon.com, Inc or / and its affiliates.

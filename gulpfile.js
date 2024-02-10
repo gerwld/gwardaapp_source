@@ -49,8 +49,8 @@ const COPYRIGHT = `//   - This file is part of GwardaApp Extension
 //   - You should have received a copy of the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0) License
 //   - along with GwardaApp Extension.  If not, see <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
 
-
 // Note: Amazon is a registered trademark of Amazon and all related Marks are Trademarks of Amazon.com, Inc. or its affiliates. This extension is not affiliated with or endorsed by Amazon.com, Inc or / and its affiliates.
+
 `
 
 //## Minify Images  ##//
@@ -102,7 +102,7 @@ task('minifyJS', async function () {
             filter(['**', '!**/content.js', '!**/background.js', '!**/rate_popup.js', '!**/__*.js'])
         )
         .pipe(stripDebug())
-        // .pipe(uglify())
+        .pipe(uglify())
         .pipe(insert.prepend(COPYRIGHT))
         .pipe(gulpFlatten({ includeParents: 4 }))
         .pipe(dest('./dist/chromium/assets/js/'))
@@ -131,7 +131,7 @@ task('minifyHTML', async function () {
 
 //## Add other files  ##//
 task('addOther', async function () {
-    src(['./LICENSE.md', './package.json', './README.md', './SECURITY.md', './CONTRIBUTING.md'])
+    src(['./LICENSE.md', './package.json', './README.md', './SECURITY.md', './PRIVACY.md', './CONTRIBUTING.md'])
         .pipe(dest('./dist/chromium'))
         .pipe(dest('./dist/firefox'))
         .pipe(dest('./dist/'))
