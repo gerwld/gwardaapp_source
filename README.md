@@ -11,7 +11,7 @@ Discover Amazon product info, find best prices, leverage SEO keywords, locate to
 
 ## Installation
 
-GwardaApp is available on the [Google Chrome Store](https://chromewebstore.google.com/detail/), [Firefox Web Store](https://addons.mozilla.org/en-US/firefox/addon/gwardaapp/) and [Microsoft Edge Store](https://microsoftedge.microsoft.com/addons/detail/). Visit the store page and click on the "Add" button to install the extension directly to your browser.
+GwardaApp is available on the [Google Chrome Store](https://chromewebstore.google.com/detail/gwardaapp-amazon-research/hfknhnfhdnmioompphjjdpgoolcfobng), [Firefox Web Store](https://addons.mozilla.org/en-US/firefox/addon/gwardaapp/) and [Microsoft Edge Store](https://microsoftedge.microsoft.com/addons/detail/). Visit the store page and click on the "Add" button to install the extension directly to your browser.
 
 You can also download the latest version of GwardaApp Extension from the [Releases](https://github.com/gerwld/gwardaapp_amazon/releases) page. Choose the appropriate version for your operating system and follow the installation instructions provided.
 
